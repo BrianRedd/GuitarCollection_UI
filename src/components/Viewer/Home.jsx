@@ -77,20 +77,6 @@ const Home = () => {
           <h1>Brian's Guitars</h1>
         </Col>
       </Row>
-      <Row className="border d-flex align-items-baseline">
-        <Col xs={12} md={3}>
-          <h3>Statistics</h3>
-        </Col>
-        <Col xs={12} md={3}>
-          {guitars.length} Guitars Loaded
-        </Col>
-        <Col xs={12} md={3}>
-          {brands.length} Brands Loaded
-        </Col>
-        <Col xs={12} md={3}>
-          {gallery.length} Gallery Images Loaded
-        </Col>
-      </Row>
       <Row className="pt-3 text-center">
         <Col>
           <h3>Today's Featured Guitar</h3>

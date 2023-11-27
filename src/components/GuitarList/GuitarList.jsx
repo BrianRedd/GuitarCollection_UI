@@ -20,7 +20,7 @@ import {
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Alert } from "reactstrap";
+import { Alert, Badge } from "reactstrap";
 import confirm from "reactstrap-confirm";
 
 import useFilters from "../../hooks/useFilters";
@@ -36,8 +36,8 @@ import {
   OWNERSHIP_STATUS_OPTIONS
 } from "../data/constants";
 
-import "./styles/guitarlist.scss";
 import { serverLocation } from "../../utils/constants";
+import "./styles/guitarlist.scss";
 
 /**
  * @function GuitarList
@@ -61,13 +61,16 @@ const GuitarList = () => {
     image => image.caption === CAPTION_OPTION_FULL_FRONT
   );
 
-  const guitars = applyFilter(guitarsFromState ?? []);
+  const guitars = applyFilter(guitarsFromState ?? []).map(guitar => ({
+    ...guitar,
+    noOfPictures: guitar.pictures.length
+  }));
 
   const { orderBy, order, page = 0, pageSize = DEFAULT_PAGE_SIZE } = pagination;
 
   const headCells = [
     {
-      id: "thumbnail",
+      id: "noOfPictures",
       label: ""
     },
     {
@@ -207,13 +210,21 @@ const GuitarList = () => {
                         onClick={() => {
                           navigate(`/guitar/${row._id}`);
                         }}
+                        className="text-nowrap"
                       >
                         {!_.isEmpty(frontPicture) && (
-                          <img
-                            src={`${serverLocation}/gallery/${frontPicture.image}`}
-                            height="60"
-                            alt={row.name}
-                          ></img>
+                          <React.Fragment>
+                            <img
+                              src={`${serverLocation}/gallery/${frontPicture.image}`}
+                              height="60"
+                              alt={row.name}
+                            />
+                            {Boolean(row.noOfPictures) && (
+                              <Badge color="info" className="picture-badge">
+                                {row.noOfPictures}
+                              </Badge>
+                            )}
+                          </React.Fragment>
                         )}
                       </TableCell>
                       <TableCell

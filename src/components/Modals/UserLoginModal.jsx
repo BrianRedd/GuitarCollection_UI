@@ -1,6 +1,6 @@
 /** @module UserLoginModal */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   faEye,
@@ -14,7 +14,7 @@ import { Button, Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import { Formik } from "formik";
 import _ from "lodash";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Alert, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 import { getUser, updateUser, writeUser } from "../../store/slices/userSlice";
@@ -32,6 +32,9 @@ const UserLoginModal = props => {
   const { isModalOpen, toggle } = props;
   const dispatch = useDispatch();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const user = useSelector(state => state.userState?.user) ?? {};
+
   const [userObject, setUserObject] = useState({});
   const [error, setError] = useState(null);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -43,6 +46,12 @@ const UserLoginModal = props => {
     passwordConfirm: "",
     saveCookie: true
   };
+
+  useEffect(() => {
+    if (isModalOpen && _.isEmpty(user)) {
+      setIsPasswordVisible(false);
+    }
+  }, [isModalOpen, user]);
 
   const EyeAdornment = (
     <IconButton
@@ -125,20 +134,21 @@ const UserLoginModal = props => {
                   <IconButton
                     size="small"
                     onClick={() => {
-                      dispatch(getUser(formProps.values.username)).then(
-                        response => {
-                          if (response?.payload?.data) {
-                            if (!response.payload.data?.password) {
-                              formProps.setFieldValue("isNewPassword", true);
-                            }
-                            setUserObject(response.payload.data);
-                            setError(null);
-                          } else {
-                            setUserObject({});
-                            setError(response?.payload?.message);
+                      const usernameToLower =
+                        formProps.values.username.toLowerCase();
+                      formProps.setFieldValue("username", usernameToLower);
+                      dispatch(getUser(usernameToLower)).then(response => {
+                        if (response?.payload?.data) {
+                          if (!response.payload.data?.password) {
+                            formProps.setFieldValue("isNewPassword", true);
                           }
+                          setUserObject(response.payload.data);
+                          setError(null);
+                        } else {
+                          setUserObject({});
+                          setError(response?.payload?.message);
                         }
-                      );
+                      });
                     }}
                     color="info"
                     disabled={!formProps.values.username}

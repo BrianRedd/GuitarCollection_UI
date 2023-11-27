@@ -52,7 +52,7 @@ const ImageSelectorModal = props => {
   };
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} size="lg">
+    <Modal isOpen={isOpen} toggle={toggle} fullscreen>
       <ModalHeader toggle={toggle}>Select Image From Gallery</ModalHeader>
       <ModalBody>
         <Row className="selector-image-container">

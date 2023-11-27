@@ -151,7 +151,9 @@ const ManageUserModal = props => {
                   label="New Password"
                   required={Boolean(formProps?.values?.oldPassword)}
                   otherProps={{
-                    disabled: formProps?.values?.oldPassword !== user.password,
+                    disabled:
+                      md5Hasher(formProps?.values?.oldPassword) !==
+                      user.password,
                     type: isPasswordVisible ? "" : "password"
                   }}
                   width="full"
