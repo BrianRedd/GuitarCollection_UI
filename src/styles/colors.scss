@@ -1,0 +1,48 @@
+$color-dark-blue: #153A4A;
+$color-dark-blue-80percMask: rgba(25,58,74,0.9);
+$color-white: #FFFFFF;
+$color-white-80percMask: rgba(255,255,255,0.9);
+$color-light-green: #B4C953;
+$color-tan: #D9AE41;
+$color-light-grey: #CCCCCC;
+$color-dark-grey: #5F7078;
+$color-darker-grey: #252A2A;
+$color-rust: #762f0c;
+$color-rust-20percMask: rgba(118, 47, 12, 0.2);
+$color-pale-yellow: #fafad2;  
+
+.color-dark-blue {
+  color: $color-dark-blue;
+}
+
+.color-white {
+	color: $color-white; 
+}
+
+.color-light-green {
+	color: $color-light-green; 
+}
+
+.color-tan {
+	color: $color-tan; 
+}
+
+.color-light-grey {
+	color: $color-light-grey; 
+}
+
+.color-dark-grey {
+	color: $color-dark-grey; 
+}
+
+.color-darker-grey {
+	color: $color-darker-grey; 
+}
+
+.color-rust {
+	color: $color-rust; 
+}
+
+.color-pale-yellow {
+  color: $color-pale-yellow;
+}

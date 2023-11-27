@@ -1,0 +1,57 @@
+/** @module brands.scss */
+
+.brands-container {
+  overflow: auto;
+  max-height: 450px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: start;
+  height: 48px;
+}
+
+.brand-block {
+  position: relative;
+  text-align: center;
+  width: 200px !important;
+  height: 175px !important;
+  display: inline-block;
+  padding: 0 !important;
+  .brand-buttons-container {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    button {
+      background-color: rgba(255, 255, 255, 0.2);
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.6);
+      }
+    }
+  }
+  .brand-name {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+  }
+  .brand-logo {
+    position: relative;
+    top: 40px;
+    height: 70px;
+    max-width: 175px;
+  }
+  .brand-notes {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+  &:hover {
+    .brand-notes {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+	"name": "guitar-collection",
+	"homepage": "http://whatsmymonkey.com/",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@emotion/react": "^11.11.1",
+		"@emotion/styled": "^11.11.0",
+		"@fortawesome/fontawesome-svg-core": "^6.4.2",
+		"@fortawesome/free-solid-svg-icons": "^6.4.2",
+		"@fortawesome/react-fontawesome": "^0.2.0",
+		"@mui/icons-material": "^5.14.16",
+		"@mui/material": "^5.14.17",
+		"@mui/x-data-grid": "^6.18.0",
+		"@mui/x-data-grid-generator": "^6.18.0",
+		"@mui/x-date-pickers": "^5.0.20",
+		"@reduxjs/toolkit": "^1.9.7",
+		"@testing-library/jest-dom": "5.16.1",
+		"@testing-library/react": "12.1.2",
+		"@testing-library/user-event": "13.5.0",
+		"acorn": "^8.11.2",
+		"axios": "^1.6.0",
+		"bootstrap": "^5.1.3",
+		"enzyme": "^3.11.0",
+		"enzyme-adapter-react-16": "1.15.6",
+		"formik": "^2.2.9",
+		"lodash": "^4.17.21",
+		"moment": "^2.29.4",
+		"notistack": "^3.0.1",
+		"prop-types": "^15.8.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-image-file-resizer": "^0.4.8",
+		"react-number-format": "^5.3.1",
+		"react-redux": "^8.0.2",
+		"react-router-dom": "^6.17.0",
+		"react-scripts": "5.0.0",
+		"reactstrap": "^9.0.1",
+		"reactstrap-confirm": "^1.3.2",
+		"redux-logger": "^3.0.6",
+		"redux-thunk": "2.4.1",
+		"redux-toolkit": "^1.1.2",
+		"sass": "1.45.2",
+		"web-vitals": "^2.1.2",
+		"yup": "^1.3.2"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"jest": {
+		"snapshotSerializers": [
+			"enzyme-to-json/serializer"
+		],
+		"collectCoverageFrom": [
+			"src/**/*.js",
+			"!src/index.js"
+		],
+		"coverageReporters": [
+			"text"
+		]
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+		"enzyme-to-json": "3.6.2",
+		"eslint-config-airbnb": "19.0.4",
+		"eslint-config-prettier": "8.3.0",
+		"eslint-plugin-jsx-a11y": "6.5.1",
+		"eslint-plugin-prettier": "4.0.0",
+		"prettier": "2.5.1"
+	}
+}

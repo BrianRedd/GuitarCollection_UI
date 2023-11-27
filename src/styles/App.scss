@@ -1,0 +1,49 @@
+.App {
+  .app-body {
+    margin-top: 66px;
+  }
+
+  a {
+    text-decoration: none;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .nav-item {
+    padding: 0 10px 0 10px;
+    a {
+      color: white;
+    }
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  thead {
+    background-color: cadetblue;
+    * {
+      font-weight: bold;
+    }
+  }
+
+  .icon_holder {
+    width: 125px;
+  }
+
+  .custom-pagination {
+    display: flex;
+    justify-content: flex-end;
+    .MuiTablePagination-toolbar {
+      display: flex;
+      align-items: baseline;
+    }
+  }
+}

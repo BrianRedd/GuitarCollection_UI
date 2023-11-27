@@ -1,0 +1,21 @@
+/** @module modalstyles.scss */
+
+.selector-image-container {
+  .image-selector {
+    height: 130px;
+    width: 100px;
+    display: inline-block;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 0.5em;
+    border: solid 2px white;
+    &.selected {
+      border-color: #1976d2;
+    }
+    &:disabled {
+      opacity: 0.6;
+      cursor: unset;
+    }
+  }
+}
