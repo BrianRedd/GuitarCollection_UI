@@ -109,7 +109,7 @@ const NavBar = () => {
   };
 
   return (
-    <Navbar color="dark" dark expand="sm" fixed="top">
+    <Navbar color="dark" dark expand="lg" fixed="top">
       <NavbarBrand href="/">Brian's Guitars</NavbarBrand>
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isHamburgerOpen} navbar>

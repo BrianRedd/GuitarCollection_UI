@@ -81,6 +81,7 @@ export const STATUS_OPTIONS_DEFAULTS = [
 ];
 
 export const CAPTION_OPTION_FULL_FRONT = "Full Front";
+export const CAPTION_OPTION_RECEIPT = "Receipt";
 
 export const CAPTION_OPTIONS_DEFAULTS = [
   CAPTION_OPTION_FULL_FRONT,
@@ -91,7 +92,8 @@ export const CAPTION_OPTIONS_DEFAULTS = [
   "Headstock Back",
   "Label",
   "Serial Number",
-  "Case"
+  "Case",
+  CAPTION_OPTION_RECEIPT
 ];
 
 export const SPEC_OPTIONS_DEFAULTS = [

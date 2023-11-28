@@ -18,8 +18,12 @@ import {
   Row
 } from "reactstrap";
 
+import usePermissions from "../../hooks/usePermissions";
 import { serverLocation } from "../../utils/constants";
-import { CAPTION_OPTIONS_DEFAULTS } from "../data/constants";
+import {
+  CAPTION_OPTIONS_DEFAULTS,
+  CAPTION_OPTION_RECEIPT
+} from "../data/constants";
 
 import InputFreeFormField from "../common/InputFreeFormField";
 
@@ -35,7 +39,13 @@ const ImageSelectorModal = props => {
 
   const [selectedImage, setSelectedImage] = useState({});
 
-  const gallery = useSelector(state => state.galleryState?.list) ?? [];
+  const galleryFromState = useSelector(state => state.galleryState?.list) ?? [];
+
+  const hasPurchaseHistoryPermissions = usePermissions("VIEW_PURCHASE_HISTORY");
+
+  const gallery = hasPurchaseHistoryPermissions
+    ? galleryFromState
+    : galleryFromState?.map(image => image.caption !== CAPTION_OPTION_RECEIPT);
 
   const formProps = useFormikContext();
 
