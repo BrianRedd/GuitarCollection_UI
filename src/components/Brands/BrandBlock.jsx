@@ -12,6 +12,7 @@ import confirm from "reactstrap-confirm";
 import usePermissions from "../../hooks/usePermissions";
 import { deleteBrand, getBrands } from "../../store/slices/brandsSlice";
 import { serverLocation } from "../../utils/constants";
+import { BRAND_PERM } from "../data/constants";
 
 import "./styles/brands.scss";
 
@@ -23,7 +24,7 @@ const BrandBlock = props => {
   const { brand, selectBrand } = props;
   const dispatch = useDispatch();
 
-  const hasEditBrandPermissions = usePermissions("EDIT_BRAND");
+  const hasEditBrandPermissions = usePermissions(BRAND_PERM);
 
   return (
     <div className="border brand-block">

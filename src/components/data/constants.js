@@ -125,11 +125,17 @@ export const TODO_OPTIONS_DEFAULTS = [
   "Completed"
 ];
 
+export const ADMIN_PERM = "ADMIN";
+export const GUITAR_PERM = "EDIT_GUITAR";
+export const BRAND_PERM = "EDIT_BRAND";
+export const PURCHASE_PERM = "VIEW_PURCHASE_HISTORY";
+
 export const PERMISSIONS_OPTIONS = [
-  "EDIT_USER",
-  "EDIT_GUITAR",
-  "EDIT_BRAND",
-  "VIEW_PURCHASE_HISTORY"
+  ADMIN_PERM,
+  BRAND_PERM,
+  GUITAR_PERM,
+  PURCHASE_PERM,
+  "EDIT_USER"
 ];
 
 export const FILTER_QUERY = "query";

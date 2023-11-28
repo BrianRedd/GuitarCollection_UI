@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
 import usePermissions from "../../hooks/usePermissions";
+import { GUITAR_PERM } from "../data/constants";
 
 import "./styles/editors.scss";
 
@@ -24,7 +25,7 @@ const GuitarFormButtons = props => {
 
   const navigate = useNavigate();
 
-  const hasEditGuitarPermissions = usePermissions("EDIT_GUITAR");
+  const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
 
   const formProps = useFormikContext();
   return (

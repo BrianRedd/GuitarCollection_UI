@@ -16,6 +16,7 @@ import { getColWidth } from "../../utils/utils";
 import {
   CAPTION_OPTION_FULL_FRONT,
   OWNERSHIP_STATUS_OPTIONS,
+  PURCHASE_PERM,
   SPEC_OPTIONS_DEFAULTS,
   TODO_OPTIONS_DEFAULTS
 } from "../data/constants";
@@ -35,7 +36,7 @@ const GuitarForm = props => {
 
   const gallery = useSelector(state => state.galleryState?.list) ?? [];
 
-  const hasPurchaseHistoryPermissions = usePermissions("VIEW_PURCHASE_HISTORY");
+  const hasPurchaseHistoryPermissions = usePermissions(PURCHASE_PERM);
 
   const [snComment, setSnComment] = useState(null);
 

@@ -36,7 +36,7 @@ import md5Hasher from "../../utils/md5";
 import { cookieFunctions, getUserName } from "../../utils/utils";
 import InputMultiSelectField from "../common/InputMultiSelectField";
 import InputTextField from "../common/InputTextField";
-import { PERMISSIONS_OPTIONS } from "../data/constants";
+import { ADMIN_PERM, PERMISSIONS_OPTIONS } from "../data/constants";
 import { manageUserValidationSchema } from "./data/modalData";
 
 /**
@@ -185,7 +185,7 @@ const ManageUserModal = props => {
                   label="Remember Me"
                 />
               </Collapse>
-              {(user?.permissions ?? []).includes("EDIT_USER") && (
+              {(user?.permissions ?? []).includes(ADMIN_PERM) && (
                 <InputMultiSelectField
                   className="mt-3"
                   name="permissions"

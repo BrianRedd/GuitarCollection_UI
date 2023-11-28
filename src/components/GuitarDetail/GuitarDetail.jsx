@@ -18,7 +18,12 @@ import usePermissions from "../../hooks/usePermissions";
 import { updateGuitar, updateSelected } from "../../store/slices/guitarsSlice";
 import { serverLocation } from "../../utils/constants";
 import { getColWidth } from "../../utils/utils";
-import { CAPTION_OPTION_FULL_FRONT, DATE_FORMAT } from "../data/constants";
+import {
+  CAPTION_OPTION_FULL_FRONT,
+  DATE_FORMAT,
+  GUITAR_PERM,
+  PURCHASE_PERM
+} from "../data/constants";
 
 import GuitarPictures from "./GuitarPictures";
 import MaintenanceTable from "./MaintenanceTable";
@@ -41,8 +46,8 @@ const GuitarDetail = () => {
   const brands = useSelector(state => state.brandsState?.list) ?? [];
   const gallery = useSelector(state => state.galleryState?.list) ?? [];
 
-  const hasEditGuitarPermissions = usePermissions("EDIT_GUITAR");
-  const hasPurchaseHistoryPermissions = usePermissions("VIEW_PURCHASE_HISTORY");
+  const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
+  const hasPurchaseHistoryPermissions = usePermissions(PURCHASE_PERM);
 
   const guitar =
     guitars.find(guitar => guitar._id === matchId || guitar.name === matchId) ??
@@ -68,11 +73,12 @@ const GuitarDetail = () => {
   const LinkParser = paragraph => {
     // links
     const potentialLinks = paragraph.split(/[|^_]+/);
-    return potentialLinks.map(snippet => {
+    return potentialLinks.map((snippet, id) => {
       const linkedGuitar = guitars.find(guitar => guitar.name === snippet);
       if (!_.isEmpty(linkedGuitar)) {
         return (
           <span
+            key={`${id}`}
             className="navigation-span"
             onClick={() => navigate(`/guitar/${linkedGuitar._id}`)}
           >

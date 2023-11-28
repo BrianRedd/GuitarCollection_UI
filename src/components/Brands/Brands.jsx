@@ -18,6 +18,7 @@ import {
 } from "../../store/slices/brandsSlice";
 import * as types from "../../types/types";
 import { serverLocation } from "../../utils/constants";
+import { BRAND_PERM } from "../data/constants";
 
 import InputTextField from "../common/InputTextField";
 import BrandBlock from "./BrandBlock";
@@ -33,7 +34,7 @@ const Brands = () => {
   const [selectedBrand, setSelectedBrand] = useState(types.brand.defaults);
   const brands = useSelector(state => state.brandsState.list) ?? [];
 
-  const hasEditBrandPermissions = usePermissions("EDIT_BRAND");
+  const hasEditBrandPermissions = usePermissions(BRAND_PERM);
 
   const isEdit = Boolean(selectedBrand._id);
 

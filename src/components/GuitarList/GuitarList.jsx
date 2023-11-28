@@ -33,6 +33,7 @@ import * as types from "../../types/types";
 import {
   CAPTION_OPTION_FULL_FRONT,
   DEFAULT_PAGE_SIZE,
+  GUITAR_PERM,
   OWNERSHIP_STATUS_OPTIONS
 } from "../data/constants";
 
@@ -53,7 +54,7 @@ const GuitarList = () => {
   const brands = useSelector(state => state.brandsState?.list) ?? [];
   const gallery = useSelector(state => state.galleryState?.list) ?? [];
 
-  const hasEditGuitarPermissions = usePermissions("EDIT_GUITAR");
+  const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
 
   const applyFilter = useFilters();
 

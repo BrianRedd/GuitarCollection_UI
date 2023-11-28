@@ -33,6 +33,7 @@ import { clearMessage as clearGalleryMessage } from "../../store/slices/galleryS
 import { clearMessage as clearGuitarMessage } from "../../store/slices/guitarsSlice";
 import * as types from "../../types/types";
 import { getUserName } from "../../utils/utils";
+import { GUITAR_PERM } from "../data/constants";
 
 import FiltersModal from "../Modals/FiltersModal";
 import ManageUserModal from "../Modals/ManageUserModal";
@@ -54,7 +55,7 @@ const NavBar = () => {
   const { user } = useSelector(state => state.userState) ?? {};
   const { filters } = useSelector(state => state.filtersState) ?? {};
 
-  const hasEditGuitarPermissions = usePermissions("EDIT_GUITAR");
+  const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
 
   const numberOfAppliedFilters = useMemo(
     () =>

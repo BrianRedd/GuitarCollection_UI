@@ -19,6 +19,7 @@ import {
   getGallery
 } from "../../store/slices/gallerySlice";
 import { serverLocation } from "../../utils/constants";
+import { GUITAR_PERM } from "../data/constants";
 
 import ImageViewerModal from "../Modals/ImageViewerModal";
 
@@ -32,7 +33,7 @@ const GalleryImage = props => {
   const { image, selectImage, handleDelete } = props;
   const dispatch = useDispatch();
 
-  const hasEditGuitarPermissions = usePermissions("EDIT_GUITAR");
+  const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 

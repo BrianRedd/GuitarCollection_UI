@@ -22,7 +22,8 @@ import usePermissions from "../../hooks/usePermissions";
 import { serverLocation } from "../../utils/constants";
 import {
   CAPTION_OPTIONS_DEFAULTS,
-  CAPTION_OPTION_RECEIPT
+  CAPTION_OPTION_RECEIPT,
+  PURCHASE_PERM
 } from "../data/constants";
 
 import InputFreeFormField from "../common/InputFreeFormField";
@@ -41,11 +42,11 @@ const ImageSelectorModal = props => {
 
   const galleryFromState = useSelector(state => state.galleryState?.list) ?? [];
 
-  const hasPurchaseHistoryPermissions = usePermissions("VIEW_PURCHASE_HISTORY");
+  const hasPurchaseHistoryPermissions = usePermissions(PURCHASE_PERM);
 
   const gallery = hasPurchaseHistoryPermissions
     ? galleryFromState
-    : galleryFromState?.map(image => image.caption !== CAPTION_OPTION_RECEIPT);
+    : galleryFromState?.filter(image => image.caption !== CAPTION_OPTION_RECEIPT);
 
   const formProps = useFormikContext();
 

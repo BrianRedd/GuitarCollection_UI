@@ -18,6 +18,11 @@ import {
   updateGalleryImage
 } from "../../store/slices/gallerySlice";
 import * as types from "../../types/types";
+import {
+  CAPTION_OPTION_RECEIPT,
+  GUITAR_PERM,
+  PURCHASE_PERM
+} from "../data/constants";
 
 import ImageUploadModal from "../Modals/ImageUploadModal";
 import GalleryImage from "./GalleryImage";
@@ -32,9 +37,16 @@ const Gallery = () => {
   const dispatch = useDispatch();
 
   const guitars = useSelector(state => state.guitarsState.list) ?? [];
-  const gallery = useSelector(state => state.galleryState.list) ?? [];
+  const galleryFromState = useSelector(state => state.galleryState?.list) ?? [];
 
-  const hasEditGuitarPermissions = usePermissions("EDIT_GUITAR");
+  const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
+  const hasPurchaseHistoryPermissions = usePermissions(PURCHASE_PERM);
+
+  const gallery = hasPurchaseHistoryPermissions
+    ? galleryFromState
+    : galleryFromState?.filter(
+        image => image.caption !== CAPTION_OPTION_RECEIPT
+      );
 
   const [selectedImage, setSelectedImage] = useState(
     types.galleryImage.defaults
@@ -54,6 +66,7 @@ const Gallery = () => {
     });
     return _.orderBy(
       (gallery ?? []).map(image => ({
+        key: image._id,
         ...image,
         guitar: `${imageGuitarMapping?.[image._id] ?? ""}`
       })),
@@ -117,9 +130,9 @@ const Gallery = () => {
                     </Row>
                   </ButtonBase>
                 )}
-                {gridData()?.map(image => (
+                {gridData()?.map((image, idx) => (
                   <GalleryImage
-                    key={image._id}
+                    key={`${image._id}_${idx}`}
                     image={image}
                     selectImage={image => {
                       selectImage(image);

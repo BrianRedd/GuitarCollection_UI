@@ -16,8 +16,10 @@ import usePermissions from "../../hooks/usePermissions";
 import { updateGuitar } from "../../store/slices/guitarsSlice";
 import { serverLocation } from "../../utils/constants";
 import {
+  ADMIN_PERM,
   CAPTION_OPTION_FULL_FRONT,
   DATE_FORMAT,
+  GUITAR_PERM,
   STATUS_OPTION_PLAYABLE
 } from "../data/constants";
 
@@ -29,7 +31,8 @@ const Home = () => {
   const gallery = useSelector(state => state.galleryState?.list) ?? [];
   const filters = useSelector(state => state.filtersState.filters) ?? {};
 
-  const hasEditGuitarPermissions = usePermissions("EDIT_GUITAR");
+  const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
+  const hasAdminPermissions = usePermissions(ADMIN_PERM);
 
   const applyFilter = useFilters();
 
@@ -77,6 +80,30 @@ const Home = () => {
           <h1>Brian's Guitars</h1>
         </Col>
       </Row>
+      {hasAdminPermissions && (
+        <Row className="border d-flex align-items-baseline">
+          <Col>
+            <h3>Statistics</h3>
+          </Col>
+          <Col>{guitars.length} Guitars Loaded</Col>
+          <Col>{brands.length} Brands Loaded</Col>
+          <Col>{gallery.length} Gallery Images Loaded</Col>
+          <Col>
+            Average Guitar Cost: $
+            {_.round(
+              _.mean(
+                guitars?.map(
+                  guitar =>
+                    guitar.purchaseHistory?.find(
+                      ph => ph.ownershipStatus === "PUR"
+                    )?.amount ?? 0
+                )
+              ),
+              2
+            )}
+          </Col>
+        </Row>
+      )}
       <Row className="pt-3 text-center">
         <Col>
           <h3>Today's Featured Guitar</h3>

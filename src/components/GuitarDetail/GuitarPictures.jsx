@@ -25,6 +25,11 @@ import {
 import { getGuitars, updateGuitar } from "../../store/slices/guitarsSlice";
 import * as types from "../../types/types";
 import { galleryValidationSchema } from "../Gallery/data/validationSchemas";
+import {
+  CAPTION_OPTION_RECEIPT,
+  GUITAR_PERM,
+  PURCHASE_PERM
+} from "../data/constants";
 
 import GalleryImage from "../Gallery/GalleryImage";
 import ImageSelectorModal from "../Modals/ImageSelectorModal";
@@ -40,9 +45,14 @@ const GuitarPictures = props => {
   const { guitar } = props;
   const dispatch = useDispatch();
 
-  const gallery = useSelector(state => state.galleryState?.list) ?? [];
+  const galleryFromState = useSelector(state => state.galleryState?.list) ?? [];
 
-  const hasEditGuitarPermissions = usePermissions("EDIT_GUITAR");
+  const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
+  const hasPurchaseHistoryPermissions = usePermissions(PURCHASE_PERM);
+
+  const gallery = hasPurchaseHistoryPermissions
+    ? galleryFromState
+    : galleryFromState?.filter(image => image.caption !== CAPTION_OPTION_RECEIPT);
 
   const [selectedImage, setSelectedImage] = useState(
     types.galleryImage.defaults
