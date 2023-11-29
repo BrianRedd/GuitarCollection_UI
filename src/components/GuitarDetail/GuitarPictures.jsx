@@ -52,7 +52,9 @@ const GuitarPictures = props => {
 
   const gallery = hasPurchaseHistoryPermissions
     ? galleryFromState
-    : galleryFromState?.filter(image => image.caption !== CAPTION_OPTION_RECEIPT);
+    : galleryFromState?.filter(
+        image => image.caption !== CAPTION_OPTION_RECEIPT
+      );
 
   const [selectedImage, setSelectedImage] = useState(
     types.galleryImage.defaults
@@ -127,7 +129,7 @@ const GuitarPictures = props => {
               </h5>
             </ButtonBase>
             <Collapse isOpen={isOpen}>
-              <Row>
+              <Row className="d-flex justify-content-center">
                 {guitarImageList?.map(image => (
                   <GalleryImage
                     key={image._id}
@@ -149,7 +151,7 @@ const GuitarPictures = props => {
                   />
                 ))}
                 {hasEditGuitarPermissions && (
-                  <div className="gallery-image border d-block">
+                  <div className="gallery-image border d-block bg-white">
                     <ButtonBase
                       className="w-100 d-block h-50"
                       onClick={() => {

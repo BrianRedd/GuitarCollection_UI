@@ -3,11 +3,10 @@
 import React, { useEffect, useState } from "react";
 
 import { Button, ButtonBase } from "@mui/material";
-import { Box } from "@mui/system";
 import _ from "lodash";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Row } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 import confirm from "reactstrap-confirm";
 
 import { useNavigate } from "react-router";
@@ -74,7 +73,7 @@ const Home = () => {
   }, [guitars, brands, gallery]);
 
   return (
-    <Box sx={{ width: "100%" }} className="p-4">
+    <Container fluid="md">
       <Row>
         <Col>
           <h1>Brian's Guitars</h1>
@@ -247,7 +246,7 @@ const Home = () => {
           </ButtonBase>
         </Col>
       </Row>
-    </Box>
+    </Container>
   );
 };
 

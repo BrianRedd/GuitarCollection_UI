@@ -108,7 +108,7 @@ const ImageSelectorModal = props => {
           Select
         </Button>
         <Button
-          className="ms-2"
+          className="ms-2 bg-white"
           onClick={() => {
             handleCancel();
             toggle();

@@ -4,12 +4,11 @@ import React, { useState } from "react";
 
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, ButtonBase } from "@mui/material";
-import { Formik } from "formik";
+import { ButtonBase } from "@mui/material";
+import { Form, Formik } from "formik";
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Row } from "reactstrap";
-import { galleryValidationSchema } from "./data/validationSchemas";
+import { Col, Container, Row } from "reactstrap";
 
 import usePermissions from "../../hooks/usePermissions";
 import {
@@ -23,6 +22,7 @@ import {
   GUITAR_PERM,
   PURCHASE_PERM
 } from "../data/constants";
+import { galleryValidationSchema } from "./data/validationSchemas";
 
 import ImageUploadModal from "../Modals/ImageUploadModal";
 import GalleryImage from "./GalleryImage";
@@ -75,7 +75,7 @@ const Gallery = () => {
   };
 
   return (
-    <Box sx={{ width: "100%" }} className="p-4">
+    <Container fluid="md gallery-container">
       <h1>Gallery</h1>
       <Formik
         initialValues={selectedImage}
@@ -108,11 +108,11 @@ const Gallery = () => {
             setSelectedImage(image);
           };
           return (
-            <React.Fragment>
-              <Row>
+            <Form className="gallery-form">
+              <Row className="justify-content-center">
                 {hasEditGuitarPermissions && (
                   <ButtonBase
-                    className="gallery-image border d-block me-2"
+                    className="gallery-image border d-block me-2 bg-white"
                     onClick={() => {
                       selectImage(types.galleryImage.defaults);
                       setIsModalOpen(true);
@@ -147,11 +147,11 @@ const Gallery = () => {
                 selectedImage={selectedImage}
                 handleSubmit={formProps.handleSubmit}
               />
-            </React.Fragment>
+            </Form>
           );
         }}
       </Formik>
-    </Box>
+    </Container>
   );
 };
 

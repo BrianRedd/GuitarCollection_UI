@@ -95,7 +95,6 @@ const userSlice = createSlice({
     });
     builder.addCase(addUser.fulfilled, (state, action) => {
       state.loading = false;
-      state.user = action.payload.data;
     });
     builder.addCase(addUser.rejected, (state, action) => {
       state.loading = false;
@@ -124,7 +123,6 @@ const userSlice = createSlice({
     });
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       state.loading = false;
-      state.user = {};
     });
     builder.addCase(deleteUser.rejected, (state, action) => {
       state.loading = false;

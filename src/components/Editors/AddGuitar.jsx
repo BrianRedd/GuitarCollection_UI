@@ -1,10 +1,10 @@
 import React from "react";
 
-import { Box } from "@mui/system";
 import { Formik } from "formik";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Container } from "reactstrap";
 
 import { addGuitar } from "../../store/slices/guitarsSlice";
 import * as types from "../../types/types";
@@ -29,7 +29,7 @@ const AddGuitar = () => {
   const submitButtonText = "Add Guitar";
 
   return (
-    <Box sx={{ width: "100%" }} className="p-4">
+    <Container fluid="md">
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {
@@ -69,7 +69,7 @@ const AddGuitar = () => {
           );
         }}
       </Formik>
-    </Box>
+    </Container>
   );
 };
 

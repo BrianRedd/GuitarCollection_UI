@@ -134,8 +134,7 @@ export const PERMISSIONS_OPTIONS = [
   ADMIN_PERM,
   BRAND_PERM,
   GUITAR_PERM,
-  PURCHASE_PERM,
-  "EDIT_USER"
+  PURCHASE_PERM
 ];
 
 export const FILTER_QUERY = "query";

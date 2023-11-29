@@ -43,7 +43,7 @@ const GuitarFormButtons = props => {
         </Button>
       )}
       <Button
-        className="ms-2"
+        className="ms-2 bg-white"
         onClick={() => {
           formProps.resetForm(initialValues);
           navigate(`/${isEdit ? `guitar/${initialValues._id}` : "guitarlist"}`);

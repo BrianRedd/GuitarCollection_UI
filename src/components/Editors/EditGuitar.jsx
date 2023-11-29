@@ -1,11 +1,10 @@
 import React from "react";
 
-import { Box } from "@mui/system";
 import { Formik } from "formik";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { Alert } from "reactstrap";
+import { Alert, Container } from "reactstrap";
 
 import { getGuitars, updateGuitar } from "../../store/slices/guitarsSlice";
 import * as types from "../../types/types";
@@ -36,7 +35,7 @@ const EditGuitar = () => {
   }`;
 
   return (
-    <Box sx={{ width: "100%" }} className="p-4">
+    <Container fluid="md">
       {initialValues?._id && matchId ? (
         <Formik
           initialValues={initialValues}
@@ -82,7 +81,7 @@ const EditGuitar = () => {
           {matchId ?? "Item"} Not Found or Valid
         </Alert>
       )}
-    </Box>
+    </Container>
   );
 };
 

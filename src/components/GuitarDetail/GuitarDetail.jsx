@@ -5,13 +5,12 @@ import React, { useEffect } from "react";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, IconButton } from "@mui/material";
-import { Box } from "@mui/system";
 import _ from "lodash";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
-import { Alert, Col, Row } from "reactstrap";
+import { Alert, Col, Container, Row } from "reactstrap";
 import confirm from "reactstrap-confirm";
 
 import usePermissions from "../../hooks/usePermissions";
@@ -106,7 +105,7 @@ const GuitarDetail = () => {
   );
 
   return (
-    <Box sx={{ width: "100%" }} className="p-4">
+    <Container fluid="md">
       <div className="d-flex w-100 justify-content-between">
         <h1>{guitar.name}</h1>
         {hasEditGuitarPermissions && (
@@ -226,7 +225,7 @@ const GuitarDetail = () => {
       <SpecificationsTable guitar={guitar} />
       <TodoList guitar={guitar} />
       <MaintenanceTable guitar={guitar} />
-    </Box>
+    </Container>
   );
 };
 

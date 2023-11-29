@@ -4,10 +4,10 @@ import React, { useState } from "react";
 
 import { faCircleXmark, faIndustry } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, Col, Form, FormGroup, Row } from "reactstrap";
+import { Alert, Col, Container, Form, FormGroup, Row } from "reactstrap";
 import { getBrandsValidationSchema } from "./data/validationSchemas";
 
 import usePermissions from "../../hooks/usePermissions";
@@ -39,7 +39,7 @@ const Brands = () => {
   const isEdit = Boolean(selectedBrand._id);
 
   return (
-    <Box sx={{ width: "100%" }} className="p-4">
+    <Container fluid="md">
       <h1>Brands</h1>
       <Formik
         initialValues={selectedBrand}
@@ -76,22 +76,6 @@ const Brands = () => {
           };
           return (
             <React.Fragment>
-              {brands?.length ? (
-                <Row className="brands-container border">
-                  {brands?.map(brand => (
-                    <BrandBlock
-                      key={brand.id}
-                      brand={brand}
-                      selectBrand={selectBrand}
-                    />
-                  ))}
-                </Row>
-              ) : (
-                <Alert className="m-0" color={"danger"}>
-                  No Brands Found
-                </Alert>
-              )}
-
               {hasEditBrandPermissions && (
                 <React.Fragment>
                   <h4 className="mt-3">
@@ -166,7 +150,7 @@ const Brands = () => {
                               : "Create New Brand"}
                           </Button>
                           <Button
-                            className="ms-2"
+                            className="ms-2 bg-white"
                             onClick={() => {
                               formProps.resetForm(types.brand.defaults);
                               setSelectedBrand(types.brand.defaults);
@@ -186,11 +170,26 @@ const Brands = () => {
                   </Form>
                 </React.Fragment>
               )}
+              {brands?.length ? (
+                <Row className="brands-container border">
+                  {brands?.map(brand => (
+                    <BrandBlock
+                      key={brand.id}
+                      brand={brand}
+                      selectBrand={selectBrand}
+                    />
+                  ))}
+                </Row>
+              ) : (
+                <Alert className="m-0" color={"danger"}>
+                  No Brands Found
+                </Alert>
+              )}
             </React.Fragment>
           );
         }}
       </Formik>
-    </Box>
+    </Container>
   );
 };
 

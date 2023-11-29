@@ -32,11 +32,13 @@ import {
 
 import { updateUser, writeUser } from "../../store/slices/userSlice";
 
+import usePermissions from "../../hooks/usePermissions";
 import md5Hasher from "../../utils/md5";
 import { cookieFunctions, getUserName } from "../../utils/utils";
 import InputMultiSelectField from "../common/InputMultiSelectField";
 import InputTextField from "../common/InputTextField";
 import { ADMIN_PERM, PERMISSIONS_OPTIONS } from "../data/constants";
+import AddEditUserForm from "./AddEditUserForm";
 import { manageUserValidationSchema } from "./data/modalData";
 
 /**
@@ -51,6 +53,8 @@ const ManageUserModal = props => {
 
   const [isUpdatePasswordOpen, setIsUpdatePasswordOpen] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const hasAdminPermissions = usePermissions(ADMIN_PERM);
 
   const initialValues = {
     ...user,
@@ -185,7 +189,7 @@ const ManageUserModal = props => {
                   label="Remember Me"
                 />
               </Collapse>
-              {(user?.permissions ?? []).includes(ADMIN_PERM) && (
+              {hasAdminPermissions && (
                 <InputMultiSelectField
                   className="mt-3"
                   name="permissions"
@@ -196,6 +200,7 @@ const ManageUserModal = props => {
                   width="full"
                 />
               )}
+              <AddEditUserForm />
             </ModalBody>
             <ModalFooter className="d-flex justify-content-around">
               <Button
@@ -218,7 +223,7 @@ const ManageUserModal = props => {
                 onClick={formProps.handleSubmit}
               >
                 <FontAwesomeIcon icon={faUserPen} className="me-2" />
-                Update User
+                Update {getUserName(user)}
               </Button>
             </ModalFooter>
           </React.Fragment>
