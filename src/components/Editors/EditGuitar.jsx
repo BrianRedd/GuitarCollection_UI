@@ -31,7 +31,9 @@ const EditGuitar = () => {
   };
 
   const submitButtonText = `Update ${
-    initialValues.instrumentType ?? INSTRUMENT_OPTION_GUITAR
+    initialValues.name ??
+    initialValues.instrumentType ??
+    INSTRUMENT_OPTION_GUITAR
   }`;
 
   return (

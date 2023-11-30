@@ -105,7 +105,7 @@ const Home = () => {
       )}
       <Row className="pt-3 text-center">
         <Col>
-          <h3>Today's Featured Guitar</h3>
+          <h3>Today's Featured Instrument</h3>
         </Col>
       </Row>
       <Row>
@@ -218,7 +218,7 @@ const Home = () => {
                       setFeaturedGuitar(featuredGuitar);
                     }}
                   >
-                    Find Another Featured Guitar?
+                    Find Another Featured Instrument?
                   </Button>
                 </Col>
               </Row>

@@ -116,34 +116,39 @@ const NavBar = () => {
       <Collapse isOpen={isHamburgerOpen} navbar>
         <Nav className="me-auto w-100" navbar>
           <NavItem>
-            <Link to="/">
+            <Link to="/" onClick={toggle}>
               <FontAwesomeIcon icon={faHome} /> Home
             </Link>
           </NavItem>
           <NavItem>
-            <Link to="/guitarlist">
+            <Link to="/guitarlist" onClick={toggle}>
               <FontAwesomeIcon icon={faList} /> Guitar List
             </Link>
           </NavItem>
           {hasEditGuitarPermissions && (
             <NavItem>
-              <Link to="/addguitar">
+              <Link to="/addguitar" onClick={toggle}>
                 <FontAwesomeIcon icon={faGuitar} /> Add Guitar
               </Link>
             </NavItem>
           )}
           <NavItem>
-            <Link to="/brands">
+            <Link to="/brands" onClick={toggle}>
               <FontAwesomeIcon icon={faIndustry} /> Brands
             </Link>
           </NavItem>
           <NavItem>
-            <Link to="/gallery">
+            <Link to="/gallery" onClick={toggle}>
               <FontAwesomeIcon icon={faImages} /> Image Gallery
             </Link>
           </NavItem>
           <NavItem>
-            <Link onClick={toggleFilterModal}>
+            <Link
+              onClick={() => {
+                toggleFilterModal();
+                toggle();
+              }}
+            >
               <FontAwesomeIcon icon={faFilter} /> Filters{" "}
               {Boolean(numberOfAppliedFilters) && (
                 <Badge color="warning">{numberOfAppliedFilters}</Badge>
@@ -152,20 +157,30 @@ const NavBar = () => {
           </NavItem>
           {selectedGuitar && (
             <NavItem>
-              <Link to={`/guitar/${selectedGuitar}`}>
+              <Link to={`/guitar/${selectedGuitar}`} onClick={toggle}>
                 <FontAwesomeIcon icon={faGuitar} /> {selectedGuitar}
               </Link>
             </NavItem>
           )}
           {user._id ? (
             <NavItem className="ms-auto">
-              <Link onClick={toggleManageUserModal}>
+              <Link
+                onClick={() => {
+                  toggleManageUserModal();
+                  toggle();
+                }}
+              >
                 <FontAwesomeIcon icon={faUserGear} /> {getUserName(user)}
               </Link>
             </NavItem>
           ) : (
             <NavItem className="ms-auto">
-              <Link onClick={toggleLoginModal}>
+              <Link
+                onClick={() => {
+                  toggleLoginModal();
+                  toggle();
+                }}
+              >
                 <FontAwesomeIcon icon={faUser} /> Login
               </Link>
             </NavItem>

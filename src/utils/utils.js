@@ -1,5 +1,8 @@
 /** @module utils */
 
+import moment from "moment";
+import { ALLOWED_DATE_FORMATS } from "../components/data/constants";
+
 export const getColWidth = width => {
   const xs = 12;
   let md = 0;
@@ -30,7 +33,6 @@ export const getUserName = user => {
     : user.username ?? "User";
 };
 
-
 /**
  * @function cookieFunctions
  * @description Object of two cookie functions: setCookie and getCookie
@@ -53,4 +55,14 @@ export const cookieFunctions = {
     });
     return requestedCookie;
   }
+};
+
+export const formatDate = (dateString, ignoreDay) => {
+  const isValid = moment(dateString, ALLOWED_DATE_FORMATS, true).isValid();
+  if (!isValid) {
+    return dateString;
+  }
+  return moment(dateString, ALLOWED_DATE_FORMATS, true).format(
+    ignoreDay ? "YYYY-MM" : "YYYY-MM-DD"
+  );
 };

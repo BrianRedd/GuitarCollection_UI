@@ -158,7 +158,7 @@ const FiltersModal = props => {
                     width="full"
                   />
                   <InputMultiSelectField
-                    label="Featured Guitar Status"
+                    label="Featured Instrument Status"
                     name={FILTER_FEATURED_STATUS}
                     options={statusOptions}
                     size="small"

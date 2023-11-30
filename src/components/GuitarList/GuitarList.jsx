@@ -30,14 +30,17 @@ import {
   updatePagination
 } from "../../store/slices/guitarsSlice";
 import * as types from "../../types/types";
+import { serverLocation } from "../../utils/constants";
+import { formatDate } from "../../utils/utils";
 import {
+  ALLOWED_DATE_FORMATS,
   CAPTION_OPTION_FULL_FRONT,
   DEFAULT_PAGE_SIZE,
   GUITAR_PERM,
   OWNERSHIP_STATUS_OPTIONS
 } from "../data/constants";
 
-import { serverLocation } from "../../utils/constants";
+import moment from "moment";
 import "./styles/guitarlist.scss";
 
 /**
@@ -62,10 +65,23 @@ const GuitarList = () => {
     image => image.caption === CAPTION_OPTION_FULL_FRONT
   );
 
-  const guitars = applyFilter(guitarsFromState ?? []).map(guitar => ({
-    ...guitar,
-    noOfPictures: guitar.pictures.length
-  }));
+  const guitars = applyFilter(guitarsFromState ?? []).map(guitar => {
+    const rawAcquiredDate =
+      guitar?.purchaseHistory?.find(
+        transaction => transaction.ownershipStatus === "PUR"
+      )?.when ?? "";
+    const isAcquiredDateValid = moment(
+      rawAcquiredDate,
+      ALLOWED_DATE_FORMATS,
+      true
+    ).isValid();
+    return {
+      ...guitar,
+      noOfPictures: (guitar?.pictures ?? []).length,
+      dateAcquired: formatDate(rawAcquiredDate ?? "", true),
+      isAcquiredDateValid
+    };
+  });
 
   const { orderBy, order, page = 0, pageSize = DEFAULT_PAGE_SIZE } = pagination;
 
@@ -93,6 +109,10 @@ const GuitarList = () => {
     {
       id: "status",
       label: "Status"
+    },
+    {
+      id: "dateAcquired",
+      label: "Date Acquired"
     },
     {
       id: "lastPlayed",
@@ -273,6 +293,15 @@ const GuitarList = () => {
                         }}
                       >
                         {row.status}
+                      </TableCell>
+                      <TableCell
+                        onClick={() => {
+                          navigate(`/guitar/${row._id}`);
+                        }}
+                      >
+                        {row.isAcquiredDateValid
+                          ? moment(row.dateAcquired).format("MMM YYYY")
+                          : row.dateAcquired}
                       </TableCell>
                       <TableCell
                         onClick={() => {

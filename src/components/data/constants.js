@@ -140,3 +140,16 @@ export const PERMISSIONS_OPTIONS = [
 export const FILTER_QUERY = "query";
 export const FILTER_STATUS = "status";
 export const FILTER_FEATURED_STATUS = "featuredStatus";
+
+export const ALLOWED_DATE_FORMATS = [
+  "DD/MM/YYYY",
+  "DD/M/YYYY",
+  "D/MM/YYYY",
+  "D/M/YYYY",
+  "YYYY-MM-DD",
+  "YYYY-M-DD",
+  "MM/YYYY",
+  "M/YYYY",
+  "YYYY-MM",
+  "YYYY-M"
+];
