@@ -128,7 +128,7 @@ const NavBar = () => {
           {hasEditGuitarPermissions && (
             <NavItem>
               <Link to="/addguitar" onClick={toggle}>
-                <FontAwesomeIcon icon={faGuitar} /> Add Guitar
+                <FontAwesomeIcon icon={faGuitar} /> Add Instrument
               </Link>
             </NavItem>
           )}

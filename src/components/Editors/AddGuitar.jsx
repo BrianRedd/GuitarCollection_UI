@@ -26,7 +26,7 @@ const AddGuitar = () => {
 
   const initialValues = types.guitar.defaults;
 
-  const submitButtonText = "Add Guitar";
+  const submitButtonText = "Add Instrument";
 
   return (
     <Container fluid="md">
@@ -54,7 +54,7 @@ const AddGuitar = () => {
           return (
             <React.Fragment>
               <div className="w-100 d-flex justify-content-between">
-                <h1>Add Guitar</h1>
+                <h1>Add Instrument</h1>
                 <GuitarFormButtons
                   className=""
                   submitButtonText={submitButtonText}
