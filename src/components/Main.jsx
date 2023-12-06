@@ -1,16 +1,17 @@
 import React, { useEffect, useRef } from "react";
 
 import { enqueueSnackbar } from "notistack";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
 import { getBrands } from "../store/slices/brandsSlice";
 import { getGallery } from "../store/slices/gallerySlice";
-import { getGuitars } from "../store/slices/guitarsSlice";
+import { getGuitars, updateSelected } from "../store/slices/guitarsSlice";
 
 import { getUser, writeUser } from "../store/slices/userSlice";
 import { cookieFunctions } from "../utils/utils";
 
+import _ from "lodash";
 import Brands from "./Brands/Brands";
 import Gallery from "./Gallery/Gallery";
 import GuitarDetail from "./GuitarDetail/GuitarDetail";
@@ -25,6 +26,8 @@ import NavBar from "./Viewer/NavBar";
 const Main = () => {
   const dispatch = useDispatch();
 
+  const guitars = useSelector(state => state.guitarsState?.list) ?? [];
+
   const sectionRefs = [
     useRef(null), // 0 home
     useRef(null), // 1 guitarList
@@ -32,6 +35,8 @@ const Main = () => {
     useRef(null), // 3 brands
     useRef(null) // 4 detail
   ];
+
+  const hash = (window.location.hash ?? "").slice(1);
 
   useEffect(() => {
     dispatch(getGuitars()).then(response => {
@@ -70,13 +75,23 @@ const Main = () => {
     }
   }, [dispatch, loginCookie]);
 
-  const hash = window.location.hash;
-
   const scrollTo = sectionIdx => {
     window.scrollTo({
       top: sectionRefs[sectionIdx].current.offsetTop - 50,
       behavior: "smooth"
     });
+  };
+
+  const selectAndGoToGuitar = id => {
+    const selectedGuitar = guitars?.find(
+      guitar => guitar._id === id || guitar.name === id
+    );
+    if (_.isEmpty(selectedGuitar)) {
+      return false;
+    }
+    window.location.hash = `#${id}`;
+    dispatch(updateSelected(selectedGuitar.name));
+    scrollTo(4);
   };
 
   return (
@@ -85,11 +100,11 @@ const Main = () => {
         <NavBar scrollTo={scrollTo} />
         <div className="app-body">
           <div ref={sectionRefs[0]}>
-            <Home />
+            <Home selectAndGoToGuitar={selectAndGoToGuitar} />
           </div>
           <hr />
           <div ref={sectionRefs[1]}>
-            <GuitarList />
+            <GuitarList selectAndGoToGuitar={selectAndGoToGuitar} />
           </div>
           <hr />
           <div ref={sectionRefs[2]}>
@@ -100,14 +115,9 @@ const Main = () => {
             <Brands />
           </div>
           <hr />
-          {hash && (
-            <React.Fragment>
-              <hr />
-              <div ref={sectionRefs[3]}>
-                <GuitarDetail hash={hash?.slice(1)} ref={sectionRefs[4]} />
-              </div>
-            </React.Fragment>
-          )}
+          <div ref={sectionRefs[4]}>
+            <GuitarDetail ref={sectionRefs[4]} />
+          </div>
         </div>
       </div>
     </BrowserRouter>

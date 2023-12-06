@@ -14,6 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import _ from "lodash";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -43,6 +44,7 @@ const NavBar = props => {
   const { scrollTo } = props;
 
   const dispatch = useDispatch();
+
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isManageUserModalOpen, setIsManageUserModalOpen] = useState(false);
@@ -119,6 +121,7 @@ const NavBar = props => {
         <Nav className="me-auto w-100" navbar>
           <NavItem>
             <Link
+              to={`/#${selectedGuitar ?? ""}`}
               onClick={() => {
                 toggle();
                 scrollTo(0);
@@ -129,6 +132,7 @@ const NavBar = props => {
           </NavItem>
           <NavItem>
             <Link
+              to={`/#${selectedGuitar ?? ""}`}
               onClick={() => {
                 toggle();
                 scrollTo(1);
@@ -151,6 +155,7 @@ const NavBar = props => {
           )}
           <NavItem>
             <Link
+              to={`/#${selectedGuitar ?? ""}`}
               onClick={() => {
                 toggle();
                 scrollTo(2);
@@ -161,6 +166,7 @@ const NavBar = props => {
           </NavItem>
           <NavItem>
             <Link
+              to={`/#${selectedGuitar ?? ""}`}
               onClick={() => {
                 toggle();
                 scrollTo(3);
@@ -171,6 +177,7 @@ const NavBar = props => {
           </NavItem>
           <NavItem>
             <Link
+              to={`/#${selectedGuitar ?? ""}`}
               onClick={() => {
                 toggleFilterModal();
                 toggle();
@@ -184,7 +191,13 @@ const NavBar = props => {
           </NavItem>
           {selectedGuitar && (
             <NavItem>
-              <Link to={`/#${selectedGuitar}`} onClick={toggle}>
+              <Link
+                to={`/#${selectedGuitar ?? ""}`}
+                onClick={() => {
+                  toggle();
+                  scrollTo(4);
+                }}
+              >
                 <FontAwesomeIcon icon={faGuitar} /> {selectedGuitar}
               </Link>
             </NavItem>
@@ -252,6 +265,14 @@ const NavBar = props => {
       />
     </Navbar>
   );
+};
+
+NavBar.propTypes = {
+  scrollTo: PropTypes.func
+};
+
+NavBar.defaultProps = {
+  scrollTo: () => {}
 };
 
 export default NavBar;

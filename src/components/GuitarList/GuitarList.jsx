@@ -18,8 +18,8 @@ import {
   Tooltip
 } from "@mui/material";
 import _ from "lodash";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Alert, Badge } from "reactstrap";
 import confirm from "reactstrap-confirm";
 
@@ -47,9 +47,11 @@ import "./styles/guitarlist.scss";
  * @function GuitarList
  * @returns {ReactNode}
  */
-const GuitarList = () => {
+const GuitarList = props => {
+  const { selectAndGoToGuitar } = props;
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const {
     list: guitarsFromState = [],
     pagination = types.guitarsState.defaults
@@ -229,7 +231,7 @@ const GuitarList = () => {
                         component="th"
                         scope="row"
                         onClick={() => {
-                          navigate(`/guitar/${row._id}`);
+                          selectAndGoToGuitar(row._id);
                         }}
                         className="text-nowrap"
                       >
@@ -252,7 +254,7 @@ const GuitarList = () => {
                         component="th"
                         scope="row"
                         onClick={() => {
-                          navigate(`/guitar/${row._id}`);
+                          selectAndGoToGuitar(row._id);
                         }}
                       >
                         <b>{row.name}</b>
@@ -260,7 +262,7 @@ const GuitarList = () => {
                       </TableCell>
                       <TableCell
                         onClick={() => {
-                          navigate(`/guitar/${row._id}`);
+                          selectAndGoToGuitar(row._id);
                         }}
                       >
                         {brand.logo ? (
@@ -275,28 +277,28 @@ const GuitarList = () => {
                       </TableCell>
                       <TableCell
                         onClick={() => {
-                          navigate(`/guitar/${row._id}`);
+                          selectAndGoToGuitar(row._id);
                         }}
                       >
                         {row.model}
                       </TableCell>
                       <TableCell
                         onClick={() => {
-                          navigate(`/guitar/${row._id}`);
+                          selectAndGoToGuitar(row._id);
                         }}
                       >
                         {row.year}
                       </TableCell>
                       <TableCell
                         onClick={() => {
-                          navigate(`/guitar/${row._id}`);
+                          selectAndGoToGuitar(row._id);
                         }}
                       >
                         {row.status}
                       </TableCell>
                       <TableCell
                         onClick={() => {
-                          navigate(`/guitar/${row._id}`);
+                          selectAndGoToGuitar(row._id);
                         }}
                       >
                         {row.isAcquiredDateValid
@@ -305,7 +307,7 @@ const GuitarList = () => {
                       </TableCell>
                       <TableCell
                         onClick={() => {
-                          navigate(`/guitar/${row._id}`);
+                          selectAndGoToGuitar(row._id);
                         }}
                       >
                         {row.lastPlayed}
@@ -313,7 +315,9 @@ const GuitarList = () => {
                       {hasEditGuitarPermissions && (
                         <TableCell className="icon_holder">
                           <IconButton
-                            onClick={() => navigate(`/editguitar/${row._id}`)}
+                            onClick={() => {
+                              selectAndGoToGuitar(row._id);
+                            }}
                           >
                             <FontAwesomeIcon
                               icon={faEdit}
@@ -374,6 +378,14 @@ const GuitarList = () => {
       )}
     </Box>
   );
+};
+
+GuitarList.propTypes = {
+  selectAndGoToGuitar: PropTypes.func
+};
+
+GuitarList.defaultProps = {
+  selectAndGoToGuitar: () => {}
 };
 
 export default GuitarList;

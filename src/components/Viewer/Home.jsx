@@ -1,18 +1,18 @@
 /** @module Home */
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, ButtonBase } from "@mui/material";
 import _ from "lodash";
 import moment from "moment";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
 import confirm from "reactstrap-confirm";
 
-import { useNavigate } from "react-router";
 import useFilters from "../../hooks/useFilters";
 import usePermissions from "../../hooks/usePermissions";
-import { updateGuitar } from "../../store/slices/guitarsSlice";
+import { updateGuitar, updateSelected } from "../../store/slices/guitarsSlice";
 import { serverLocation } from "../../utils/constants";
 import {
   ADMIN_PERM,
@@ -22,10 +22,13 @@ import {
   STATUS_OPTION_PLAYABLE
 } from "../data/constants";
 
-const Home = () => {
-  const homeRef = useRef();
+const Home = props => {
+  const { selectAndGoToGuitar } = props;
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
+  const hash = (window.location.hash ?? "").slice(1);
+
   const guitars = useSelector(state => state.guitarsState?.list) ?? [];
   const brands = useSelector(state => state.brandsState?.list) ?? [];
   const gallery = useSelector(state => state.galleryState?.list) ?? [];
@@ -38,14 +41,19 @@ const Home = () => {
 
   const [featuredGuitar, setFeaturedGuitar] = useState({});
 
-  const getFeaturedGuitar = () => {
+  const getFeaturedGuitar = isNew => {
     const availableGuitars = applyFilter(guitars, true);
 
     // TODO: take into account last played
+
     const rand = Math.floor(Math.random() * availableGuitars.length);
     const featuredGuitar = (guitars ?? []).find(
-      guitar => guitar._id === availableGuitars[rand]._id
+      guitar =>
+        (!isNew && hash && (guitar._id === hash || guitar.name === hash)) ||
+        guitar._id === availableGuitars[rand]._id
     );
+    window.location.hash = `#${featuredGuitar._id}`;
+    dispatch(updateSelected(featuredGuitar.name));
     const frontPicture = (gallery ?? []).find(image => {
       return (
         (featuredGuitar.pictures ?? []).includes(image?._id) &&
@@ -74,7 +82,7 @@ const Home = () => {
   }, [guitars, brands, gallery]);
 
   return (
-    <Container fluid="md" ref={homeRef}>
+    <Container fluid="md">
       <Row>
         <Col>
           <h1>Brian's Guitars</h1>
@@ -117,7 +125,7 @@ const Home = () => {
                 <Col>
                   <h5
                     onClick={() => {
-                      navigate(`/guitar/${featuredGuitar._id}`);
+                      selectAndGoToGuitar(featuredGuitar._id);
                     }}
                   >
                     <b>{featuredGuitar.name}</b>
@@ -197,7 +205,7 @@ const Home = () => {
                                 lastPlayed: moment().format(DATE_FORMAT)
                               })
                             ).then(() => {
-                              navigate(`/guitar/${featuredGuitar._id}`);
+                              selectAndGoToGuitar(featuredGuitar._id);
                             });
                           }
                         }}
@@ -215,7 +223,7 @@ const Home = () => {
                     disableElevation
                     color="info"
                     onClick={() => {
-                      const featuredGuitar = getFeaturedGuitar();
+                      const featuredGuitar = getFeaturedGuitar(true);
                       setFeaturedGuitar(featuredGuitar);
                     }}
                   >
@@ -231,7 +239,7 @@ const Home = () => {
             style={{ minWidth: "200px", minHeight: "200px" }}
             className="border"
             onClick={() => {
-              navigate(`/guitar/${featuredGuitar._id}`);
+              selectAndGoToGuitar(featuredGuitar._id);
             }}
           >
             {hasFrontPicture ? (
@@ -249,6 +257,14 @@ const Home = () => {
       </Row>
     </Container>
   );
+};
+
+Home.propTypes = {
+  selectAndGoToGuitar: PropTypes.func
+};
+
+Home.defaultProps = {
+  selectAndGoToGuitar: () => {}
 };
 
 export default Home;
