@@ -39,7 +39,9 @@ import FiltersModal from "../Modals/FiltersModal";
 import ManageUserModal from "../Modals/ManageUserModal";
 import UserLoginModal from "../Modals/UserLoginModal";
 
-const NavBar = () => {
+const NavBar = props => {
+  const { scrollTo } = props;
+
   const dispatch = useDispatch();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -116,30 +118,55 @@ const NavBar = () => {
       <Collapse isOpen={isHamburgerOpen} navbar>
         <Nav className="me-auto w-100" navbar>
           <NavItem>
-            <Link to="/" onClick={toggle}>
+            <Link
+              onClick={() => {
+                toggle();
+                scrollTo(0);
+              }}
+            >
               <FontAwesomeIcon icon={faHome} /> Home
             </Link>
           </NavItem>
           <NavItem>
-            <Link to="/guitarlist" onClick={toggle}>
+            <Link
+              onClick={() => {
+                toggle();
+                scrollTo(1);
+              }}
+            >
               <FontAwesomeIcon icon={faList} /> Guitar List
             </Link>
           </NavItem>
           {hasEditGuitarPermissions && (
             <NavItem>
-              <Link to="/addguitar" onClick={toggle}>
+              <Link
+                onClick={() => {
+                  toggle();
+                  console.log("Open Add Guitar modal");
+                }}
+              >
                 <FontAwesomeIcon icon={faGuitar} /> Add Instrument
               </Link>
             </NavItem>
           )}
           <NavItem>
-            <Link to="/brands" onClick={toggle}>
-              <FontAwesomeIcon icon={faIndustry} /> Brands
+            <Link
+              onClick={() => {
+                toggle();
+                scrollTo(2);
+              }}
+            >
+              <FontAwesomeIcon icon={faImages} /> Image Gallery
             </Link>
           </NavItem>
           <NavItem>
-            <Link to="/gallery" onClick={toggle}>
-              <FontAwesomeIcon icon={faImages} /> Image Gallery
+            <Link
+              onClick={() => {
+                toggle();
+                scrollTo(3);
+              }}
+            >
+              <FontAwesomeIcon icon={faIndustry} /> Brands
             </Link>
           </NavItem>
           <NavItem>
@@ -157,7 +184,7 @@ const NavBar = () => {
           </NavItem>
           {selectedGuitar && (
             <NavItem>
-              <Link to={`/guitar/${selectedGuitar}`} onClick={toggle}>
+              <Link to={`/#${selectedGuitar}`} onClick={toggle}>
                 <FontAwesomeIcon icon={faGuitar} /> {selectedGuitar}
               </Link>
             </NavItem>

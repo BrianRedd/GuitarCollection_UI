@@ -7,8 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, IconButton } from "@mui/material";
 import _ from "lodash";
 import moment from "moment";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { Alert, Col, Container, Row } from "reactstrap";
 import confirm from "reactstrap-confirm";
@@ -36,8 +36,9 @@ import "./styles/guitardetail.scss";
  * @function GuitarDetail
  * @returns {React.ReactNode}
  */
-const GuitarDetail = () => {
-  const { id: matchId } = useParams();
+const GuitarDetail = props => {
+  const { hash } = props;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -49,14 +50,13 @@ const GuitarDetail = () => {
   const hasPurchaseHistoryPermissions = usePermissions(PURCHASE_PERM);
 
   const guitar =
-    guitars.find(guitar => guitar._id === matchId || guitar.name === matchId) ??
-    {};
+    guitars.find(guitar => guitar._id === hash || guitar.name === hash) ?? {};
 
   const guitarName = guitar.name ?? "";
 
   useEffect(() => {
     dispatch(updateSelected(guitarName));
-  }, [dispatch, guitarName, matchId]);
+  }, [dispatch, guitarName, hash]);
 
   const brand = (brands ?? []).find(brand => brand.id === guitar.brandId) ?? {};
 
@@ -89,10 +89,10 @@ const GuitarDetail = () => {
     });
   };
 
-  if (!guitar?._id || !matchId) {
+  if (!guitar?._id || !hash) {
     return (
       <Alert className="m-0" color={"danger"}>
-        {matchId ?? "Guitar"} Not Found or ID is Invalid
+        {hash ?? "Guitar"} Not Found or ID is Invalid
       </Alert>
     );
   }
@@ -227,6 +227,14 @@ const GuitarDetail = () => {
       <MaintenanceTable guitar={guitar} />
     </Container>
   );
+};
+
+GuitarDetail.propTypes = {
+  hash: PropTypes.string
+};
+
+GuitarDetail.defaultProps = {
+  hash: ""
 };
 
 export default GuitarDetail;

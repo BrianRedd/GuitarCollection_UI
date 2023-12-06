@@ -1,6 +1,6 @@
 /** @module Home */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Button, ButtonBase } from "@mui/material";
 import _ from "lodash";
@@ -23,6 +23,7 @@ import {
 } from "../data/constants";
 
 const Home = () => {
+  const homeRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const guitars = useSelector(state => state.guitarsState?.list) ?? [];
@@ -73,7 +74,7 @@ const Home = () => {
   }, [guitars, brands, gallery]);
 
   return (
-    <Container fluid="md">
+    <Container fluid="md" ref={homeRef}>
       <Row>
         <Col>
           <h1>Brian's Guitars</h1>

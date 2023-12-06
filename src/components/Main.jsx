@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { enqueueSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 import { getBrands } from "../store/slices/brandsSlice";
 import { getGallery } from "../store/slices/gallerySlice";
@@ -10,14 +10,13 @@ import { getGuitars } from "../store/slices/guitarsSlice";
 
 import { getUser, writeUser } from "../store/slices/userSlice";
 import { cookieFunctions } from "../utils/utils";
+
 import Brands from "./Brands/Brands";
-import AddGuitar from "./Editors/AddGuitar";
-import EditGuitar from "./Editors/EditGuitar";
 import Gallery from "./Gallery/Gallery";
 import GuitarDetail from "./GuitarDetail/GuitarDetail";
 import GuitarList from "./GuitarList/GuitarList";
 import Home from "./Viewer/Home";
-import Layout from "./Viewer/Layout";
+import NavBar from "./Viewer/NavBar";
 
 /**
  * @function Main
@@ -25,6 +24,14 @@ import Layout from "./Viewer/Layout";
  */
 const Main = () => {
   const dispatch = useDispatch();
+
+  const sectionRefs = [
+    useRef(null), // 0 home
+    useRef(null), // 1 guitarList
+    useRef(null), // 2 gallery
+    useRef(null), // 3 brands
+    useRef(null) // 4 detail
+  ];
 
   useEffect(() => {
     dispatch(getGuitars()).then(response => {
@@ -63,22 +70,45 @@ const Main = () => {
     }
   }, [dispatch, loginCookie]);
 
+  const hash = window.location.hash;
+
+  const scrollTo = sectionIdx => {
+    window.scrollTo({
+      top: sectionRefs[sectionIdx].current.offsetTop - 50,
+      behavior: "smooth"
+    });
+  };
+
   return (
     <BrowserRouter>
       <div className="App" data-test="component-app">
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="guitarlist" element={<GuitarList />} />
-            <Route path="addguitar" element={<AddGuitar />} />
-            <Route path="editguitar" element={<EditGuitar />} />
-            <Route path="editguitar/:id" element={<EditGuitar />} />
-            <Route path="brands" element={<Brands />} />
-            <Route path="guitar" element={<GuitarDetail />} />
-            <Route path="guitar/:id" element={<GuitarDetail />} />
-            <Route path="gallery" element={<Gallery />} />
-          </Route>
-        </Routes>
+        <NavBar scrollTo={scrollTo} />
+        <div className="app-body">
+          <div ref={sectionRefs[0]}>
+            <Home />
+          </div>
+          <hr />
+          <div ref={sectionRefs[1]}>
+            <GuitarList />
+          </div>
+          <hr />
+          <div ref={sectionRefs[2]}>
+            <Gallery />
+          </div>
+          <hr />
+          <div ref={sectionRefs[3]}>
+            <Brands />
+          </div>
+          <hr />
+          {hash && (
+            <React.Fragment>
+              <hr />
+              <div ref={sectionRefs[3]}>
+                <GuitarDetail hash={hash?.slice(1)} ref={sectionRefs[4]} />
+              </div>
+            </React.Fragment>
+          )}
+        </div>
       </div>
     </BrowserRouter>
   );
