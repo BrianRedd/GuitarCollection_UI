@@ -52,8 +52,6 @@ const FiltersModal = props => {
     noOfStringOptions
   } = useOptions();
 
-  console.log("brandOptions", brandOptions);
-
   const ovationBrands = ["ADO", "APO", "HGO", "OV"];
 
   return (

@@ -1,6 +1,6 @@
 /** @module Brands */
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 import { faCircleXmark, faIndustry } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,7 +30,6 @@ import "./styles/brands.scss";
  * @returns {ReactNode}
  */
 const Brands = () => {
-  const brandsRef = useRef();
   const dispatch = useDispatch();
   const [selectedBrand, setSelectedBrand] = useState(types.brand.defaults);
   const brands = useSelector(state => state.brandsState.list) ?? [];
@@ -39,15 +38,8 @@ const Brands = () => {
 
   const isEdit = Boolean(selectedBrand._id);
 
-  const scrollTo = () => {
-    brandsRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  };
-
   return (
-    <Container fluid="md" ref={brandsRef}>
+    <Container fluid="md">
       <h1>Brands</h1>
       <Formik
         initialValues={selectedBrand}

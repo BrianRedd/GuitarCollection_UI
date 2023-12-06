@@ -116,7 +116,7 @@ const Main = () => {
           </div>
           <hr />
           <div ref={sectionRefs[4]}>
-            <GuitarDetail ref={sectionRefs[4]} />
+            <GuitarDetail />
           </div>
         </div>
       </div>
