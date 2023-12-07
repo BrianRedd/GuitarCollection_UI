@@ -1,8 +1,7 @@
 /** @module utils/utilsTest */
 
+import { mount, shallow } from "enzyme";
 import React from "react";
-import { shallow, mount } from "enzyme";
-import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
 /**
@@ -71,14 +70,6 @@ export const commonSetup = (
 ) => {
   const component = <Component {...props} />;
   return useMount
-    ? mount(
-        store ? (
-          <MemoryRouter>
-            <Provider store={store}>{component}</Provider>
-          </MemoryRouter>
-        ) : (
-          component
-        )
-      )
+    ? mount(store ? <Provider store={store}>{component}</Provider> : component)
     : shallow(component);
 };

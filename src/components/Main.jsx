@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
+import _ from "lodash";
 import { enqueueSnackbar } from "notistack";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
 
 import { getBrands } from "../store/slices/brandsSlice";
 import { getGallery } from "../store/slices/gallerySlice";
@@ -11,8 +11,8 @@ import { getGuitars, updateSelected } from "../store/slices/guitarsSlice";
 import { getUser, writeUser } from "../store/slices/userSlice";
 import { cookieFunctions } from "../utils/utils";
 
-import _ from "lodash";
 import Brands from "./Brands/Brands";
+import EditGuitarModal from "./Editors/EditGuitarModal";
 import Gallery from "./Gallery/Gallery";
 import GuitarDetail from "./GuitarDetail/GuitarDetail";
 import GuitarList from "./GuitarList/GuitarList";
@@ -26,7 +26,7 @@ import NavBar from "./Viewer/NavBar";
 const Main = () => {
   const dispatch = useDispatch();
 
-  const guitars = useSelector(state => state.guitarsState?.list) ?? [];
+  const { list: guitars } = useSelector(state => state.guitarsState) ?? {};
 
   const sectionRefs = [
     useRef(null), // 0 home
@@ -36,7 +36,7 @@ const Main = () => {
     useRef(null) // 4 detail
   ];
 
-  const hash = (window.location.hash ?? "").slice(1);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getGuitars()).then(response => {
@@ -86,41 +86,52 @@ const Main = () => {
     const selectedGuitar = guitars?.find(
       guitar => guitar._id === id || guitar.name === id
     );
-    if (_.isEmpty(selectedGuitar)) {
-      return false;
-    }
     window.location.hash = `#${id}`;
-    dispatch(updateSelected(selectedGuitar.name));
+    dispatch(updateSelected(selectedGuitar?.name ?? id));
     scrollTo(4);
   };
 
+  const editGuitar = id => {
+    window.location.hash = `#${id}`;
+    dispatch(updateSelected(id));
+    setIsEditModalOpen(true);
+  };
+
   return (
-    <BrowserRouter>
-      <div className="App" data-test="component-app">
-        <NavBar scrollTo={scrollTo} />
-        <div className="app-body">
-          <div ref={sectionRefs[0]}>
-            <Home selectAndGoToGuitar={selectAndGoToGuitar} />
-          </div>
-          <hr />
-          <div ref={sectionRefs[1]}>
-            <GuitarList selectAndGoToGuitar={selectAndGoToGuitar} />
-          </div>
-          <hr />
-          <div ref={sectionRefs[2]}>
-            <Gallery />
-          </div>
-          <hr />
-          <div ref={sectionRefs[3]}>
-            <Brands />
-          </div>
-          <hr />
-          <div ref={sectionRefs[4]}>
-            <GuitarDetail />
-          </div>
+    <div className="App" data-test="component-app">
+      <NavBar scrollTo={scrollTo} selectAndGoToGuitar={selectAndGoToGuitar} />
+      <div className="app-body">
+        <div ref={sectionRefs[0]}>
+          <Home selectAndGoToGuitar={selectAndGoToGuitar} />
+        </div>
+        <hr />
+        <div ref={sectionRefs[1]}>
+          <GuitarList
+            selectAndGoToGuitar={selectAndGoToGuitar}
+            editGuitar={editGuitar}
+          />
+        </div>
+        <hr />
+        <div ref={sectionRefs[3]}>
+          <Brands scrollTo={scrollTo} />
+        </div>
+        <hr />
+        <div ref={sectionRefs[2]}>
+          <Gallery />
+        </div>
+        <hr />
+        <div ref={sectionRefs[4]}>
+          <GuitarDetail
+            selectAndGoToGuitar={selectAndGoToGuitar}
+            editGuitar={editGuitar}
+          />
         </div>
       </div>
-    </BrowserRouter>
+      <EditGuitarModal
+        isOpen={isEditModalOpen}
+        toggle={() => setIsEditModalOpen(!isEditModalOpen)}
+      />
+    </div>
   );
 };
 

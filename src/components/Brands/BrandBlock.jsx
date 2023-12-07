@@ -6,7 +6,7 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconButton } from "@mui/material";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import confirm from "reactstrap-confirm";
 
 import usePermissions from "../../hooks/usePermissions";
@@ -14,6 +14,7 @@ import { deleteBrand, getBrands } from "../../store/slices/brandsSlice";
 import { serverLocation } from "../../utils/constants";
 import { BRAND_PERM } from "../data/constants";
 
+import { writeFilters } from "../../store/slices/filtersSlice";
 import "./styles/brands.scss";
 
 /**
@@ -21,13 +22,26 @@ import "./styles/brands.scss";
  * @returns {React.ReactNode}
  */
 const BrandBlock = props => {
-  const { brand, selectBrand } = props;
+  const { brand, selectBrand, scrollTo } = props;
   const dispatch = useDispatch();
+
+  const filters = useSelector(state => state.filtersState.filters) ?? {};
 
   const hasEditBrandPermissions = usePermissions(BRAND_PERM);
 
   return (
-    <div className="border brand-block">
+    <div
+      onClick={() => {
+        dispatch(
+          writeFilters({
+            ...filters,
+            brandId: [brand.id]
+          })
+        );
+        scrollTo(1);
+      }}
+      className="border brand-block"
+    >
       <p className="brand-name">{brand.name}</p>
       {brand.logo && (
         <img
@@ -65,12 +79,14 @@ const BrandBlock = props => {
 
 BrandBlock.propTypes = {
   brand: PropTypes.objectOf(PropTypes.any),
-  selectBrand: PropTypes.func
+  selectBrand: PropTypes.func,
+  scrollTo: PropTypes.func
 };
 
 BrandBlock.defaultTypes = {
   brand: {},
-  selectBrand: () => {}
+  selectBrand: () => {},
+  scrollTo: () => {}
 };
 
 export default BrandBlock;

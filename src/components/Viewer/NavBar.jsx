@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /** @module NavBar */
 
 import React, { useEffect, useMemo, useState } from "react";
@@ -16,7 +17,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   Alert,
   Badge,
@@ -36,12 +36,13 @@ import * as types from "../../types/types";
 import { getUserName } from "../../utils/utils";
 import { GUITAR_PERM } from "../data/constants";
 
+import AddGuitarModal from "../Editors/AddGuitarModal";
 import FiltersModal from "../Modals/FiltersModal";
 import ManageUserModal from "../Modals/ManageUserModal";
 import UserLoginModal from "../Modals/UserLoginModal";
 
 const NavBar = props => {
-  const { scrollTo } = props;
+  const { scrollTo, selectAndGoToGuitar } = props;
 
   const dispatch = useDispatch();
 
@@ -49,6 +50,7 @@ const NavBar = props => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isManageUserModalOpen, setIsManageUserModalOpen] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [isAddGuitarModalOpen, setIsAddGuitarModalOpen] = useState(false);
 
   const { message: guitarsMessage, selected: selectedGuitar } =
     useSelector(state => state.guitarsState) ?? {};
@@ -112,6 +114,9 @@ const NavBar = props => {
   const toggleManageUserModal = () => {
     setIsManageUserModalOpen(!isManageUserModalOpen);
   };
+  const toggleAddGuitarModal = () => {
+    setIsAddGuitarModalOpen(!isAddGuitarModalOpen);
+  };
 
   return (
     <Navbar color="dark" dark expand="lg" fixed="top">
@@ -119,110 +124,88 @@ const NavBar = props => {
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isHamburgerOpen} navbar>
         <Nav className="me-auto w-100" navbar>
-          <NavItem>
-            <Link
-              to={`/#${selectedGuitar ?? ""}`}
-              onClick={() => {
-                toggle();
-                scrollTo(0);
-              }}
-            >
-              <FontAwesomeIcon icon={faHome} /> Home
-            </Link>
+          <NavItem
+            onClick={() => {
+              toggle();
+              scrollTo(0);
+            }}
+          >
+            <FontAwesomeIcon icon={faHome} /> Home
           </NavItem>
-          <NavItem>
-            <Link
-              to={`/#${selectedGuitar ?? ""}`}
-              onClick={() => {
-                toggle();
-                scrollTo(1);
-              }}
-            >
-              <FontAwesomeIcon icon={faList} /> Guitar List
-            </Link>
+          <NavItem
+            onClick={() => {
+              toggle();
+              scrollTo(1);
+            }}
+          >
+            <FontAwesomeIcon icon={faList} /> Guitar List
           </NavItem>
           {hasEditGuitarPermissions && (
-            <NavItem>
-              <Link
-                onClick={() => {
-                  toggle();
-                  console.log("Open Add Guitar modal");
-                }}
-              >
-                <FontAwesomeIcon icon={faGuitar} /> Add Instrument
-              </Link>
+            <NavItem
+              onClick={() => {
+                toggle();
+                toggleAddGuitarModal();
+              }}
+            >
+              <FontAwesomeIcon icon={faGuitar} /> Add Instrument
             </NavItem>
           )}
-          <NavItem>
-            <Link
-              to={`/#${selectedGuitar ?? ""}`}
-              onClick={() => {
-                toggle();
-                scrollTo(2);
-              }}
-            >
-              <FontAwesomeIcon icon={faImages} /> Image Gallery
-            </Link>
+          <NavItem
+            onClick={() => {
+              toggle();
+              scrollTo(2);
+            }}
+          >
+            <FontAwesomeIcon icon={faImages} /> Image Gallery
           </NavItem>
-          <NavItem>
-            <Link
-              to={`/#${selectedGuitar ?? ""}`}
-              onClick={() => {
-                toggle();
-                scrollTo(3);
-              }}
-            >
-              <FontAwesomeIcon icon={faIndustry} /> Brands
-            </Link>
+          <NavItem
+            onClick={() => {
+              toggle();
+              scrollTo(3);
+            }}
+          >
+            <FontAwesomeIcon icon={faIndustry} /> Brands
           </NavItem>
-          <NavItem>
-            <Link
-              to={`/#${selectedGuitar ?? ""}`}
-              onClick={() => {
-                toggleFilterModal();
-                toggle();
-              }}
-            >
-              <FontAwesomeIcon icon={faFilter} /> Filters{" "}
-              {Boolean(numberOfAppliedFilters) && (
-                <Badge color="warning">{numberOfAppliedFilters}</Badge>
-              )}
-            </Link>
+          <NavItem
+            onClick={() => {
+              toggleFilterModal();
+              toggle();
+            }}
+          >
+            <FontAwesomeIcon icon={faFilter} /> Filters{" "}
+            {Boolean(numberOfAppliedFilters) && (
+              <Badge color="warning">{numberOfAppliedFilters}</Badge>
+            )}
           </NavItem>
           {selectedGuitar && (
-            <NavItem>
-              <Link
-                to={`/#${selectedGuitar ?? ""}`}
-                onClick={() => {
-                  toggle();
-                  scrollTo(4);
-                }}
-              >
-                <FontAwesomeIcon icon={faGuitar} /> {selectedGuitar}
-              </Link>
+            <NavItem
+              onClick={() => {
+                toggle();
+                scrollTo(4);
+              }}
+            >
+              <FontAwesomeIcon icon={faGuitar} /> {selectedGuitar}
             </NavItem>
           )}
           {user._id ? (
-            <NavItem className="ms-auto">
-              <Link
-                onClick={() => {
-                  toggleManageUserModal();
-                  toggle();
-                }}
-              >
-                <FontAwesomeIcon icon={faUserGear} /> {getUserName(user)}
-              </Link>
+            <NavItem
+              className="ms-auto"
+              onClick={() => {
+                toggleManageUserModal();
+                toggle();
+              }}
+            >
+              <FontAwesomeIcon icon={faUserGear} /> {getUserName(user)}
             </NavItem>
           ) : (
-            <NavItem className="ms-auto">
-              <Link
-                onClick={() => {
-                  toggleLoginModal();
-                  toggle();
-                }}
-              >
-                <FontAwesomeIcon icon={faUser} /> Login
-              </Link>
+            <NavItem
+              className="ms-auto"
+              onClick={() => {
+                toggleLoginModal();
+                toggle();
+              }}
+            >
+              <FontAwesomeIcon icon={faUser} /> Login
             </NavItem>
           )}
         </Nav>
@@ -263,16 +246,23 @@ const NavBar = props => {
         isModalOpen={isManageUserModalOpen}
         toggle={toggleManageUserModal}
       />
+      <AddGuitarModal
+        isOpen={isAddGuitarModalOpen}
+        toggle={toggleAddGuitarModal}
+        selectAndGoToGuitar={selectAndGoToGuitar}
+      />
     </Navbar>
   );
 };
 
 NavBar.propTypes = {
-  scrollTo: PropTypes.func
+  scrollTo: PropTypes.func,
+  selectAndGoToGuitar: PropTypes.func
 };
 
 NavBar.defaultProps = {
-  scrollTo: () => {}
+  scrollTo: () => {},
+  selectAndGoToGuitar: () => {}
 };
 
 export default NavBar;

@@ -25,14 +25,13 @@ import InputFreeFormField from "../common/InputFreeFormField";
 import InputSelectField from "../common/InputSelectField";
 import InputTextField from "../common/InputTextField";
 import EditableGrid from "./EditableGrid";
-import GuitarFormButtons from "./GuitarFormButtons";
 
 /**
  * @function GuitarForm
  * @returns {React.ReactNode}
  */
 const GuitarForm = props => {
-  const { initialValues, submitButtonText } = props;
+  const { initialValues } = props;
 
   const gallery = useSelector(state => state.galleryState?.list) ?? [];
 
@@ -412,25 +411,18 @@ const GuitarForm = props => {
           ]}
         />
       </FormGroup>
-      <GuitarFormButtons
-        className="mt-5"
-        submitButtonText={submitButtonText}
-        initialValues={initialValues}
-      />
     </Form>
   );
 };
 
 GuitarForm.propTypes = {
   handleSubmit: PropTypes.func,
-  initialValues: PropTypes.objectOf(PropTypes.any),
-  submitButtonText: PropTypes.string
+  initialValues: PropTypes.objectOf(PropTypes.any)
 };
 
 GuitarForm.defaultTypes = {
   handleSubmit: () => {},
-  initialValues: {},
-  submitButtonText: ""
+  initialValues: {}
 };
 
 export default GuitarForm;

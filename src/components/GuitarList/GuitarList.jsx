@@ -48,7 +48,7 @@ import "./styles/guitarlist.scss";
  * @returns {ReactNode}
  */
 const GuitarList = props => {
-  const { selectAndGoToGuitar } = props;
+  const { selectAndGoToGuitar, editGuitar } = props;
 
   const dispatch = useDispatch();
 
@@ -316,7 +316,7 @@ const GuitarList = props => {
                         <TableCell className="icon_holder">
                           <IconButton
                             onClick={() => {
-                              selectAndGoToGuitar(row._id);
+                              editGuitar(row._id);
                             }}
                           >
                             <FontAwesomeIcon
@@ -348,15 +348,6 @@ const GuitarList = props => {
                     </TableRow>
                   );
                 })}
-                {emptyRows > 0 && (
-                  <TableRow
-                    style={{
-                      height: 71 * emptyRows
-                    }}
-                  >
-                    <TableCell colSpan={headCells.length} />
-                  </TableRow>
-                )}
               </TableBody>
             </Table>
           </TableContainer>
@@ -381,11 +372,13 @@ const GuitarList = props => {
 };
 
 GuitarList.propTypes = {
-  selectAndGoToGuitar: PropTypes.func
+  selectAndGoToGuitar: PropTypes.func,
+  editGuitar: PropTypes.func
 };
 
 GuitarList.defaultProps = {
-  selectAndGoToGuitar: () => {}
+  selectAndGoToGuitar: () => {},
+  editGuitar: () => {}
 };
 
 export default GuitarList;

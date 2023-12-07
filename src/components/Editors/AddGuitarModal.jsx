@@ -2,11 +2,11 @@ import React from "react";
 
 import { Formik } from "formik";
 import moment from "moment";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Container } from "reactstrap";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
-import { addGuitar } from "../../store/slices/guitarsSlice";
+import { addGuitar, getGuitars } from "../../store/slices/guitarsSlice";
 import * as types from "../../types/types";
 import { DATE_FORMAT } from "../data/constants";
 import { getGuitarsValidationSchema } from "./data/validationSchemas";
@@ -15,12 +15,12 @@ import GuitarForm from "./GuitarForm";
 import GuitarFormButtons from "./GuitarFormButtons";
 
 /**
- * @function AddGuitar
+ * @function AddGuitarModal
  * @returns {React.ReactNode}
  */
-const AddGuitar = () => {
+const AddGuitarModal = props => {
+  const { isOpen, toggle, selectAndGoToGuitar } = props;
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const guitars = useSelector(state => state.guitarsState?.list) ?? [];
 
@@ -29,7 +29,8 @@ const AddGuitar = () => {
   const submitButtonText = "Add Instrument";
 
   return (
-    <Container fluid="md">
+    <Modal isOpen={isOpen} toggle={toggle} fullscreen>
+      <ModalHeader toggle={toggle}>Add Instrument</ModalHeader>
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {
@@ -40,10 +41,13 @@ const AddGuitar = () => {
               : ""
           };
           dispatch(addGuitar(submissionValues)).then(response => {
-            actions.resetForm(initialValues);
-            navigate(
-              `/guitar/${response?.payload?.data?._id ?? values?.name ?? ""}`
-            );
+            if (response) {
+              dispatch(getGuitars()).then(() => {
+                actions.resetForm(initialValues);
+                selectAndGoToGuitar(response?.payload?.data?._id);
+              });
+            }
+            toggle();
           });
         }}
         validationSchema={getGuitarsValidationSchema({
@@ -53,24 +57,34 @@ const AddGuitar = () => {
         {() => {
           return (
             <React.Fragment>
-              <div className="w-100 d-flex justify-content-between">
-                <h1>Add Instrument</h1>
+              <ModalBody>
+                <GuitarForm initialValues={initialValues} />
+              </ModalBody>
+              <ModalFooter>
                 <GuitarFormButtons
-                  className=""
                   submitButtonText={submitButtonText}
                   initialValues={initialValues}
+                  toggle={toggle}
                 />
-              </div>
-              <GuitarForm
-                initialValues={initialValues}
-                submitButtonText={submitButtonText}
-              />
+              </ModalFooter>
             </React.Fragment>
           );
         }}
       </Formik>
-    </Container>
+    </Modal>
   );
 };
 
-export default AddGuitar;
+AddGuitarModal.propTypes = {
+  isOpen: PropTypes.bool,
+  toggle: PropTypes.func,
+  scrollTo: PropTypes.func
+};
+
+AddGuitarModal.defaultProps = {
+  isOpen: false,
+  toggle: () => {},
+  scrollTo: () => {}
+};
+
+export default AddGuitarModal;

@@ -11,13 +11,17 @@
 }
 
 .brand-block {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
+  cursor: pointer;
   position: relative;
   text-align: center;
   width: 200px !important;
   height: 175px !important;
   display: inline-block;
   padding: 0 !important;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
   .brand-buttons-container {
     position: absolute;
     width: 100%;

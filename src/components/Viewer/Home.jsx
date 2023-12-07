@@ -50,9 +50,9 @@ const Home = props => {
     const featuredGuitar = (guitars ?? []).find(
       guitar =>
         (!isNew && hash && (guitar._id === hash || guitar.name === hash)) ||
-        guitar._id === availableGuitars[rand]._id
+        guitar._id === availableGuitars[rand]?._id
     );
-    window.location.hash = `#${featuredGuitar._id}`;
+    window.location.hash = `#${featuredGuitar?._id}`;
     dispatch(updateSelected(featuredGuitar.name));
     const frontPicture = (gallery ?? []).find(image => {
       return (

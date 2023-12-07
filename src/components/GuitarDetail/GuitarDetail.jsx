@@ -7,8 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, IconButton } from "@mui/material";
 import _ from "lodash";
 import moment from "moment";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Alert, Col, Container, Row } from "reactstrap";
 import confirm from "reactstrap-confirm";
 
@@ -35,9 +35,10 @@ import "./styles/guitardetail.scss";
  * @function GuitarDetail
  * @returns {React.ReactNode}
  */
-const GuitarDetail = () => {
+const GuitarDetail = props => {
+  const { selectAndGoToGuitar, editGuitar } = props;
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const hash = (window.location.hash ?? "").slice(1);
 
@@ -78,7 +79,7 @@ const GuitarDetail = () => {
           <span
             key={`${id}`}
             className="navigation-span"
-            onClick={() => navigate(`/guitar/${linkedGuitar._id}`)}
+            onClick={() => selectAndGoToGuitar(linkedGuitar._id)}
           >
             {snippet}
           </span>
@@ -110,7 +111,11 @@ const GuitarDetail = () => {
           <div className="d-flex w-100 justify-content-between">
             <h1>{guitar.name}</h1>
             {hasEditGuitarPermissions && (
-              <IconButton onClick={() => navigate(`/editguitar/${guitar._id}`)}>
+              <IconButton
+                onClick={() => {
+                  editGuitar(guitar._id);
+                }}
+              >
                 <FontAwesomeIcon icon={faEdit} className="text-info" />
               </IconButton>
             )}
@@ -234,6 +239,16 @@ const GuitarDetail = () => {
       )}
     </React.Fragment>
   );
+};
+
+GuitarDetail.propTypes = {
+  selectAndGoToGuitar: PropTypes.func,
+  editGuitar: PropTypes.func
+};
+
+GuitarDetail.defaultProps = {
+  selectAndGoToGuitar: () => {},
+  editGuitar: () => {}
 };
 
 export default GuitarDetail;

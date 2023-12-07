@@ -6,9 +6,9 @@ import { faCircleXmark, faIndustry } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { Formik } from "formik";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Col, Container, Form, FormGroup, Row } from "reactstrap";
-import { getBrandsValidationSchema } from "./data/validationSchemas";
 
 import usePermissions from "../../hooks/usePermissions";
 import {
@@ -19,6 +19,7 @@ import {
 import * as types from "../../types/types";
 import { serverLocation } from "../../utils/constants";
 import { BRAND_PERM } from "../data/constants";
+import { getBrandsValidationSchema } from "./data/validationSchemas";
 
 import InputTextField from "../common/InputTextField";
 import BrandBlock from "./BrandBlock";
@@ -29,7 +30,8 @@ import "./styles/brands.scss";
  * @function Brands
  * @returns {ReactNode}
  */
-const Brands = () => {
+const Brands = props => {
+  const { scrollTo } = props;
   const dispatch = useDispatch();
   const [selectedBrand, setSelectedBrand] = useState(types.brand.defaults);
   const brands = useSelector(state => state.brandsState.list) ?? [];
@@ -171,12 +173,13 @@ const Brands = () => {
                 </React.Fragment>
               )}
               {brands?.length ? (
-                <Row className="brands-container border">
+                <Row className="brands-container border justify-content-center">
                   {brands?.map(brand => (
                     <BrandBlock
                       key={brand.id}
                       brand={brand}
                       selectBrand={selectBrand}
+                      scrollTo={scrollTo}
                     />
                   ))}
                 </Row>
@@ -191,6 +194,14 @@ const Brands = () => {
       </Formik>
     </Container>
   );
+};
+
+Brands.propTypes = {
+  scrollTo: PropTypes.func
+};
+
+Brands.defaultProps = {
+  scrollTo: () => {}
 };
 
 export default Brands;

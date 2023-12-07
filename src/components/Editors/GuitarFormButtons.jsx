@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { useFormikContext } from "formik";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
 
 import usePermissions from "../../hooks/usePermissions";
 import { GUITAR_PERM } from "../data/constants";
@@ -19,11 +18,7 @@ import "./styles/editors.scss";
  * @returns {React.ReactNode}
  */
 const GuitarFormButtons = props => {
-  const { className, submitButtonText, initialValues } = props;
-
-  const isEdit = Boolean(initialValues._id);
-
-  const navigate = useNavigate();
+  const { className, submitButtonText, initialValues, toggle } = props;
 
   const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
 
@@ -46,7 +41,7 @@ const GuitarFormButtons = props => {
         className="ms-2 bg-white"
         onClick={() => {
           formProps.resetForm(initialValues);
-          navigate(`/${isEdit ? `guitar/${initialValues._id}` : "guitarlist"}`);
+          toggle();
         }}
         variant="outlined"
         color="secondary"
@@ -61,13 +56,15 @@ const GuitarFormButtons = props => {
 GuitarFormButtons.propTypes = {
   className: PropTypes.string,
   submitButtonText: PropTypes.string,
-  initialValues: PropTypes.objectOf(PropTypes.any)
+  initialValues: PropTypes.objectOf(PropTypes.any),
+  toggle: PropTypes.func
 };
 
 GuitarFormButtons.defaultProps = {
   className: "",
   submitButtonText: "Submit",
-  initialValues: {}
+  initialValues: {},
+  toggle: () => {}
 };
 
 export default GuitarFormButtons;
