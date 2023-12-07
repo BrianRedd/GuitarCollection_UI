@@ -82,7 +82,7 @@ const Home = props => {
   }, [guitars, brands, gallery]);
 
   return (
-    <Container fluid="md">
+    <Container fluid="md" className="mt-4">
       <Row>
         <Col>
           <h1>Brian's Guitars</h1>

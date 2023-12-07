@@ -77,7 +77,7 @@ const Main = () => {
 
   const scrollTo = sectionIdx => {
     window.scrollTo({
-      top: sectionRefs[sectionIdx].current.offsetTop - 50,
+      top: sectionRefs[sectionIdx].current.offsetTop - 80,
       behavior: "smooth"
     });
   };
@@ -101,7 +101,7 @@ const Main = () => {
     <div className="App" data-test="component-app">
       <NavBar scrollTo={scrollTo} selectAndGoToGuitar={selectAndGoToGuitar} />
       <div className="app-body">
-        <div ref={sectionRefs[0]}>
+        <div ref={sectionRefs[0]} className="pt-1">
           <Home selectAndGoToGuitar={selectAndGoToGuitar} />
         </div>
         <hr />
@@ -116,15 +116,15 @@ const Main = () => {
           <Brands scrollTo={scrollTo} />
         </div>
         <hr />
-        <div ref={sectionRefs[2]}>
-          <Gallery />
-        </div>
-        <hr />
         <div ref={sectionRefs[4]}>
           <GuitarDetail
             selectAndGoToGuitar={selectAndGoToGuitar}
             editGuitar={editGuitar}
           />
+        </div>
+        <hr />
+        <div ref={sectionRefs[2]}>
+          <Gallery />
         </div>
       </div>
       <EditGuitarModal

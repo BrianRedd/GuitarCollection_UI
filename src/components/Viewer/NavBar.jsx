@@ -140,14 +140,22 @@ const NavBar = props => {
           >
             <FontAwesomeIcon icon={faList} /> Guitar List
           </NavItem>
-          {hasEditGuitarPermissions && (
+          <NavItem
+            onClick={() => {
+              toggle();
+              scrollTo(3);
+            }}
+          >
+            <FontAwesomeIcon icon={faIndustry} /> Brands
+          </NavItem>
+          {selectedGuitar && (
             <NavItem
               onClick={() => {
                 toggle();
-                toggleAddGuitarModal();
+                scrollTo(4);
               }}
             >
-              <FontAwesomeIcon icon={faGuitar} /> Add Instrument
+              <FontAwesomeIcon icon={faGuitar} /> {selectedGuitar}
             </NavItem>
           )}
           <NavItem
@@ -160,14 +168,6 @@ const NavBar = props => {
           </NavItem>
           <NavItem
             onClick={() => {
-              toggle();
-              scrollTo(3);
-            }}
-          >
-            <FontAwesomeIcon icon={faIndustry} /> Brands
-          </NavItem>
-          <NavItem
-            onClick={() => {
               toggleFilterModal();
               toggle();
             }}
@@ -177,14 +177,14 @@ const NavBar = props => {
               <Badge color="warning">{numberOfAppliedFilters}</Badge>
             )}
           </NavItem>
-          {selectedGuitar && (
+          {hasEditGuitarPermissions && (
             <NavItem
               onClick={() => {
                 toggle();
-                scrollTo(4);
+                toggleAddGuitarModal();
               }}
             >
-              <FontAwesomeIcon icon={faGuitar} /> {selectedGuitar}
+              <FontAwesomeIcon icon={faGuitar} /> Add Instrument
             </NavItem>
           )}
           {user._id ? (

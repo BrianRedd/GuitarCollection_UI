@@ -124,9 +124,7 @@ export const guitarsState = {
     }),
     pagination: shape({
       order: string,
-      orderBy: string,
-      page: number,
-      pageSize: number
+      orderBy: string
     }),
     selected: string
   }),
@@ -136,9 +134,7 @@ export const guitarsState = {
     message: {},
     pagination: {
       order: "asc",
-      orderBy: DEFAULT_ORDER_BY,
-      page: 0,
-      pageSize: DEFAULT_PAGE_SIZE
+      orderBy: DEFAULT_ORDER_BY
     },
     selected: ""
   }
