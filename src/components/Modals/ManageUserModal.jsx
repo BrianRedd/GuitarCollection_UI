@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import _ from "lodash";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Collapse,
@@ -32,24 +31,29 @@ import {
 
 import { updateUser, writeUser } from "../../store/slices/userSlice";
 
+import useModalContext from "../../hooks/useModalContext";
 import usePermissions from "../../hooks/usePermissions";
+import { toggleToggle } from "../../store/slices/toggleSlice";
 import md5Hasher from "../../utils/md5";
 import { cookieFunctions, getUserName } from "../../utils/utils";
+import { ADMIN_PERM, PERMISSIONS_OPTIONS } from "../data/constants";
+import { manageUserValidationSchema } from "./data/modalData";
+
 import InputMultiSelectField from "../common/InputMultiSelectField";
 import InputTextField from "../common/InputTextField";
-import { ADMIN_PERM, PERMISSIONS_OPTIONS } from "../data/constants";
 import AddEditUserForm from "./AddEditUserForm";
-import { manageUserValidationSchema } from "./data/modalData";
 
 /**
  * @function ManageUserModal
  * @returns {React.ReactNode}
  */
-const ManageUserModal = props => {
-  const { isModalOpen, toggle } = props;
+const ManageUserModal = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector(state => state.userState) ?? {};
+
+  const { isOpen } = useModalContext("manageUserModal");
+  const toggle = () => dispatch(toggleToggle({ id: "manageUserModal" }));
 
   const [isUpdatePasswordOpen, setIsUpdatePasswordOpen] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -78,7 +82,7 @@ const ManageUserModal = props => {
   );
 
   return (
-    <Modal isOpen={isModalOpen} toggle={toggle}>
+    <Modal isOpen={isOpen} toggle={toggle}>
       <Formik
         initialValues={initialValues}
         validationSchema={manageUserValidationSchema}
@@ -231,18 +235,6 @@ const ManageUserModal = props => {
       </Formik>
     </Modal>
   );
-};
-
-ManageUserModal.propTypes = {
-  image: PropTypes.objectOf(PropTypes.any),
-  isModalOpen: PropTypes.bool,
-  toggle: PropTypes.func
-};
-
-ManageUserModal.defaultProps = {
-  image: {},
-  isModalOpen: false,
-  toggle: () => {}
 };
 
 export default ManageUserModal;

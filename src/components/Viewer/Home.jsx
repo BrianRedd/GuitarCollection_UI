@@ -191,9 +191,8 @@ const Home = props => {
                   </p>
                   <p>
                     <b>Last Played: </b>
-                    {featuredGuitar.playLog[0]?.playDate ||
-                      `${featuredGuitar.lastPlayed}*` ||
-                      "N/A"}
+                    {featuredGuitar.playLog?.[0]?.playDate ||
+                      `${featuredGuitar.lastPlayed || "N/A"}*`}
                   </p>
                   {hasEditGuitarPermissions && (
                     <p>

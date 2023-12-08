@@ -2,11 +2,12 @@ import React from "react";
 
 import { Formik } from "formik";
 import moment from "moment";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
+import useModalContext from "../../hooks/useModalContext";
 import { getGuitars, updateGuitar } from "../../store/slices/guitarsSlice";
+import { toggleToggle } from "../../store/slices/toggleSlice";
 import * as types from "../../types/types";
 import { DATE_FORMAT, INSTRUMENT_OPTION_GUITAR } from "../data/constants";
 import { getGuitarsValidationSchema } from "./data/validationSchemas";
@@ -18,12 +19,14 @@ import GuitarFormButtons from "./GuitarFormButtons";
  * @function EditGuitarModal
  * @returns {React.ReactNode}
  */
-const EditGuitarModal = props => {
-  const { isOpen, toggle } = props;
+const EditGuitarModal = () => {
   const dispatch = useDispatch();
 
   const { list: guitars, selected: selectedGuitar } =
     useSelector(state => state.guitarsState) ?? {};
+
+  const { isOpen } = useModalContext("editGuitarModal");
+  const toggle = () => dispatch(toggleToggle({ id: "editGuitarModal" }));
 
   const hash = (window.location.hash ?? "").slice(1);
 
@@ -88,16 +91,6 @@ const EditGuitarModal = props => {
       </Formik>
     </Modal>
   );
-};
-
-EditGuitarModal.propTypes = {
-  isOpen: PropTypes.bool,
-  toggle: PropTypes.func
-};
-
-EditGuitarModal.defaultProps = {
-  isOpen: false,
-  toggle: () => {}
 };
 
 export default EditGuitarModal;

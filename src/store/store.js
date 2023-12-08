@@ -6,6 +6,7 @@ import brandsReducer from "./slices/brandsSlice";
 import filtersReducer from "./slices/filtersSlice";
 import galleryReducer from "./slices/gallerySlice";
 import guitarsReducer from "./slices/guitarsSlice";
+import toggleReducer from "./slices/toggleSlice";
 import userReducer from "./slices/userSlice";
 
 const store = configureStore({
@@ -14,6 +15,7 @@ const store = configureStore({
     filtersState: filtersReducer,
     galleryState: galleryReducer,
     guitarsState: guitarsReducer,
+    toggleState: toggleReducer,
     userState: userReducer
   }
 });

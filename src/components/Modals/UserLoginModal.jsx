@@ -13,27 +13,31 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import { Formik } from "formik";
 import _ from "lodash";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
+import useModalContext from "../../hooks/useModalContext";
+import { toggleToggle } from "../../store/slices/toggleSlice";
 import { getUser, updateUser, writeUser } from "../../store/slices/userSlice";
-
 import md5Hasher from "../../utils/md5";
 import { cookieFunctions } from "../../utils/utils";
-import InputTextField from "../common/InputTextField";
 import { userLoginValidationSchema } from "./data/modalData";
+
+import InputTextField from "../common/InputTextField";
 
 /**
  * @function UserLoginModal
  * @returns {React.ReactNode}
  */
-const UserLoginModal = props => {
-  const { isModalOpen, toggle } = props;
+const UserLoginModal = () => {
   const dispatch = useDispatch();
 
+  // necessary to ensure that passwordVisible useEffect can have user dependency
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const user = useSelector(state => state.userState?.user) ?? {};
+
+  const { isOpen } = useModalContext("loginModal");
+  const toggle = () => dispatch(toggleToggle({ id: "loginModal" }));
 
   const [userObject, setUserObject] = useState({});
   const [error, setError] = useState(null);
@@ -48,10 +52,10 @@ const UserLoginModal = props => {
   };
 
   useEffect(() => {
-    if (isModalOpen && _.isEmpty(user)) {
+    if (isOpen && _.isEmpty(user)) {
       setIsPasswordVisible(false);
     }
-  }, [isModalOpen, user]);
+  }, [isOpen, user]);
 
   const EyeAdornment = (
     <IconButton
@@ -66,7 +70,7 @@ const UserLoginModal = props => {
   );
 
   return (
-    <Modal isOpen={isModalOpen} toggle={toggle}>
+    <Modal isOpen={isOpen} toggle={toggle}>
       <Formik
         initialValues={initialValues}
         validationSchema={userLoginValidationSchema}
@@ -239,18 +243,6 @@ const UserLoginModal = props => {
       </Formik>
     </Modal>
   );
-};
-
-UserLoginModal.propTypes = {
-  image: PropTypes.objectOf(PropTypes.any),
-  isModalOpen: PropTypes.bool,
-  toggle: PropTypes.func
-};
-
-UserLoginModal.defaultProps = {
-  image: {},
-  isModalOpen: false,
-  toggle: () => {}
 };
 
 export default UserLoginModal;

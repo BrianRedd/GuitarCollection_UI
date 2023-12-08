@@ -130,9 +130,9 @@ const GuitarPictures = props => {
             </ButtonBase>
             <Collapse isOpen={isOpen}>
               <Row className="d-flex justify-content-center">
-                {guitarImageList?.map(image => (
+                {guitarImageList?.map((image, idx) => (
                   <GalleryImage
-                    key={image._id}
+                    key={`${image._id}_${idx}`}
                     image={image}
                     selectImage={image => {
                       selectImage(image);

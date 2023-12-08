@@ -65,7 +65,7 @@ const Gallery = () => {
       });
     });
     return _.orderBy(
-      (gallery ?? []).map(image => ({
+      (gallery ?? []).map((image) => ({
         key: image._id,
         ...image,
         guitar: `${imageGuitarMapping?.[image._id] ?? ""}`

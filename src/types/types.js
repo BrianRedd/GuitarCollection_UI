@@ -82,6 +82,13 @@ export const guitar = {
         cost: string,
         notes: string
       })
+    ),
+    playLog: arrayOf(
+      shape({
+        playDate: string,
+        playedBy: string,
+        notes: string
+      })
     )
   }),
   defaults: {
@@ -105,7 +112,8 @@ export const guitar = {
     specifications: [],
     pictures: [],
     maintenance: [],
-    todoList: []
+    todoList: [],
+    playLog: []
   }
 };
 
@@ -295,5 +303,20 @@ export const filtersState = {
       [FILTER_FEATURED_STATUS]: [STATUS_OPTION_PLAYABLE],
       tuning: []
     }
+  }
+};
+
+/*
+ TOGGLE TYPES
+ ------------*/
+/**
+ * @const toggleState
+ */
+export const toggleState = {
+  types: shape({
+    toggles: arrayOf(objectOf(any))
+  }),
+  defaults: {
+    toggles: []
   }
 };

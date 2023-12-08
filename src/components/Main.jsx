@@ -10,12 +10,13 @@ import { getGuitars, updateSelected } from "../store/slices/guitarsSlice";
 import { getUser, writeUser } from "../store/slices/userSlice";
 import { cookieFunctions } from "../utils/utils";
 
+import { toggleToggle } from "../store/slices/toggleSlice";
 import Brands from "./Brands/Brands";
-import EditGuitarModal from "./Editors/EditGuitarModal";
 import Gallery from "./Gallery/Gallery";
 import GuitarDetail from "./GuitarDetail/GuitarDetail";
 import GuitarList from "./GuitarList/GuitarList";
 import Home from "./Viewer/Home";
+import Modals from "./Viewer/Modals";
 import NavBar from "./Viewer/NavBar";
 
 /**
@@ -93,7 +94,7 @@ const Main = () => {
   const editGuitar = id => {
     window.location.hash = `#${id}`;
     dispatch(updateSelected(id));
-    setIsEditModalOpen(true);
+    dispatch(toggleToggle({ id: "editGuitarModal" }));
   };
 
   return (
@@ -126,10 +127,7 @@ const Main = () => {
           <Gallery />
         </div>
       </div>
-      <EditGuitarModal
-        isOpen={isEditModalOpen}
-        toggle={() => setIsEditModalOpen(!isEditModalOpen)}
-      />
+      <Modals />
     </div>
   );
 };

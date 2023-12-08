@@ -10,7 +10,7 @@ const useUpdatePlayLog = () => {
   const username =
     useSelector(state => state.userState?.user?.username) ?? "Unknown User";
 
-  const getPlayLog = (guitarObject, note) => {
+  const getPlayLog = (guitarObject, notes) => {
     const lastPlayed = guitarObject?.lastPlayed;
 
     const originalPlayLog = _.orderBy(
@@ -32,7 +32,7 @@ const useUpdatePlayLog = () => {
     const newEntry = {
       playDate: today,
       playedBy: username,
-      note
+      notes
     };
 
     if (lastPlayed && !originalPlayLog?.length) {

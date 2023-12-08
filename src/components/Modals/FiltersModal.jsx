@@ -6,7 +6,6 @@ import { faCircleXmark, faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { Formik } from "formik";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Col,
@@ -18,25 +17,28 @@ import {
   Row
 } from "reactstrap";
 
+import useModalContext from "../../hooks/useModalContext";
 import useOptions from "../../hooks/useOptions";
 import { writeFilters } from "../../store/slices/filtersSlice";
+import { toggleToggle } from "../../store/slices/toggleSlice";
 import * as types from "../../types/types";
+import { FILTER_FEATURED_STATUS, FILTER_STATUS } from "../data/constants";
 
 import InputMultiSelectField from "../common/InputMultiSelectField";
 import InputSelectField from "../common/InputSelectField";
 import InputTextField from "../common/InputTextField";
-import { FILTER_FEATURED_STATUS, FILTER_STATUS } from "../data/constants";
 
 /**
  * @function FiltersModal
  * @returns {React.ReactNode}
  */
-const FiltersModal = props => {
-  const { isModalOpen, toggle } = props;
-
+const FiltersModal = () => {
   const dispatch = useDispatch();
 
   const filters = useSelector(state => state.filtersState.filters) ?? {};
+
+  const { isOpen } = useModalContext("filterModal");
+  const toggle = () => dispatch(toggleToggle({ id: "filterModal" }));
 
   const [brandRadioOption, setBrandRadioOption] = useState(0);
 
@@ -55,7 +57,7 @@ const FiltersModal = props => {
   const ovationBrands = ["ADO", "APO", "HGO", "OV"];
 
   return (
-    <Modal isOpen={isModalOpen} toggle={toggle} size="lg">
+    <Modal isOpen={isOpen} toggle={toggle} size="lg">
       <ModalHeader toggle={toggle}>Apply Filters</ModalHeader>
       <Formik
         initialValues={filters}
@@ -260,16 +262,6 @@ const FiltersModal = props => {
       </Formik>
     </Modal>
   );
-};
-
-FiltersModal.propTypes = {
-  isModalOpen: PropTypes.bool,
-  toggle: PropTypes.func
-};
-
-FiltersModal.defaultProps = {
-  isModalOpen: false,
-  toggle: () => {}
 };
 
 export default FiltersModal;

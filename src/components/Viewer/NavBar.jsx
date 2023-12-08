@@ -32,25 +32,21 @@ import usePermissions from "../../hooks/usePermissions";
 import { clearMessage as clearBrandMessage } from "../../store/slices/brandsSlice";
 import { clearMessage as clearGalleryMessage } from "../../store/slices/gallerySlice";
 import { clearMessage as clearGuitarMessage } from "../../store/slices/guitarsSlice";
+import { toggleToggle } from "../../store/slices/toggleSlice";
 import * as types from "../../types/types";
 import { getUserName } from "../../utils/utils";
 import { GUITAR_PERM } from "../data/constants";
 
-import AddGuitarModal from "../Editors/AddGuitarModal";
-import FiltersModal from "../Modals/FiltersModal";
-import ManageUserModal from "../Modals/ManageUserModal";
-import UserLoginModal from "../Modals/UserLoginModal";
-
+/**
+ * @function NavBar
+ * @returns {React.ReactNode}
+ */
 const NavBar = props => {
   const { scrollTo, selectAndGoToGuitar } = props;
 
   const dispatch = useDispatch();
 
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isManageUserModalOpen, setIsManageUserModalOpen] = useState(false);
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [isAddGuitarModalOpen, setIsAddGuitarModalOpen] = useState(false);
 
   const { message: guitarsMessage, selected: selectedGuitar } =
     useSelector(state => state.guitarsState) ?? {};
@@ -105,18 +101,6 @@ const NavBar = props => {
   }, [galleryMessage, dispatch]);
 
   const toggle = () => setIsHamburgerOpen(!isHamburgerOpen);
-  const toggleFilterModal = () => {
-    setIsFilterModalOpen(!isFilterModalOpen);
-  };
-  const toggleLoginModal = () => {
-    setIsLoginModalOpen(!isLoginModalOpen);
-  };
-  const toggleManageUserModal = () => {
-    setIsManageUserModalOpen(!isManageUserModalOpen);
-  };
-  const toggleAddGuitarModal = () => {
-    setIsAddGuitarModalOpen(!isAddGuitarModalOpen);
-  };
 
   return (
     <Navbar color="dark" dark expand="lg" fixed="top">
@@ -168,8 +152,8 @@ const NavBar = props => {
           </NavItem>
           <NavItem
             onClick={() => {
-              toggleFilterModal();
               toggle();
+              dispatch(toggleToggle({ id: "filterModal" }));
             }}
           >
             <FontAwesomeIcon icon={faFilter} /> Filters{" "}
@@ -181,7 +165,12 @@ const NavBar = props => {
             <NavItem
               onClick={() => {
                 toggle();
-                toggleAddGuitarModal();
+                dispatch(
+                  toggleToggle({
+                    id: "addGuitarModal",
+                    selectAndGoToGuitar
+                  })
+                );
               }}
             >
               <FontAwesomeIcon icon={faGuitar} /> Add Instrument
@@ -191,8 +180,8 @@ const NavBar = props => {
             <NavItem
               className="ms-auto"
               onClick={() => {
-                toggleManageUserModal();
                 toggle();
+                dispatch(toggleToggle({ id: "manageUserModal" }));
               }}
             >
               <FontAwesomeIcon icon={faUserGear} /> {getUserName(user)}
@@ -201,8 +190,8 @@ const NavBar = props => {
             <NavItem
               className="ms-auto"
               onClick={() => {
-                toggleLoginModal();
                 toggle();
+                dispatch(toggleToggle({ id: "loginModal" }));
               }}
             >
               <FontAwesomeIcon icon={faUser} /> Login
@@ -234,23 +223,6 @@ const NavBar = props => {
       >
         {galleryMessage?.text}
       </Alert>
-      <FiltersModal
-        isModalOpen={isFilterModalOpen}
-        toggle={toggleFilterModal}
-      />
-      <UserLoginModal
-        isModalOpen={isLoginModalOpen}
-        toggle={toggleLoginModal}
-      />
-      <ManageUserModal
-        isModalOpen={isManageUserModalOpen}
-        toggle={toggleManageUserModal}
-      />
-      <AddGuitarModal
-        isOpen={isAddGuitarModalOpen}
-        toggle={toggleAddGuitarModal}
-        selectAndGoToGuitar={selectAndGoToGuitar}
-      />
     </Navbar>
   );
 };

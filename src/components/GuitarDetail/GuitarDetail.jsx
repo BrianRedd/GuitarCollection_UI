@@ -182,15 +182,13 @@ const GuitarDetail = props => {
                           }}
                         >
                           Last Played:{" "}
-                          {guitar.playLog[0]?.playDate ||
-                            `${guitar.lastPlayed}*` ||
-                            "N/A"}
+                          {guitar.playLog?.[0]?.playDate ||
+                            `${guitar.lastPlayed || "N/A"}*`}
                         </Button>
                       ) : (
                         <DetailItem title="Last Played" width="wide">
-                          {guitar.lastPlayed
-                            ? moment(guitar.lastPlayed).format(DATE_FORMAT)
-                            : "N/A"}
+                          {guitar.playLog?.[0]?.playDate ||
+                            `${guitar.lastPlayed || "N/A"}*`}
                         </DetailItem>
                       )}
                     </Col>
