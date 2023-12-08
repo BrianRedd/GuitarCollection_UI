@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 import {
-  faEdit,
+  faPenToSquare,
   faSquareMinus,
   faTrash
 } from "@fortawesome/free-solid-svg-icons";
@@ -71,7 +71,7 @@ const GalleryImage = props => {
                 selectImage(image);
               }}
             >
-              <FontAwesomeIcon icon={faEdit} className="text-success small" />
+              <FontAwesomeIcon icon={faPenToSquare} className="text-success small" />
             </IconButton>
             <IconButton
               onClick={() => {

@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Box,
@@ -294,7 +294,7 @@ const GuitarList = props => {
                           }}
                         >
                           <FontAwesomeIcon
-                            icon={faEdit}
+                            icon={faPenToSquare}
                             className="text-success small"
                           />
                         </IconButton>

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, IconButton } from "@mui/material";
 import _ from "lodash";
@@ -119,7 +119,7 @@ const GuitarDetail = props => {
                   editGuitar(guitar._id);
                 }}
               >
-                <FontAwesomeIcon icon={faEdit} className="text-info" />
+                <FontAwesomeIcon icon={faPenToSquare} className="text-primary" />
               </IconButton>
             )}
           </div>

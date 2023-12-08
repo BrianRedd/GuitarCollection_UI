@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconButton } from "@mui/material";
 import PropTypes from "prop-types";
@@ -22,7 +22,7 @@ import "./styles/brands.scss";
  * @returns {React.ReactNode}
  */
 const BrandBlock = props => {
-  const { brand, selectBrand, scrollTo } = props;
+  const { brand, selectBrand, scrollTo, setIsEditOpen } = props;
   const dispatch = useDispatch();
 
   const filters = useSelector(state => state.filtersState.filters) ?? {};
@@ -54,8 +54,13 @@ const BrandBlock = props => {
       {brand.notes && <p className="brand-notes">{brand.notes}</p>}
       {hasEditBrandPermissions && (
         <div className="brand-buttons-container">
-          <IconButton onClick={() => selectBrand(brand)}>
-            <FontAwesomeIcon icon={faEdit} className="text-success small" />
+          <IconButton
+            onClick={() => {
+              selectBrand(brand);
+              setIsEditOpen(true);
+            }}
+          >
+            <FontAwesomeIcon icon={faPenToSquare} className="text-success small" />
           </IconButton>
           <IconButton
             onClick={() => {
@@ -83,13 +88,15 @@ const BrandBlock = props => {
 BrandBlock.propTypes = {
   brand: PropTypes.objectOf(PropTypes.any),
   selectBrand: PropTypes.func,
-  scrollTo: PropTypes.func
+  scrollTo: PropTypes.func,
+  setIsEditOpen: PropTypes.func
 };
 
 BrandBlock.defaultTypes = {
   brand: {},
   selectBrand: () => {},
-  scrollTo: () => {}
+  scrollTo: () => {},
+  setIsEditOpen: () => {}
 };
 
 export default BrandBlock;

@@ -2,13 +2,26 @@
 
 import React, { useState } from "react";
 
-import { faCircleXmark, faIndustry } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleXmark,
+  faPenToSquare,
+  faPlus,
+  faSave
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { Formik } from "formik";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, Col, Container, Form, FormGroup, Row } from "reactstrap";
+import {
+  Alert,
+  Col,
+  Collapse,
+  Container,
+  Form,
+  FormGroup,
+  Row
+} from "reactstrap";
 
 import usePermissions from "../../hooks/usePermissions";
 import {
@@ -32,9 +45,13 @@ import "./styles/brands.scss";
  */
 const Brands = props => {
   const { scrollTo } = props;
+
   const dispatch = useDispatch();
-  const [selectedBrand, setSelectedBrand] = useState(types.brand.defaults);
+
   const brands = useSelector(state => state.brandsState.list) ?? [];
+
+  const [selectedBrand, setSelectedBrand] = useState(types.brand.defaults);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const hasEditBrandPermissions = usePermissions(BRAND_PERM);
 
@@ -80,96 +97,109 @@ const Brands = props => {
             <React.Fragment>
               {hasEditBrandPermissions && (
                 <React.Fragment>
-                  <h4 className="mt-3">
-                    {isEdit
-                      ? `Edit Brand ${selectedBrand.name}`
-                      : "Add New Brand"}
-                  </h4>
-                  <Form>
-                    <FormGroup>
-                      <Row>
-                        <InputTextField
-                          name="name"
-                          required
-                          onChange={evt => {
-                            const value = evt.target.value;
-                            if (value && value.length > 2 && !isEdit) {
-                              formProps.setFieldValue(
-                                "id",
-                                value?.slice(0, 2)?.toUpperCase()
-                              );
-                            }
-                          }}
+                  <Row className=" justify-content-end d-flex mb-3">
+                    <Button
+                      color="primary"
+                      onClick={() => setIsEditOpen(!isEditOpen)}
+                      className=" justify-content-end d-flex"
+                      startIcon={
+                        <FontAwesomeIcon
+                          icon={isEdit ? faPenToSquare : faPlus}
                         />
-                        <InputTextField
-                          name="id"
-                          required
-                          otherProps={{
-                            disabled: !formProps.values?.name || isEdit
-                          }}
-                        />
-                        <InputTextField name="notes" width="wide" />
-                      </Row>
-                      <Row>
-                        <Col xs={isEdit ? 6 : 12} md={isEdit ? 4 : 6}>
-                          <input
-                            type="file"
-                            name="image"
-                            className="form-control form-control-lg"
-                            onChange={event => {
-                              formProps.setFieldValue(
-                                "logo",
-                                event.currentTarget.files[0]
-                              );
-                            }}
+                      }
+                    >
+                      <b>
+                        {isEdit
+                          ? `Edit Brand ${selectedBrand.name}`
+                          : "Add New Brand"}
+                      </b>
+                    </Button>
+                  </Row>
+                  <Collapse isOpen={isEditOpen}>
+                    <Form>
+                      <FormGroup>
+                        <Row>
+                          <InputTextField
+                            name="name"
                             required
-                          />
-                        </Col>
-                        {isEdit && selectedBrand.logo && (
-                          <Col xs={6} md={2}>
-                            <img
-                              src={`${serverLocation}/brandLogos/${selectedBrand.logo}`}
-                              width="100"
-                              className="img-thumbnail mt-1"
-                              alt={selectedBrand.name}
-                            ></img>
-                          </Col>
-                        )}
-                        <Col xs={12} md={6} className="buttons-container">
-                          <Button
-                            onClick={formProps.handleSubmit}
-                            variant="contained"
-                            disableElevation
-                            color="primary"
-                            className="font-weight-bold"
-                          >
-                            <FontAwesomeIcon
-                              icon={faIndustry}
-                              className="me-3"
-                            />
-                            {isEdit
-                              ? `Save ${selectedBrand.name}`
-                              : "Create New Brand"}
-                          </Button>
-                          <Button
-                            className="ms-2 bg-white"
-                            onClick={() => {
-                              formProps.resetForm(types.brand.defaults);
-                              setSelectedBrand(types.brand.defaults);
+                            onChange={evt => {
+                              const value = evt.target.value;
+                              if (value && value.length > 2 && !isEdit) {
+                                formProps.setFieldValue(
+                                  "id",
+                                  value?.slice(0, 2)?.toUpperCase()
+                                );
+                              }
                             }}
-                            variant="outlined"
-                            color="secondary"
-                          >
-                            <FontAwesomeIcon
-                              icon={faCircleXmark}
-                              className="me-3"
+                          />
+                          <InputTextField
+                            name="id"
+                            required
+                            otherProps={{
+                              disabled: !formProps.values?.name || isEdit
+                            }}
+                          />
+                          <InputTextField name="notes" width="wide" />
+                        </Row>
+                        <Row>
+                          <Col xs={isEdit ? 6 : 12} md={isEdit ? 4 : 6}>
+                            <input
+                              type="file"
+                              name="image"
+                              className="form-control form-control-lg"
+                              onChange={event => {
+                                formProps.setFieldValue(
+                                  "logo",
+                                  event.currentTarget.files[0]
+                                );
+                              }}
+                              required
                             />
-                            Cancel
-                          </Button>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                  </Form>
+                          </Col>
+                          {isEdit && selectedBrand.logo && (
+                            <Col xs={6} md={2}>
+                              <img
+                                src={`${serverLocation}/brandLogos/${selectedBrand.logo}`}
+                                width="100"
+                                className="img-thumbnail mt-1"
+                                alt={selectedBrand.name}
+                              ></img>
+                            </Col>
+                          )}
+                          <Col xs={12} md={6} className="buttons-container">
+                            <Button
+                              onClick={formProps.handleSubmit}
+                              variant="contained"
+                              disableElevation
+                              color="primary"
+                              className="font-weight-bold"
+                            >
+                              <FontAwesomeIcon icon={faSave} className="me-3" />
+                              {isEdit
+                                ? `Save ${selectedBrand.name}`
+                                : "Create New Brand"}
+                            </Button>
+                            <Button
+                              className="ms-2 bg-white"
+                              onClick={() => {
+                                formProps.resetForm(types.brand.defaults);
+                                setSelectedBrand(types.brand.defaults);
+                                setIsEditOpen(false);
+                              }}
+                              variant="outlined"
+                              color="secondary"
+                            >
+                              <FontAwesomeIcon
+                                icon={faCircleXmark}
+                                className="me-3"
+                              />
+                              Cancel
+                            </Button>
+                          </Col>
+                        </Row>
+                      </FormGroup>
+                    </Form>
+                  </Collapse>
                 </React.Fragment>
               )}
               {brands?.length ? (
@@ -180,6 +210,7 @@ const Brands = props => {
                       brand={brand}
                       selectBrand={selectBrand}
                       scrollTo={scrollTo}
+                      setIsEditOpen={setIsEditOpen}
                     />
                   ))}
                 </Row>
