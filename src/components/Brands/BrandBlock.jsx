@@ -35,7 +35,8 @@ const BrandBlock = props => {
         dispatch(
           writeFilters({
             ...filters,
-            brandId: [brand.id]
+            brandId: [brand.id],
+            status: []
           })
         );
         scrollTo(1);
