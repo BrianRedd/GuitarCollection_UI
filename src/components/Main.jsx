@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { enqueueSnackbar } from "notistack";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,8 +35,6 @@ const Main = () => {
     useRef(null), // 3 brands
     useRef(null) // 4 detail
   ];
-
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getGuitars()).then(response => {

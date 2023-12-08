@@ -8,12 +8,12 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
-import confirm from "reactstrap-confirm";
 
 import useFilters from "../../hooks/useFilters";
 import usePermissions from "../../hooks/usePermissions";
 import useUpdatePlayLog from "../../hooks/useUpdatePlayLog";
 import { updateGuitar, updateSelected } from "../../store/slices/guitarsSlice";
+import { toggleToggle } from "../../store/slices/toggleSlice";
 import { serverLocation } from "../../utils/constants";
 import {
   ADMIN_PERM,
@@ -29,8 +29,6 @@ const Home = props => {
   const dispatch = useDispatch();
 
   const hash = (window.location.hash ?? "").slice(1);
-
-  console.log("hash", hash);
 
   const guitars = useSelector(state => state.guitarsState?.list) ?? [];
   const brands = useSelector(state => state.brandsState?.list) ?? [];
@@ -57,8 +55,6 @@ const Home = props => {
     ) ?? {
       name: "Unknown"
     };
-
-    console.log("featuredGuitar", featuredGuitar);
 
     window.location.hash = `#${featuredGuitar?._id ?? ""}`;
     dispatch(updateSelected(featuredGuitar.name));
@@ -88,6 +84,14 @@ const Home = props => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guitars, brands, gallery]);
+
+  useEffect(() => {
+    if (!hash) {
+      const featuredGuitar = getFeaturedGuitar(true);
+      setFeaturedGuitar(featuredGuitar);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hash]);
 
   const { getPlayLog } = useUpdatePlayLog();
 
@@ -202,28 +206,30 @@ const Home = props => {
                         color="success"
                         onClick={async event => {
                           event.preventDefault();
-                          const result = await confirm({
-                            title: `Play ${featuredGuitar.name}?`,
-                            message: `Want to play ${featuredGuitar.name} today?`,
-                            confirmColor: "success",
-                            cancelColor: "link text-danger",
-                            confirmText: "Yes!",
-                            cancelText: "No"
-                          });
-                          if (result) {
-                            const playLog = getPlayLog(
-                              featuredGuitar,
-                              "Featured Guitar"
-                            );
-                            const updateObject = {
-                              ...featuredGuitar,
-                              lastPlayed: moment().format(DATE_FORMAT),
-                              playLog
-                            };
-                            dispatch(updateGuitar(updateObject)).then(() => {
-                              selectAndGoToGuitar(featuredGuitar._id);
-                            });
-                          }
+
+                          dispatch(
+                            toggleToggle({
+                              id: "confirmationModal",
+                              title: `Play ${featuredGuitar.name}?`,
+                              text: `Want to play ${featuredGuitar.name} today?`,
+                              handleYes: () => {
+                                const playLog = getPlayLog(
+                                  featuredGuitar,
+                                  "Featured Guitar"
+                                );
+                                const updateObject = {
+                                  ...featuredGuitar,
+                                  lastPlayed: moment().format(DATE_FORMAT),
+                                  playLog
+                                };
+                                dispatch(updateGuitar(updateObject)).then(
+                                  () => {
+                                    selectAndGoToGuitar(featuredGuitar._id);
+                                  }
+                                );
+                              }
+                            })
+                          );
                         }}
                       >
                         Play Today?

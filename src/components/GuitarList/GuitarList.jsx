@@ -20,7 +20,6 @@ import _ from "lodash";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Badge } from "reactstrap";
-import confirm from "reactstrap-confirm";
 
 import useFilters from "../../hooks/useFilters";
 import usePermissions from "../../hooks/usePermissions";
@@ -39,6 +38,7 @@ import {
 } from "../data/constants";
 
 import moment from "moment";
+import { toggleToggle } from "../../store/slices/toggleSlice";
 import "./styles/guitarlist.scss";
 
 /**
@@ -299,18 +299,18 @@ const GuitarList = props => {
                           />
                         </IconButton>
                         <IconButton
-                          onClick={async event => {
-                            event.preventDefault();
-                            const result = await confirm({
-                              title: `Delete ${row.name}?`,
-                              message: `Are you sure you want to permanently delete ${row.name}?`,
-                              confirmColor: "danger",
-                              cancelColor: "link text-primary"
-                            });
-                            if (result) {
-                              dispatch(removeGuitar(row._id));
-                            }
-                          }}
+                          onClick={() => 
+                            dispatch(
+                              toggleToggle({
+                                id: "confirmationModal",
+                                title: `Delete ${row.name ?? "Instrument"}?`,
+                                text: `Are you sure you want to permanently delete ${
+                                  row.name ?? "this instrument"
+                                }?`,
+                                handleYes: () => dispatch(removeGuitar(row._id))
+                              })
+                            )
+                          }
                         >
                           <FontAwesomeIcon
                             icon={faTrash}

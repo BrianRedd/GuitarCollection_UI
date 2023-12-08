@@ -11,7 +11,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ButtonBase, IconButton } from "@mui/material";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import confirm from "reactstrap-confirm";
 
 import usePermissions from "../../hooks/usePermissions";
 import {
@@ -23,6 +22,7 @@ import { GUITAR_PERM } from "../data/constants";
 
 import ImageViewerModal from "../Modals/ImageViewerModal";
 
+import { toggleToggle } from "../../store/slices/toggleSlice";
 import "./styles/gallery.scss";
 
 /**
@@ -74,24 +74,25 @@ const GalleryImage = props => {
               <FontAwesomeIcon icon={faEdit} className="text-success small" />
             </IconButton>
             <IconButton
-              onClick={async () => {
-                const result = await confirm({
-                  title: `${isDisconnect ? "Disconnect" : "Delete"} Image?`,
-                  message: `Are you sure you want to ${
-                    isDisconnect ? "disconnect" : "permanently delete"
-                  } image?`,
-                  confirmColor: "danger",
-                  cancelColor: "link text-primary"
-                });
-                if (result) {
-                  if (handleDelete) {
-                    handleDelete();
-                  } else {
-                    dispatch(deleteGalleryImage(image)).then(() => {
-                      dispatch(getGallery());
-                    });
-                  }
-                }
+              onClick={() => {
+                dispatch(
+                  toggleToggle({
+                    id: "confirmationModal",
+                    title: `${isDisconnect ? "Disconnect" : "Delete"} Image?`,
+                    text: `Are you sure you want to ${
+                      isDisconnect ? "disconnect" : "permanently delete"
+                    } image?`,
+                    handleYes: () => {
+                      if (handleDelete) {
+                        handleDelete();
+                      } else {
+                        dispatch(deleteGalleryImage(image)).then(() => {
+                          dispatch(getGallery());
+                        });
+                      }
+                    }
+                  })
+                );
               }}
             >
               <FontAwesomeIcon

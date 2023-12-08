@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconButton } from "@mui/material";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import confirm from "reactstrap-confirm";
 
 import usePermissions from "../../hooks/usePermissions";
 import { deleteBrand, getBrands } from "../../store/slices/brandsSlice";
@@ -15,6 +14,7 @@ import { serverLocation } from "../../utils/constants";
 import { BRAND_PERM } from "../data/constants";
 
 import { writeFilters } from "../../store/slices/filtersSlice";
+import { toggleToggle } from "../../store/slices/toggleSlice";
 import "./styles/brands.scss";
 
 /**
@@ -57,16 +57,18 @@ const BrandBlock = props => {
             <FontAwesomeIcon icon={faEdit} className="text-success small" />
           </IconButton>
           <IconButton
-            onClick={async () => {
-              const result = await confirm({
-                title: `Delete Brand ${brand.name}?`,
-                message: `Are you sure you want to permanently delete brand ${brand.name}?`,
-                confirmColor: "danger",
-                cancelColor: "link text-primary"
-              });
-              if (result) {
-                dispatch(deleteBrand(brand)).then(() => dispatch(getBrands()));
-              }
+            onClick={() => {
+              dispatch(
+                toggleToggle({
+                  id: "confirmationModal",
+                  title: `Delete Brand ${brand.name}?`,
+                  text: `Are you sure you want to permanently delete brand ${brand.name}?`,
+                  handleYes: () =>
+                    dispatch(deleteBrand(brand)).then(() =>
+                      dispatch(getBrands())
+                    )
+                })
+              );
             }}
           >
             <FontAwesomeIcon icon={faTrash} className="text-danger small" />

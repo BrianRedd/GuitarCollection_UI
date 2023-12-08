@@ -10,7 +10,6 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Col, Container, Row } from "reactstrap";
-import confirm from "reactstrap-confirm";
 
 import usePermissions from "../../hooks/usePermissions";
 import { updateGuitar, updateSelected } from "../../store/slices/guitarsSlice";
@@ -30,6 +29,7 @@ import SpecificationsTable from "./SpecificationsTable";
 import TodoList from "./TodoList";
 
 import useUpdatePlayLog from "../../hooks/useUpdatePlayLog";
+import { toggleToggle } from "../../store/slices/toggleSlice";
 import "./styles/guitardetail.scss";
 
 /**
@@ -159,26 +159,25 @@ const GuitarDetail = props => {
                           color="success"
                           onClick={async event => {
                             event.preventDefault();
-                            const result = await confirm({
-                              title: `Played ${guitar.name} today?`,
-                              message: `Did you play ${guitar.name} today?`,
-                              confirmColor: "success",
-                              cancelColor: "link text-danger",
-                              confirmText: "Yes!",
-                              cancelText: "No"
-                            });
-                            if (result) {
-                              const playLog = getPlayLog(
-                                guitar,
-                                "Featured Guitar"
-                              );
-                              const updateObject = {
-                                ...guitar,
-                                lastPlayed: moment().format(DATE_FORMAT),
-                                playLog
-                              };
-                              dispatch(updateGuitar(updateObject));
-                            }
+                            dispatch(
+                              toggleToggle({
+                                id: "confirmationModal",
+                                title: `Played ${guitar.name} today?`,
+                                text: `Did you play ${guitar.name} today?`,
+                                handleYes: () => {
+                                  const playLog = getPlayLog(
+                                    guitar,
+                                    "Featured Guitar"
+                                  );
+                                  const updateObject = {
+                                    ...guitar,
+                                    lastPlayed: moment().format(DATE_FORMAT),
+                                    playLog
+                                  };
+                                  dispatch(updateGuitar(updateObject));
+                                }
+                              })
+                            );
                           }}
                         >
                           Last Played:{" "}
