@@ -12,7 +12,6 @@ import {
 } from "prop-types";
 import {
   DEFAULT_ORDER_BY,
-  DEFAULT_PAGE_SIZE,
   FILTER_FEATURED_STATUS,
   FILTER_QUERY,
   FILTER_STATUS,
@@ -292,7 +291,7 @@ export const filtersState = {
       noOfStrings: [],
       soundScape: [],
       color: [],
-      [FILTER_STATUS]: [],
+      [FILTER_STATUS]: [STATUS_OPTION_PLAYABLE],
       [FILTER_FEATURED_STATUS]: [STATUS_OPTION_PLAYABLE],
       tuning: []
     }

@@ -34,7 +34,6 @@ import { formatDate } from "../../utils/utils";
 import {
   ALLOWED_DATE_FORMATS,
   CAPTION_OPTION_FULL_FRONT,
-  DEFAULT_PAGE_SIZE,
   GUITAR_PERM,
   OWNERSHIP_STATUS_OPTIONS
 } from "../data/constants";
@@ -84,7 +83,7 @@ const GuitarList = props => {
     };
   });
 
-  const { orderBy, order, page = 0, pageSize = DEFAULT_PAGE_SIZE } = pagination;
+  const { orderBy, order } = pagination;
 
   const headCells = [
     {

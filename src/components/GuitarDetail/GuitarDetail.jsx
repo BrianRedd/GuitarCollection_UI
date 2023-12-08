@@ -29,6 +29,7 @@ import PurchaseDetailTable from "./PurchaseDetailTable";
 import SpecificationsTable from "./SpecificationsTable";
 import TodoList from "./TodoList";
 
+import useUpdatePlayLog from "../../hooks/useUpdatePlayLog";
 import "./styles/guitardetail.scss";
 
 /**
@@ -53,6 +54,8 @@ const GuitarDetail = props => {
     guitars.find(guitar => guitar._id === hash || guitar.name === hash) ?? {};
 
   const guitarName = guitar.name ?? "";
+
+  const { getPlayLog } = useUpdatePlayLog();
 
   useEffect(() => {
     dispatch(updateSelected(guitarName));
@@ -165,16 +168,23 @@ const GuitarDetail = props => {
                               cancelText: "No"
                             });
                             if (result) {
-                              dispatch(
-                                updateGuitar({
-                                  ...guitar,
-                                  lastPlayed: moment().format(DATE_FORMAT)
-                                })
+                              const playLog = getPlayLog(
+                                guitar,
+                                "Featured Guitar"
                               );
+                              const updateObject = {
+                                ...guitar,
+                                lastPlayed: moment().format(DATE_FORMAT),
+                                playLog
+                              };
+                              dispatch(updateGuitar(updateObject));
                             }
                           }}
                         >
-                          Last Played: {guitar.lastPlayed || "N/A"}
+                          Last Played:{" "}
+                          {guitar.playLog[0]?.playDate ||
+                            `${guitar.lastPlayed}*` ||
+                            "N/A"}
                         </Button>
                       ) : (
                         <DetailItem title="Last Played" width="wide">

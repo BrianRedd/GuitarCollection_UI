@@ -12,6 +12,7 @@ import confirm from "reactstrap-confirm";
 
 import useFilters from "../../hooks/useFilters";
 import usePermissions from "../../hooks/usePermissions";
+import useUpdatePlayLog from "../../hooks/useUpdatePlayLog";
 import { updateGuitar, updateSelected } from "../../store/slices/guitarsSlice";
 import { serverLocation } from "../../utils/constants";
 import {
@@ -29,6 +30,8 @@ const Home = props => {
 
   const hash = (window.location.hash ?? "").slice(1);
 
+  console.log("hash", hash);
+
   const guitars = useSelector(state => state.guitarsState?.list) ?? [];
   const brands = useSelector(state => state.brandsState?.list) ?? [];
   const gallery = useSelector(state => state.galleryState?.list) ?? [];
@@ -45,14 +48,19 @@ const Home = props => {
     const availableGuitars = applyFilter(guitars, true);
 
     // TODO: take into account last played
-
     const rand = Math.floor(Math.random() * availableGuitars.length);
+
     const featuredGuitar = (guitars ?? []).find(
       guitar =>
         (!isNew && hash && (guitar._id === hash || guitar.name === hash)) ||
-        guitar._id === availableGuitars[rand]?._id
-    );
-    window.location.hash = `#${featuredGuitar?._id}`;
+        (isNew && guitar._id === availableGuitars[rand]._id)
+    ) ?? {
+      name: "Unknown"
+    };
+
+    console.log("featuredGuitar", featuredGuitar);
+
+    window.location.hash = `#${featuredGuitar?._id ?? ""}`;
     dispatch(updateSelected(featuredGuitar.name));
     const frontPicture = (gallery ?? []).find(image => {
       return (
@@ -75,11 +83,13 @@ const Home = props => {
 
   useEffect(() => {
     if (guitars.length && brands.length && gallery.length) {
-      const featuredGuitar = getFeaturedGuitar();
+      const featuredGuitar = getFeaturedGuitar(!Boolean(hash));
       setFeaturedGuitar(featuredGuitar);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guitars, brands, gallery]);
+
+  const { getPlayLog } = useUpdatePlayLog();
 
   return (
     <Container fluid="md" className="mt-4">
@@ -180,7 +190,10 @@ const Home = props => {
                     <b>No of Strings:</b> {featuredGuitar.noOfStrings}
                   </p>
                   <p>
-                    <b>Last Played:</b> {featuredGuitar.lastPlayed || "N/A"}
+                    <b>Last Played: </b>
+                    {featuredGuitar.playLog[0]?.playDate ||
+                      `${featuredGuitar.lastPlayed}*` ||
+                      "N/A"}
                   </p>
                   {hasEditGuitarPermissions && (
                     <p>
@@ -199,12 +212,16 @@ const Home = props => {
                             cancelText: "No"
                           });
                           if (result) {
-                            dispatch(
-                              updateGuitar({
-                                ...featuredGuitar,
-                                lastPlayed: moment().format(DATE_FORMAT)
-                              })
-                            ).then(() => {
+                            const playLog = getPlayLog(
+                              featuredGuitar,
+                              "Featured Guitar"
+                            );
+                            const updateObject = {
+                              ...featuredGuitar,
+                              lastPlayed: moment().format(DATE_FORMAT),
+                              playLog
+                            };
+                            dispatch(updateGuitar(updateObject)).then(() => {
                               selectAndGoToGuitar(featuredGuitar._id);
                             });
                           }

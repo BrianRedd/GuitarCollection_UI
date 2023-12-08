@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import _ from "lodash";
 import { enqueueSnackbar } from "notistack";
 import { useDispatch, useSelector } from "react-redux";
 
