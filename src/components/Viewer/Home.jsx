@@ -2,23 +2,23 @@
 
 import React, { useEffect, useState } from "react";
 
-import { Button, ButtonBase } from "@mui/material";
+import { Button, ButtonBase, IconButton } from "@mui/material";
 import _ from "lodash";
-import moment from "moment";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
 
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useFilters from "../../hooks/useFilters";
 import usePermissions from "../../hooks/usePermissions";
 import useUpdatePlayLog from "../../hooks/useUpdatePlayLog";
-import { updateGuitar, updateSelected } from "../../store/slices/guitarsSlice";
+import { updateSelected } from "../../store/slices/guitarsSlice";
 import { toggleToggle } from "../../store/slices/toggleSlice";
-import { serverLocation } from "../../utils/constants";
+import { SERVER_LOCATION } from "../../utils/constants";
 import {
   ADMIN_PERM,
   CAPTION_OPTION_FULL_FRONT,
-  DATE_FORMAT,
   GUITAR_PERM,
   STATUS_OPTION_PLAYABLE
 } from "../data/constants";
@@ -151,7 +151,7 @@ const Home = props => {
                   {featuredGuitar.brandObject?.logo ? (
                     <img
                       style={{ maxWidth: "75%" }}
-                      src={`${serverLocation}/brandLogos/${featuredGuitar.brandObject.logo}`}
+                      src={`${SERVER_LOCATION}/brandLogos/${featuredGuitar.brandObject.logo}`}
                       alt={featuredGuitar.brandObject?.name}
                     ></img>
                   ) : (
@@ -198,44 +198,27 @@ const Home = props => {
                     {featuredGuitar.playLog?.[0]?.playDate ||
                       `${featuredGuitar.lastPlayed || "N/A"}*`}
                   </p>
-                  {hasEditGuitarPermissions && (
-                    <p>
-                      <Button
-                        variant="contained"
-                        disableElevation
-                        color="success"
-                        onClick={async event => {
-                          event.preventDefault();
+                  <p>
+                    <Button
+                      variant="contained"
+                      disableElevation
+                      color="success"
+                      onClick={async event => {
+                        event.preventDefault();
 
-                          dispatch(
-                            toggleToggle({
-                              id: "confirmationModal",
-                              title: `Play ${featuredGuitar.name}?`,
-                              text: `Want to play ${featuredGuitar.name} today?`,
-                              handleYes: () => {
-                                const playLog = getPlayLog(
-                                  featuredGuitar,
-                                  "Featured Guitar"
-                                );
-                                const updateObject = {
-                                  ...featuredGuitar,
-                                  lastPlayed: moment().format(DATE_FORMAT),
-                                  playLog
-                                };
-                                dispatch(updateGuitar(updateObject)).then(
-                                  () => {
-                                    selectAndGoToGuitar(featuredGuitar._id);
-                                  }
-                                );
-                              }
-                            })
-                          );
-                        }}
-                      >
-                        Play Today?
-                      </Button>
-                    </p>
-                  )}
+                        dispatch(
+                          toggleToggle({
+                            id: "playLogModal",
+                            guitar: featuredGuitar,
+                            selectAndGoToGuitar,
+                            isReadOnly: !hasEditGuitarPermissions
+                          })
+                        );
+                      }}
+                    >
+                      Play Log
+                    </Button>
+                  </p>
                 </Col>
               </Row>
               <Row>
@@ -266,7 +249,7 @@ const Home = props => {
           >
             {hasFrontPicture ? (
               <img
-                src={`${serverLocation}/gallery/${featuredGuitar.frontPicture}`}
+                src={`${SERVER_LOCATION}/gallery/${featuredGuitar.frontPicture}`}
                 alt={featuredGuitar.name}
               ></img>
             ) : (

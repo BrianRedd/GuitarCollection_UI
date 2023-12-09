@@ -19,7 +19,7 @@ import {
 } from "reactstrap";
 
 import usePermissions from "../../hooks/usePermissions";
-import { serverLocation } from "../../utils/constants";
+import { SERVER_LOCATION } from "../../utils/constants";
 import {
   CAPTION_OPTIONS_DEFAULTS,
   CAPTION_OPTION_RECEIPT,
@@ -76,7 +76,7 @@ const ImageSelectorModal = props => {
                 image._id === selectedImage._id && "selected"
               ]).join(" ")}
               style={{
-                backgroundImage: `url(${serverLocation}/gallery/${image.image})`
+                backgroundImage: `url(${SERVER_LOCATION}/gallery/${image.image})`
               }}
               disabled={unavailableImages.includes(image._id)}
             />

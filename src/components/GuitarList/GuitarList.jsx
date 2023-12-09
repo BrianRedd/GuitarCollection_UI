@@ -1,6 +1,6 @@
 /** @module GuitarList */
 
-import React from "react";
+import React, { useMemo } from "react";
 
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,7 +19,7 @@ import {
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, Badge } from "reactstrap";
+import { Alert, Badge, Col, Row } from "reactstrap";
 
 import useFilters from "../../hooks/useFilters";
 import usePermissions from "../../hooks/usePermissions";
@@ -28,7 +28,7 @@ import {
   updatePagination
 } from "../../store/slices/guitarsSlice";
 import * as types from "../../types/types";
-import { serverLocation } from "../../utils/constants";
+import { SERVER_LOCATION } from "../../utils/constants";
 import { formatDate } from "../../utils/utils";
 import {
   ALLOWED_DATE_FORMATS,
@@ -56,6 +56,8 @@ const GuitarList = props => {
   } = useSelector(state => state.guitarsState) ?? {};
   const brands = useSelector(state => state.brandsState?.list) ?? [];
   const gallery = useSelector(state => state.galleryState?.list) ?? [];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const filters = useSelector(state => state.filtersState?.filters) ?? {};
 
   const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
 
@@ -84,6 +86,17 @@ const GuitarList = props => {
       isAcquiredDateValid
     };
   });
+
+  const numberOfAppliedFilters = useMemo(
+    () =>
+      Object.keys(filters ?? {}).filter(filter => {
+        return (
+          (Array.isArray(filters[filter]) && Boolean(filters[filter].length)) ||
+          (!Array.isArray(filters[filter]) && filters[filter])
+        );
+      }).length,
+    [filters]
+  );
 
   const { orderBy, order } = pagination;
 
@@ -156,7 +169,17 @@ const GuitarList = props => {
 
   return (
     <Box sx={{ width: "100%" }} className="p-4">
-      <h1>Guitar List</h1>
+      <Row>
+        <Col>
+          <h1>Guitar List</h1>
+        </Col>
+        <Col className="d-flex justify-content-end align-items-center">
+          <h5 onClick={() => dispatch(toggleToggle({ id: "filterModal" }))}>
+            ({guitars.length} displayed; {numberOfAppliedFilters} filters
+            applied)
+          </h5>
+        </Col>
+      </Row>
       {guitars.length ? (
         <TableContainer>
           <Table aria-labelledby="tableTitle" size="small">
@@ -212,7 +235,7 @@ const GuitarList = props => {
                       {!_.isEmpty(frontPicture) && (
                         <React.Fragment>
                           <img
-                            src={`${serverLocation}/gallery/${frontPicture.image}`}
+                            src={`${SERVER_LOCATION}/gallery/${frontPicture.image}`}
                             height="60"
                             alt={row.name}
                           />
@@ -241,7 +264,7 @@ const GuitarList = props => {
                     >
                       {brand.logo ? (
                         <img
-                          src={`${serverLocation}/brandLogos/${brand.logo}`}
+                          src={`${SERVER_LOCATION}/brandLogos/${brand.logo}`}
                           height="45"
                           alt={brand.name}
                         ></img>
@@ -299,7 +322,7 @@ const GuitarList = props => {
                           />
                         </IconButton>
                         <IconButton
-                          onClick={() => 
+                          onClick={() =>
                             dispatch(
                               toggleToggle({
                                 id: "confirmationModal",

@@ -53,6 +53,7 @@ export const guitar = {
     story: string,
     status: string,
     tuning: string,
+    sibling: string,
     lastPlayed: oneOfType([string, objectOf(any)]),
     specifications: arrayOf(
       shape({
@@ -109,6 +110,7 @@ export const guitar = {
     status: "",
     tuning: "",
     lastPlayed: "",
+    sibling: "",
     specifications: [],
     pictures: [],
     maintenance: [],

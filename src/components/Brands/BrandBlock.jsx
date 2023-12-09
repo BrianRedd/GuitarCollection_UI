@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import usePermissions from "../../hooks/usePermissions";
 import { deleteBrand, getBrands } from "../../store/slices/brandsSlice";
-import { serverLocation } from "../../utils/constants";
+import { SERVER_LOCATION } from "../../utils/constants";
 import { BRAND_PERM } from "../data/constants";
 
 import { writeFilters } from "../../store/slices/filtersSlice";
@@ -22,7 +22,7 @@ import "./styles/brands.scss";
  * @returns {React.ReactNode}
  */
 const BrandBlock = props => {
-  const { brand, selectBrand, scrollTo, setIsEditOpen } = props;
+  const { brand, scrollTo } = props;
   const dispatch = useDispatch();
 
   const filters = useSelector(state => state.filtersState.filters) ?? {};
@@ -47,7 +47,7 @@ const BrandBlock = props => {
       {brand.logo && (
         <img
           className="brand-logo"
-          src={`${serverLocation}/brandLogos/${brand.logo}`}
+          src={`${SERVER_LOCATION}/brandLogos/${brand.logo}`}
           alt={brand.name}
         ></img>
       )}
@@ -56,11 +56,19 @@ const BrandBlock = props => {
         <div className="brand-buttons-container">
           <IconButton
             onClick={() => {
-              selectBrand(brand);
-              setIsEditOpen(true);
+              dispatch(
+                toggleToggle({
+                  id: "addEditBrandModal",
+                  selectedBrand: brand,
+                  isEdit: true
+                })
+              );
             }}
           >
-            <FontAwesomeIcon icon={faPenToSquare} className="text-success small" />
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              className="text-success small"
+            />
           </IconButton>
           <IconButton
             onClick={() => {
@@ -87,16 +95,12 @@ const BrandBlock = props => {
 
 BrandBlock.propTypes = {
   brand: PropTypes.objectOf(PropTypes.any),
-  selectBrand: PropTypes.func,
-  scrollTo: PropTypes.func,
-  setIsEditOpen: PropTypes.func
+  scrollTo: PropTypes.func
 };
 
 BrandBlock.defaultTypes = {
   brand: {},
-  selectBrand: () => {},
-  scrollTo: () => {},
-  setIsEditOpen: () => {}
+  scrollTo: () => {}
 };
 
 export default BrandBlock;

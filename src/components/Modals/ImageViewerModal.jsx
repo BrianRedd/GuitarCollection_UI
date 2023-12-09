@@ -8,7 +8,7 @@ import { Button } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
-import { serverLocation } from "../../utils/constants";
+import { SERVER_LOCATION } from "../../utils/constants";
 
 /**
  * @function ImageViewerModal
@@ -22,7 +22,7 @@ const ImageViewerModal = props => {
       <ModalBody>
         <img
           className="w-100"
-          src={`${serverLocation}/gallery/${image.image}`}
+          src={`${SERVER_LOCATION}/gallery/${image.image}`}
           alt={image.caption ?? "Image"}
         ></img>
       </ModalBody>

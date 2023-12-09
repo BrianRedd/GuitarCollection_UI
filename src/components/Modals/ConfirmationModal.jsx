@@ -21,14 +21,17 @@ import { toggleToggle } from "../../store/slices/toggleSlice";
 const ConfirmationModal = () => {
   const dispatch = useDispatch();
 
-  const { isOpen, title, text, handleNo, handleYes } =
+  const { isOpen, title, text, handleNo, handleYes, children } =
     useModalContext("confirmationModal");
   const toggle = () => dispatch(toggleToggle({ id: "confirmationModal" }));
 
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
       <ModalHeader toggle={toggle}>{title ?? "Confirm"}</ModalHeader>
-      <ModalBody>{text ?? "Are you sure?"}</ModalBody>
+      <ModalBody>
+        <span>{text ?? "Are you sure?"}</span>
+        {children ? <p>{children}</p> : null}
+      </ModalBody>
       <ModalFooter>
         <Button
           className="me-2"

@@ -8,6 +8,7 @@ import {
   INSTRUMENT_OPTIONS_DEFAULTS,
   SOUNDSCAPE_OPTIONS_DEFAULTS,
   STATUS_OPTIONS_DEFAULTS,
+  STATUS_OPTION_PLAYABLE,
   TUNING_OPTIONS_DEFAULTS
 } from "../components/data/constants";
 
@@ -72,6 +73,15 @@ const useOptions = () => {
   const noOfStringOptions = _.uniq(
     _.compact(_.orderBy(guitars.map(guitar => parseFloat(guitar.noOfStrings))))
   ).map(option => option.toString());
+  const siblingOptions = _.orderBy(
+    guitars
+      .filter(guitar => guitar.status === STATUS_OPTION_PLAYABLE)
+      .map(guitar => ({
+        value: guitar._id,
+        label: guitar.name
+      })),
+    "label"
+  );
 
   return {
     brandOptions,
@@ -82,7 +92,8 @@ const useOptions = () => {
     statusOptions,
     tuningOptions,
     yearOptions,
-    noOfStringOptions
+    noOfStringOptions,
+    siblingOptions
   };
 };
 

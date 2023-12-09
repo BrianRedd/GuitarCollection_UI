@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 /** @module NavBar */
 
 import React, { useEffect, useMemo, useState } from "react";
@@ -8,8 +7,8 @@ import {
   faGuitar,
   faHome,
   faImages,
-  faIndustry,
   faList,
+  faRegistered,
   faUser,
   faUserGear
 } from "@fortawesome/free-solid-svg-icons";
@@ -33,7 +32,6 @@ import { clearMessage as clearBrandMessage } from "../../store/slices/brandsSlic
 import { clearMessage as clearGalleryMessage } from "../../store/slices/gallerySlice";
 import { clearMessage as clearGuitarMessage } from "../../store/slices/guitarsSlice";
 import { toggleToggle } from "../../store/slices/toggleSlice";
-import * as types from "../../types/types";
 import { getUserName } from "../../utils/utils";
 import { GUITAR_PERM } from "../data/constants";
 
@@ -61,10 +59,12 @@ const NavBar = props => {
 
   const numberOfAppliedFilters = useMemo(
     () =>
-      Object.keys(filters ?? {}).filter(
-        filter =>
-          filters[filter] !== types.filtersState.defaults.filters[filter]
-      ).length,
+      Object.keys(filters ?? {}).filter(filter => {
+        return (
+          (Array.isArray(filters[filter]) && Boolean(filters[filter].length)) ||
+          (!Array.isArray(filters[filter]) && filters[filter])
+        );
+      }).length,
     [filters]
   );
 
@@ -130,7 +130,7 @@ const NavBar = props => {
               scrollTo(3);
             }}
           >
-            <FontAwesomeIcon icon={faIndustry} /> Brands
+            <FontAwesomeIcon icon={faRegistered} /> Brands
           </NavItem>
           {selectedGuitar && (
             <NavItem

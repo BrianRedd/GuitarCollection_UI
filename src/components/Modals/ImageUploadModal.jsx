@@ -23,7 +23,7 @@ import {
   Row
 } from "reactstrap";
 
-import { serverLocation } from "../../utils/constants";
+import { SERVER_LOCATION } from "../../utils/constants";
 import { CAPTION_OPTIONS_DEFAULTS } from "../data/constants";
 
 import InputFreeFormField from "../common/InputFreeFormField";
@@ -74,7 +74,7 @@ const ImageUploadModal = props => {
           <Row>
             <Col>
               <img
-                src={`${serverLocation}/gallery/${selectedImage.image}`}
+                src={`${SERVER_LOCATION}/gallery/${selectedImage.image}`}
                 width="100"
                 className="img-thumbnail mt-1"
                 alt={selectedImage.alt}
@@ -113,13 +113,25 @@ const ImageUploadModal = props => {
       <ModalFooter>
         <Button
           onClick={() => {
+            handleCancel();
+            toggle();
+          }}
+          variant="contained"
+          disableElevation
+          color="error"
+        >
+          <FontAwesomeIcon icon={faCircleXmark} className="me-3" />
+          Cancel
+        </Button>
+        <Button
+          className="ms-2"
+          onClick={() => {
             handleSubmit();
             toggle();
           }}
           variant="contained"
           disableElevation
-          color="primary"
-          className="font-weight-bold"
+          color="success"
           disabled={!formProps.values.image}
         >
           <FontAwesomeIcon
@@ -127,18 +139,6 @@ const ImageUploadModal = props => {
             className="me-3"
           />
           {isEdit ? `Save Image` : "Upload New Image"}
-        </Button>
-        <Button
-          className="ms-2 bg-white"
-          onClick={() => {
-            handleCancel();
-            toggle();
-          }}
-          variant="outlined"
-          color="secondary"
-        >
-          <FontAwesomeIcon icon={faCircleXmark} className="me-3" />
-          Cancel
         </Button>
       </ModalFooter>
     </Modal>

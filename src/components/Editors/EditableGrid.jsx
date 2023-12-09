@@ -22,18 +22,18 @@ import { randomId } from "@mui/x-data-grid-generator";
 import { useFormikContext } from "formik";
 import PropTypes from "prop-types";
 
-function EditToolbar(props) {
+const EditToolbar = props => {
   const { setRows, setRowModesModel, title, fieldDefaults } = props;
 
   const createNewRow = () => {
     const id = randomId();
     setRows(oldRows => [
-      ...oldRows,
       {
         id,
         ...fieldDefaults,
         isNew: true
-      }
+      },
+      ...oldRows
     ]);
     setRowModesModel(oldModel => ({
       ...oldModel,
@@ -48,6 +48,8 @@ function EditToolbar(props) {
     <GridToolbarContainer className="d-flex justify-content-between p-2">
       <h5>{title}</h5>
       <Button
+        variant="contained"
+        disableElevation
         color="primary"
         startIcon={<FontAwesomeIcon icon={faPlus} />}
         onClick={createNewRow}
@@ -56,14 +58,21 @@ function EditToolbar(props) {
       </Button>
     </GridToolbarContainer>
   );
-}
+};
 
 /**
  * @function EditableGrid
  * @returns {React.ReactNode}
  */
 const EditableGrid = props => {
-  const { writeArray, listName, gridColumns, title, fieldDefaults } = props;
+  const {
+    writeArray,
+    listName,
+    gridColumns,
+    title,
+    fieldDefaults,
+    isReadOnly
+  } = props;
   const formProps = useFormikContext();
 
   const [rows, setRows] = useState(formProps?.values?.[listName] ?? []);
@@ -152,20 +161,22 @@ const EditableGrid = props => {
           ];
         }
 
-        return [
-          <GridActionsCellItem
-            icon={<FontAwesomeIcon icon={faPenToSquare} />}
-            label="Edit"
-            onClick={handleEditClick(id)}
-            color="success"
-          />,
-          <GridActionsCellItem
-            icon={<FontAwesomeIcon icon={faTrash} />}
-            label="Delete"
-            onClick={handleDeleteClick(id)}
-            color="warning"
-          />
-        ];
+        return isReadOnly
+          ? []
+          : [
+              <GridActionsCellItem
+                icon={<FontAwesomeIcon icon={faPenToSquare} />}
+                label="Edit"
+                onClick={handleEditClick(id)}
+                color="success"
+              />,
+              <GridActionsCellItem
+                icon={<FontAwesomeIcon icon={faTrash} />}
+                label="Delete"
+                onClick={handleDeleteClick(id)}
+                color="warning"
+              />
+            ];
       }
     }
   ];
@@ -193,15 +204,19 @@ const EditableGrid = props => {
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
-        slots={{
-          toolbar: toolBarProps => (
-            <EditToolbar
-              {...toolBarProps}
-              title={title}
-              fieldDefaults={fieldDefaults}
-            />
-          )
-        }}
+        slots={
+          isReadOnly
+            ? {}
+            : {
+                toolbar: toolBarProps => (
+                  <EditToolbar
+                    {...toolBarProps}
+                    title={title}
+                    fieldDefaults={fieldDefaults}
+                  />
+                )
+              }
+        }
         slotProps={{
           toolbar: { setRows, setRowModesModel }
         }}
@@ -215,7 +230,8 @@ EditableGrid.propTypes = {
   listName: PropTypes.string,
   gridColumns: PropTypes.arrayOf(PropTypes.any),
   title: PropTypes.string,
-  fieldDefaults: PropTypes.objectOf(PropTypes.any)
+  fieldDefaults: PropTypes.objectOf(PropTypes.any),
+  isReadOnly: PropTypes.bool
 };
 
 EditableGrid.defaultProps = {
@@ -223,7 +239,8 @@ EditableGrid.defaultProps = {
   listName: "",
   gridColumns: [],
   title: "",
-  fieldDefaults: {}
+  fieldDefaults: {},
+  isReadOnly: false
 };
 
 export default EditableGrid;

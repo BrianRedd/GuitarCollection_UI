@@ -1,3 +1,5 @@
+/** @module GuitarForm */
+
 import React, { useState } from "react";
 
 import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +12,7 @@ import { Col, Form, FormGroup, Row } from "reactstrap";
 
 import useOptions from "../../hooks/useOptions";
 import usePermissions from "../../hooks/usePermissions";
-import { serverLocation } from "../../utils/constants";
+import { SERVER_LOCATION } from "../../utils/constants";
 import { getDateFromOvationSN } from "../../utils/dateFromSN";
 import { getColWidth } from "../../utils/utils";
 import {
@@ -50,7 +52,8 @@ const GuitarForm = props => {
     soundScapeOptions,
     colorOptions,
     statusOptions,
-    tuningOptions
+    tuningOptions,
+    siblingOptions
   } = useOptions();
 
   const writeArray = (arrayField, rows) => {
@@ -71,7 +74,7 @@ const GuitarForm = props => {
           {thumbnail && (
             <Col {...getColWidth()} className="brand-logo">
               <img
-                src={`${serverLocation}/gallery/${thumbnail.image}`}
+                src={`${SERVER_LOCATION}/gallery/${thumbnail.image}`}
                 alt={initialValues.name}
               ></img>
             </Col>
@@ -172,6 +175,11 @@ const GuitarForm = props => {
                 label="Notes on Appearance"
                 width="wide"
               />
+              <InputSelectField
+                name="sibling"
+                options={siblingOptions}
+                width="wide"
+              />
             </Row>
           </Col>
         </Row>
@@ -214,7 +222,9 @@ const GuitarForm = props => {
             writeArray={writeArray}
             listName="purchaseHistory"
             fieldDefaults={{
-              ownershipStatus: "",
+              ownershipStatus: !formProps?.values?.purchaseHistory.length
+                ? "PUR"
+                : "",
               where: "",
               when: "",
               who: "",

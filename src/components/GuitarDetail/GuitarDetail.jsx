@@ -2,22 +2,20 @@
 
 import React, { useEffect } from "react";
 
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faGlobe, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, IconButton } from "@mui/material";
 import _ from "lodash";
-import moment from "moment";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Col, Container, Row } from "reactstrap";
 
 import usePermissions from "../../hooks/usePermissions";
-import { updateGuitar, updateSelected } from "../../store/slices/guitarsSlice";
-import { serverLocation } from "../../utils/constants";
+import { updateSelected } from "../../store/slices/guitarsSlice";
+import { SERVER_LOCATION } from "../../utils/constants";
 import { getColWidth } from "../../utils/utils";
 import {
   CAPTION_OPTION_FULL_FRONT,
-  DATE_FORMAT,
   GUITAR_PERM,
   PURCHASE_PERM
 } from "../data/constants";
@@ -28,7 +26,6 @@ import PurchaseDetailTable from "./PurchaseDetailTable";
 import SpecificationsTable from "./SpecificationsTable";
 import TodoList from "./TodoList";
 
-import useUpdatePlayLog from "../../hooks/useUpdatePlayLog";
 import { toggleToggle } from "../../store/slices/toggleSlice";
 import "./styles/guitardetail.scss";
 
@@ -54,8 +51,6 @@ const GuitarDetail = props => {
     guitars.find(guitar => guitar._id === hash || guitar.name === hash) ?? {};
 
   const guitarName = guitar.name ?? "";
-
-  const { getPlayLog } = useUpdatePlayLog();
 
   useEffect(() => {
     dispatch(updateSelected(guitarName));
@@ -119,7 +114,10 @@ const GuitarDetail = props => {
                   editGuitar(guitar._id);
                 }}
               >
-                <FontAwesomeIcon icon={faPenToSquare} className="text-primary" />
+                <FontAwesomeIcon
+                  icon={faPenToSquare}
+                  className="text-primary"
+                />
               </IconButton>
             )}
           </div>
@@ -127,7 +125,7 @@ const GuitarDetail = props => {
             {thumbnail && (
               <Col {...getColWidth()} className="brand-logo">
                 <img
-                  src={`${serverLocation}/gallery/${thumbnail.image}`}
+                  src={`${SERVER_LOCATION}/gallery/${thumbnail.image}`}
                   alt={guitar.name}
                 ></img>
               </Col>
@@ -137,7 +135,7 @@ const GuitarDetail = props => {
                 <Col {...getColWidth()} className="brand-logo">
                   {brand.logo && (
                     <img
-                      src={`${serverLocation}/brandLogos/${brand.logo}`}
+                      src={`${SERVER_LOCATION}/brandLogos/${brand.logo}`}
                       alt={brand.name}
                     ></img>
                   )}
@@ -152,50 +150,50 @@ const GuitarDetail = props => {
                     </DetailItem>
 
                     <Col {...getColWidth("wide")}>
-                      {hasEditGuitarPermissions ? (
-                        <Button
-                          variant="contained"
-                          disableElevation
-                          color="success"
-                          onClick={async event => {
-                            event.preventDefault();
-                            dispatch(
-                              toggleToggle({
-                                id: "confirmationModal",
-                                title: `Played ${guitar.name} today?`,
-                                text: `Did you play ${guitar.name} today?`,
-                                handleYes: () => {
-                                  const playLog = getPlayLog(
-                                    guitar,
-                                    "Featured Guitar"
-                                  );
-                                  const updateObject = {
-                                    ...guitar,
-                                    lastPlayed: moment().format(DATE_FORMAT),
-                                    playLog
-                                  };
-                                  dispatch(updateGuitar(updateObject));
-                                }
-                              })
-                            );
-                          }}
-                        >
-                          Last Played:{" "}
-                          {guitar.playLog?.[0]?.playDate ||
-                            `${guitar.lastPlayed || "N/A"}*`}
-                        </Button>
-                      ) : (
-                        <DetailItem title="Last Played" width="wide">
-                          {guitar.playLog?.[0]?.playDate ||
-                            `${guitar.lastPlayed || "N/A"}*`}
-                        </DetailItem>
-                      )}
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        color="success"
+                        onClick={async event => {
+                          event.preventDefault();
+
+                          dispatch(
+                            toggleToggle({
+                              id: "playLogModal",
+                              guitar,
+                              isReadOnly: !hasEditGuitarPermissions
+                            })
+                          );
+                        }}
+                      >
+                        Last Played:{" "}
+                        {guitar.playLog?.[0]?.playDate ||
+                          `${guitar.lastPlayed || "N/A"}*`}
+                      </Button>
                     </Col>
                   </Row>
                   <Row>
-                    <DetailItem title="Model" width="wide">
-                      {guitar.model}
-                    </DetailItem>
+                    <Col className="d-flex justify-content-between align-items-center">
+                      <span>
+                        <b>Model:</b> {guitar.model}
+                      </span>
+                      {hasEditGuitarPermissions ? (
+                        <IconButton
+                          onClick={() => {
+                            window.open(
+                              `https://www.google.com/search?q=${brand?.name}+${guitar.model}`
+                            );
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={faGlobe}
+                            className="text-info small"
+                          />
+                        </IconButton>
+                      ) : (
+                        <span />
+                      )}
+                    </Col>
                     <DetailItem title="S/N">{guitar.serialNo}</DetailItem>
                     <DetailItem title="Year">{guitar.year}</DetailItem>
                     <DetailItem title="Country of Origin" width="wide">
@@ -216,6 +214,17 @@ const GuitarDetail = props => {
                     <DetailItem title="Notes on Appearance" width="wide">
                       {guitar.appearanceNotes}
                     </DetailItem>
+                    {guitar.sibling && (
+                      <DetailItem title="Sibling" width="wide">
+                        <span
+                          className="navigation-span"
+                          onClick={() => selectAndGoToGuitar(guitar.sibling)}
+                        >
+                          {guitars?.find(g => g._id === guitar.sibling)?.name ??
+                            "Unknown"}
+                        </span>
+                      </DetailItem>
+                    )}
                   </Row>
                 </Col>
               </Row>

@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { faCircleXmark, faGuitar } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark, faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { useFormikContext } from "formik";
@@ -25,30 +25,30 @@ const GuitarFormButtons = props => {
   const formProps = useFormikContext();
   return (
     <div className={`d-flex justify-content-end save-buttons ${className}`}>
-      {hasEditGuitarPermissions && (
-        <Button
-          onClick={formProps.handleSubmit}
-          variant="contained"
-          disableElevation
-          color="primary"
-          className="font-weight-bold"
-        >
-          <FontAwesomeIcon icon={faGuitar} className="me-3" />
-          {submitButtonText}
-        </Button>
-      )}
       <Button
-        className="ms-2 bg-white"
         onClick={() => {
           formProps.resetForm(initialValues);
           toggle();
         }}
-        variant="outlined"
-        color="secondary"
+        variant="contained"
+        disableElevation
+        color="error"
       >
         <FontAwesomeIcon icon={faCircleXmark} className="me-3" />
         Cancel
       </Button>
+      {hasEditGuitarPermissions && (
+        <Button
+          className="ms-2"
+          onClick={formProps.handleSubmit}
+          variant="contained"
+          disableElevation
+          color="success"
+        >
+          <FontAwesomeIcon icon={faSave} className="me-3" />
+          {submitButtonText}
+        </Button>
+      )}
     </div>
   );
 };

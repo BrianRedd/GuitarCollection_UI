@@ -2,7 +2,11 @@
 
 import React, { useState } from "react";
 
-import { faCircleXmark, faSave } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRotateLeft,
+  faCircleCheck,
+  faCircleXmark
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { Formik } from "formik";
@@ -55,6 +59,12 @@ const FiltersModal = () => {
   } = useOptions();
 
   const ovationBrands = ["ADO", "APO", "HGO", "OV"];
+
+  const clearedFilters = {
+    ...types.filtersState.defaults.filters,
+    [FILTER_STATUS]: [],
+    [FILTER_FEATURED_STATUS]: []
+  };
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} size="lg">
@@ -237,22 +247,35 @@ const FiltersModal = () => {
                 <Button
                   className="me-2"
                   onClick={() => {
-                    formProps.setValues(types.filtersState.defaults.filters);
+                    formProps.setValues(clearedFilters);
                   }}
-                  variant="outlined"
-                  color="secondary"
+                  variant="contained"
+                  disableElevation
+                  color="error"
                 >
                   <FontAwesomeIcon icon={faCircleXmark} className="me-3" />
                   Clear
                 </Button>
                 <Button
+                  className="me-2"
+                  onClick={() => {
+                    formProps.setValues(types.filtersState.defaults.filters);
+                  }}
+                  variant="contained"
+                  color="primary"
+                  disableElevation
+                >
+                  <FontAwesomeIcon icon={faArrowRotateLeft} className="me-3" />
+                  Reset
+                </Button>
+                <Button
                   onClick={formProps.handleSubmit}
                   variant="contained"
                   disableElevation
-                  color="primary"
+                  color="success"
                   className="font-weight-bold"
                 >
-                  <FontAwesomeIcon icon={faSave} className="me-3" />
+                  <FontAwesomeIcon icon={faCircleCheck} className="me-3" />
                   Apply Filter
                 </Button>
               </ModalFooter>

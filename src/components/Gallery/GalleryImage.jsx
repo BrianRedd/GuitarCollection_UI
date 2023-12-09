@@ -17,7 +17,7 @@ import {
   deleteGalleryImage,
   getGallery
 } from "../../store/slices/gallerySlice";
-import { serverLocation } from "../../utils/constants";
+import { SERVER_LOCATION } from "../../utils/constants";
 import { GUITAR_PERM } from "../data/constants";
 
 import ImageViewerModal from "../Modals/ImageViewerModal";
@@ -48,7 +48,7 @@ const GalleryImage = props => {
       <div
         className="border gallery-image me-2 p-0 mb-2"
         style={{
-          backgroundImage: `url(${serverLocation}/gallery/${image.image})`
+          backgroundImage: `url(${SERVER_LOCATION}/gallery/${image.image})`
         }}
       >
         {image.caption && (
