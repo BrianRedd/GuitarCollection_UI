@@ -1,63 +1,50 @@
 /** @module useUpdatePlayLog */
 
+import { randomId } from "@mui/x-data-grid-generator";
 import _ from "lodash";
-import moment from "moment";
 import { useSelector } from "react-redux";
-
-import { DATE_FORMAT } from "../components/data/constants";
 
 const useUpdatePlayLog = () => {
   const username =
     useSelector(state => state.userState?.user?.username) ?? "Unknown User";
 
-  const getPlayLog = (guitarObject, notes) => {
+  const getPlayLog = guitarObject => {
     const lastPlayed = guitarObject?.lastPlayed;
 
     const originalPlayLog = _.orderBy(
-      guitarObject?.playLog ?? [],
-      ["playDate"],
-      ["desc"]
+      (guitarObject?.playLog ?? [])?.map(log => ({
+        ...log,
+        id: log.id ?? log._id
+      })),
+      "playDate",
+      "desc"
     );
-
-    const today = moment().format(DATE_FORMAT);
-
-    if (
-      originalPlayLog?.some(
-        log => log.playDate === today && log.playedBy === username
-      )
-    ) {
-      return guitarObject.playLog;
-    }
-
-    const newEntry = {
-      playDate: today,
-      playedBy: username,
-      notes
-    };
 
     if (lastPlayed && !originalPlayLog?.length) {
       return [
-        newEntry,
         {
           playDate: lastPlayed,
-          playedBy: username
+          playedBy: username,
+          notes: "Legacy 'Last Played'", 
+          id: randomId()
         }
       ];
     }
     if (originalPlayLog?.length && lastPlayed) {
       if (originalPlayLog?.some(log => log.playDate === lastPlayed)) {
-        return [newEntry, ...guitarObject?.playLog];
+        return originalPlayLog;
       }
       return [
-        newEntry,
         {
           playDate: lastPlayed,
-          playedBy: username
+          playedBy: username,
+          notes: "Legacy 'Last Played'", 
+          id: randomId()
         },
-        ...guitarObject?.playLog
+        ...originalPlayLog
       ];
     }
-    return _.orderBy([newEntry, ...originalPlayLog], ["playDate"], ["desc"]);
+    return originalPlayLog;
   };
 
   return { getPlayLog };

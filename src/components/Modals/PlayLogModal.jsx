@@ -15,11 +15,12 @@ import { Formik } from "formik";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 import useModalContext from "../../hooks/useModalContext";
+import useUpdatePlayLog from "../../hooks/useUpdatePlayLog";
+import { updateGuitar } from "../../store/slices/guitarsSlice";
 import { toggleToggle } from "../../store/slices/toggleSlice";
 import { DATE_FORMAT } from "../data/constants";
+import EditableGrid from "../common/EditableGrid";
 
-import { updateGuitar } from "../../store/slices/guitarsSlice";
-import EditableGrid from "../Editors/EditableGrid";
 
 /**
  * @function PlayLogModal
@@ -34,16 +35,15 @@ const PlayLogModal = () => {
     useModalContext("playLogModal");
   const toggle = () => dispatch(toggleToggle({ id: "playLogModal" }));
 
+  const { getPlayLog } = useUpdatePlayLog();
+
   return (
     <Modal isOpen={isOpen} toggle={toggle} size="lg">
-      <ModalHeader toggle={toggle}>Play Log</ModalHeader>
+      <ModalHeader toggle={toggle}>{guitar?.name ?? ""} Play Log</ModalHeader>
       <Formik
         initialValues={{
           ...guitar,
-          playLog: (guitar?.playLog ?? [])?.map(log => ({
-            ...log,
-            id: log.id ?? log._id
-          }))
+          playLog: getPlayLog(guitar)
         }}
         onSubmit={values => {
           dispatch(updateGuitar(values)).then(() => {

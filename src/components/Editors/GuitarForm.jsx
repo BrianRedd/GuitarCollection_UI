@@ -23,10 +23,10 @@ import {
   TODO_OPTIONS_DEFAULTS
 } from "../data/constants";
 
+import EditableGrid from "../common/EditableGrid";
 import InputFreeFormField from "../common/InputFreeFormField";
 import InputSelectField from "../common/InputSelectField";
 import InputTextField from "../common/InputTextField";
-import EditableGrid from "./EditableGrid";
 
 /**
  * @function GuitarForm
