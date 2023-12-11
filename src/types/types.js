@@ -54,7 +54,6 @@ export const guitar = {
     status: string,
     tuning: string,
     sibling: string,
-    lastPlayed: oneOfType([string, objectOf(any)]),
     specifications: arrayOf(
       shape({
         specType: string,
@@ -109,7 +108,6 @@ export const guitar = {
     story: "",
     status: "",
     tuning: "",
-    lastPlayed: "",
     sibling: "",
     specifications: [],
     pictures: [],
@@ -276,8 +274,6 @@ export const filtersState = {
       brandId: arrayOf(string),
       from_year: string,
       to_year: string,
-      from_lastPlayed: string,
-      to_lastPlayed: string,
       countyOfOrigin: arrayOf(string),
       instrumentType: arrayOf(string),
       noOfStrings: arrayOf(string),
@@ -294,8 +290,6 @@ export const filtersState = {
       brandId: [],
       from_year: "",
       to_year: "",
-      from_lastPlayed: "",
-      to_lastPlayed: "",
       countyOfOrigin: [],
       instrumentType: [],
       noOfStrings: [],

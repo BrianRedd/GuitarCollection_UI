@@ -19,7 +19,8 @@ const InputSelectField = props => {
     valueProp = "value",
     labelProp = "label",
     required,
-    otherProps = {}
+    otherProps = {},
+    compact
   } = props;
 
   const formProps = useFormikContext();
@@ -44,7 +45,12 @@ const InputSelectField = props => {
   }
 
   return (
-    <Col xs={xs} md={md} lg={lg} className={`mb-3 ${hidden ? "d-none" : ""}`}>
+    <Col
+      xs={xs}
+      md={md}
+      lg={lg}
+      className={_.compact([!compact && "mb-3", hidden && "d-none"]).join(" ")}
+    >
       <TextField
         {...otherProps}
         error={
@@ -89,6 +95,7 @@ const InputSelectField = props => {
 };
 
 InputSelectField.propTypes = {
+  compact: PropTypes.bool,
   hidden: PropTypes.bool,
   label: PropTypes.string,
   name: PropTypes.string,
@@ -102,6 +109,7 @@ InputSelectField.propTypes = {
 };
 
 InputSelectField.defaultProps = {
+  compact: false,
   hidden: false,
   label: undefined,
   name: "",

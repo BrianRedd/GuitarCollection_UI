@@ -12,7 +12,7 @@ import {
   TUNING_OPTIONS_DEFAULTS
 } from "../components/data/constants";
 
-const useOptions = () => {
+const useOptions = ({ guitarId }) => {
   const guitars = useSelector(state => state.guitarsState?.list) ?? [];
   const brands = useSelector(state => state.brandsState.list) ?? [];
 
@@ -73,12 +73,14 @@ const useOptions = () => {
   const noOfStringOptions = _.uniq(
     _.compact(_.orderBy(guitars.map(guitar => parseFloat(guitar.noOfStrings))))
   ).map(option => option.toString());
-  const siblingOptions = _.orderBy(
+  const otherGuitarOptions = _.orderBy(
     guitars
-      .filter(guitar => guitar.status === STATUS_OPTION_PLAYABLE)
+      .filter(guitar => !guitarId || guitar?._id !== guitarId)
       .map(guitar => ({
         value: guitar._id,
-        label: guitar.name
+        label: `${guitar.name}${
+          guitar.status === STATUS_OPTION_PLAYABLE ? "" : "*"
+        }`
       })),
     "label"
   );
@@ -93,7 +95,7 @@ const useOptions = () => {
     tuningOptions,
     yearOptions,
     noOfStringOptions,
-    siblingOptions
+    otherGuitarOptions
   };
 };
 

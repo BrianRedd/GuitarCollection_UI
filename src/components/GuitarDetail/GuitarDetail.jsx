@@ -166,9 +166,7 @@ const GuitarDetail = props => {
                           );
                         }}
                       >
-                        Last Played:{" "}
-                        {guitar.playLog?.[0]?.playDate ||
-                          `${guitar.lastPlayed || "N/A"}*`}
+                        Last Played: {guitar.playLog?.[0]?.playDate || "N/A"}
                       </Button>
                     </Col>
                   </Row>

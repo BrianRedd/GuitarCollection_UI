@@ -1,12 +1,12 @@
 /** @module EditableGrid */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   faCircleXmark,
-  faFloppyDisk,
   faPenToSquare,
   faPlus,
+  faSave,
   faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,7 +23,8 @@ import { useFormikContext } from "formik";
 import PropTypes from "prop-types";
 
 const EditToolbar = props => {
-  const { setRows, setRowModesModel, title, fieldDefaults } = props;
+  const { setRows, setRowModesModel, title, fieldDefaults, CustomButton } =
+    props;
 
   const createNewRow = () => {
     const id = randomId();
@@ -47,15 +48,19 @@ const EditToolbar = props => {
   return (
     <GridToolbarContainer className="d-flex justify-content-between p-2">
       <h5>{title}</h5>
-      <Button
-        variant="contained"
-        disableElevation
-        color="primary"
-        startIcon={<FontAwesomeIcon icon={faPlus} />}
-        onClick={createNewRow}
-      >
-        Add Entry
-      </Button>
+      <div className="d-inline-flex">
+        {CustomButton}
+        <Button
+          className="ms-3"
+          variant="contained"
+          disableElevation
+          color="primary"
+          startIcon={<FontAwesomeIcon icon={faPlus} />}
+          onClick={createNewRow}
+        >
+          Add Entry
+        </Button>
+      </div>
     </GridToolbarContainer>
   );
 };
@@ -71,12 +76,19 @@ const EditableGrid = props => {
     gridColumns,
     title,
     fieldDefaults,
-    isReadOnly
+    isReadOnly,
+    CustomButton
   } = props;
   const formProps = useFormikContext();
 
-  const [rows, setRows] = useState(formProps?.values?.[listName] ?? []);
+  const sourceRows = formProps?.values?.[listName];
+
+  const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
+
+  useEffect(() => {
+    setRows(sourceRows ?? []);
+  }, [sourceRows]);
 
   const writeList = rows => {
     writeArray(listName, rows);
@@ -144,19 +156,17 @@ const EditableGrid = props => {
         if (isInEditMode) {
           return [
             <GridActionsCellItem
-              icon={<FontAwesomeIcon icon={faFloppyDisk} />}
-              label="Save"
-              sx={{
-                color: "primary.main"
-              }}
-              onClick={handleSaveClick(id)}
-            />,
-            <GridActionsCellItem
               icon={<FontAwesomeIcon icon={faCircleXmark} />}
               label="Cancel"
-              className="textPrimary"
+              className="text-danger"
               onClick={handleCancelClick(id)}
               color="inherit"
+            />,
+            <GridActionsCellItem
+              icon={<FontAwesomeIcon icon={faSave} />}
+              label="Save"
+              className="text-success"
+              onClick={handleSaveClick(id)}
             />
           ];
         }
@@ -168,7 +178,7 @@ const EditableGrid = props => {
                 icon={<FontAwesomeIcon icon={faPenToSquare} />}
                 label="Edit"
                 onClick={handleEditClick(id)}
-                color="success"
+                color="primary"
               />,
               <GridActionsCellItem
                 icon={<FontAwesomeIcon icon={faTrash} />}
@@ -184,7 +194,6 @@ const EditableGrid = props => {
   return (
     <Box
       sx={{
-        height: 214,
         width: "100%",
         "& .actions": {
           color: "text.secondary"
@@ -213,6 +222,7 @@ const EditableGrid = props => {
                     {...toolBarProps}
                     title={title}
                     fieldDefaults={fieldDefaults}
+                    CustomButton={CustomButton}
                   />
                 )
               }
@@ -231,7 +241,8 @@ EditableGrid.propTypes = {
   gridColumns: PropTypes.arrayOf(PropTypes.any),
   title: PropTypes.string,
   fieldDefaults: PropTypes.objectOf(PropTypes.any),
-  isReadOnly: PropTypes.bool
+  isReadOnly: PropTypes.bool,
+  CustomButton: PropTypes.node
 };
 
 EditableGrid.defaultProps = {
@@ -240,7 +251,8 @@ EditableGrid.defaultProps = {
   gridColumns: [],
   title: "",
   fieldDefaults: {},
-  isReadOnly: false
+  isReadOnly: false,
+  CustomButton: undefined
 };
 
 export default EditableGrid;

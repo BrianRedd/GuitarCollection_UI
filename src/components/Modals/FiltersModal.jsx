@@ -56,7 +56,7 @@ const FiltersModal = () => {
     tuningOptions,
     yearOptions,
     noOfStringOptions
-  } = useOptions();
+  } = useOptions({});
 
   const ovationBrands = ["ADO", "APO", "HGO", "OV"];
 
@@ -107,66 +107,41 @@ const FiltersModal = () => {
                 <InputTextField name="query" width="full" />
                 <Row>
                   <Col>
-                    <Row>
-                      <Col>
-                        <InputSelectField
-                          name="from_year"
-                          label="From Year"
-                          width="full"
-                          options={yearOptions}
-                        />
-                      </Col>
-                      <Col>
-                        <InputSelectField
-                          name="to_year"
-                          label="To Year"
-                          width="full"
-                          options={yearOptions}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Input
-                          type="radio"
-                          onChange={() => clickBrandRadioOption(0)}
-                          checked={brandRadioOption === 0}
-                        />
-                        <br />
-                        Normal
-                      </Col>
-                      <Col>
-                        <Input
-                          type="radio"
-                          onChange={() => clickBrandRadioOption(1)}
-                          checked={brandRadioOption === 1}
-                        />
-                        <br />
-                        All Ovations
-                      </Col>
-                      <Col>
-                        <Input
-                          type="radio"
-                          onChange={() => clickBrandRadioOption(2)}
-                          checked={brandRadioOption === 2}
-                        />
-                        <br />
-                        Non Ovations
-                      </Col>
-                    </Row>
+                    <Input
+                      className="me-3"
+                      type="radio"
+                      onChange={() => clickBrandRadioOption(0)}
+                      checked={brandRadioOption === 0}
+                    />
+                    All Brands
+                  </Col>
+                  <Col>
+                    <Input
+                      className="me-3"
+                      type="radio"
+                      onChange={() => clickBrandRadioOption(1)}
+                      checked={brandRadioOption === 1}
+                    />
+                    All Ovations
+                  </Col>
+                  <Col>
+                    <Input
+                      className="me-3"
+                      type="radio"
+                      onChange={() => clickBrandRadioOption(2)}
+                      checked={brandRadioOption === 2}
+                    />
+                    Non Ovations
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
                     <InputMultiSelectField
                       name="brandId"
                       label="Brand"
                       size="small"
                       width="full"
                       options={brandOptions}
-                    />
-                    <InputMultiSelectField
-                      name="countyOfOrigin"
-                      label="Country of Origin"
-                      options={countryOptions}
-                      size="small"
-                      width="full"
                     />
                     <InputMultiSelectField
                       label="Instrument Type"
@@ -189,38 +164,14 @@ const FiltersModal = () => {
                       size="small"
                       width="full"
                     />
-                  </Col>
-                  <Col>
-                    <Row>
-                      <Col>
-                        <InputTextField
-                          name="from_lastPlayed"
-                          label="From Last Played"
-                          width="full"
-                          otherProps={{
-                            type: "date",
-                            InputLabelProps: { shrink: true }
-                          }}
-                        />
-                      </Col>
-                      <Col>
-                        <InputTextField
-                          name="to_lastPlayed"
-                          label="To Last Played"
-                          width="full"
-                          otherProps={{
-                            type: "date",
-                            InputLabelProps: { shrink: true }
-                          }}
-                        />
-                      </Col>
-                    </Row>
                     <InputMultiSelectField
-                      name="color"
-                      options={colorOptions}
+                      name="tuning"
+                      options={tuningOptions}
                       size="small"
                       width="full"
                     />
+                  </Col>
+                  <Col>
                     <InputMultiSelectField
                       name={FILTER_STATUS}
                       options={statusOptions}
@@ -234,9 +185,34 @@ const FiltersModal = () => {
                       size="small"
                       width="full"
                     />
+                    <Row className="mt-4">
+                      <Col>
+                        <InputSelectField
+                          name="from_year"
+                          label="From Year"
+                          width="full"
+                          options={yearOptions}
+                        />
+                      </Col>
+                      <Col>
+                        <InputSelectField
+                          name="to_year"
+                          label="To Year"
+                          width="full"
+                          options={yearOptions}
+                        />
+                      </Col>
+                    </Row>
                     <InputMultiSelectField
-                      name="tuning"
-                      options={tuningOptions}
+                      name="countyOfOrigin"
+                      label="Country of Origin"
+                      options={countryOptions}
+                      size="small"
+                      width="full"
+                    />
+                    <InputMultiSelectField
+                      name="color"
+                      options={colorOptions}
                       size="small"
                       width="full"
                     />

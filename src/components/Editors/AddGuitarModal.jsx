@@ -1,14 +1,13 @@
 import React from "react";
 
 import { Formik } from "formik";
-import moment from "moment";
+import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 import { addGuitar, getGuitars } from "../../store/slices/guitarsSlice";
 import { toggleToggle } from "../../store/slices/toggleSlice";
 import * as types from "../../types/types";
-import { DATE_FORMAT } from "../data/constants";
 import { getGuitarsValidationSchema } from "./data/validationSchemas";
 
 import useModalContext from "../../hooks/useModalContext";
@@ -39,9 +38,7 @@ const AddGuitarModal = () => {
         onSubmit={(values, actions) => {
           const submissionValues = {
             ...values,
-            lastPlayed: values.lastPlayed
-              ? moment(values.lastPlayed).format(DATE_FORMAT)
-              : ""
+            specifications: _.orderBy(values?.specifications, "specType")
           };
           dispatch(addGuitar(submissionValues)).then(response => {
             if (response) {

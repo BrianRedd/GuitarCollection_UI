@@ -27,13 +27,14 @@ import EditableGrid from "../common/EditableGrid";
 import InputFreeFormField from "../common/InputFreeFormField";
 import InputSelectField from "../common/InputSelectField";
 import InputTextField from "../common/InputTextField";
+import CopySpecsButton from "./CopySpecsButton";
 
 /**
  * @function GuitarForm
  * @returns {React.ReactNode}
  */
 const GuitarForm = props => {
-  const { initialValues } = props;
+  const { initialValues = {} } = props;
 
   const gallery = useSelector(state => state.galleryState?.list) ?? [];
 
@@ -53,8 +54,8 @@ const GuitarForm = props => {
     colorOptions,
     statusOptions,
     tuningOptions,
-    siblingOptions
-  } = useOptions();
+    otherGuitarOptions
+  } = useOptions({ guitarId: initialValues?._id });
 
   const writeArray = (arrayField, rows) => {
     formProps.setFieldValue(arrayField, rows);
@@ -91,15 +92,6 @@ const GuitarForm = props => {
                 <InputFreeFormField
                   name="tuning"
                   options={tuningOptions}
-                  width="wide"
-                />
-                <InputTextField
-                  name="lastPlayed"
-                  label="Last Played"
-                  otherProps={{
-                    type: "date",
-                    InputLabelProps: { shrink: true }
-                  }}
                   width="wide"
                 />
               </Row>
@@ -177,7 +169,7 @@ const GuitarForm = props => {
               />
               <InputSelectField
                 name="sibling"
-                options={siblingOptions}
+                options={otherGuitarOptions}
                 width="wide"
               />
             </Row>
@@ -205,14 +197,6 @@ const GuitarForm = props => {
               name="tuning"
               options={tuningOptions}
               width="wide"
-            />
-            <InputTextField
-              name="lastPlayed"
-              label="Last Played"
-              otherProps={{
-                type: "date",
-                InputLabelProps: { shrink: true }
-              }}
             />
           </Row>
         )}
@@ -298,6 +282,7 @@ const GuitarForm = props => {
             specType: "",
             specification: ""
           }}
+          CustomButton={<CopySpecsButton writeArray={writeArray} />}
           gridColumns={[
             {
               field: "specType",

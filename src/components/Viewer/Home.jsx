@@ -2,17 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 
-import { Button, ButtonBase, IconButton } from "@mui/material";
+import { Button, ButtonBase } from "@mui/material";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
 
-import { faGlobe } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useFilters from "../../hooks/useFilters";
 import usePermissions from "../../hooks/usePermissions";
-import useUpdatePlayLog from "../../hooks/useUpdatePlayLog";
 import { updateSelected } from "../../store/slices/guitarsSlice";
 import { toggleToggle } from "../../store/slices/toggleSlice";
 import { SERVER_LOCATION } from "../../utils/constants";
@@ -92,8 +89,6 @@ const Home = props => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hash]);
-
-  const { getPlayLog } = useUpdatePlayLog();
 
   return (
     <Container fluid="md" className="mt-4">

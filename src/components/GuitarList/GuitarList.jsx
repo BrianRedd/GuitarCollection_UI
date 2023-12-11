@@ -82,7 +82,7 @@ const GuitarList = props => {
       noOfPictures: (guitar?.pictures ?? []).length,
       dateAcquired: formatDate(rawAcquiredDate ?? "", true),
       lastPlayed:
-        guitar.playLog?.[0]?.playDate || `${guitar.lastPlayed || "N/A"}*`,
+        guitar.playLog?.[0]?.playDate || "N/A",
       isAcquiredDateValid
     };
   });

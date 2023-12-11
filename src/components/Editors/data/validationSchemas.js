@@ -37,7 +37,6 @@ export const getGuitarsValidationSchema = ({ guitars, isEdit }) => {
     ),
     story: Yup.string().nullable(),
     status: Yup.string().ensure().required(TEXT_REQUIRED),
-    tuning: Yup.string().nullable(),
-    lastPlayed: Yup.string().nullable()
+    tuning: Yup.string().nullable()
   });
 };
