@@ -310,7 +310,7 @@ const GuitarForm = props => {
           listName="todoList"
           fieldDefaults={{
             todoItem: "",
-            status: "",
+            status: "Not Started",
             completionDate: "",
             notes: ""
           }}

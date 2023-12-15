@@ -43,6 +43,7 @@ const GuitarDetail = props => {
   const guitars = useSelector(state => state.guitarsState?.list) ?? [];
   const brands = useSelector(state => state.brandsState?.list) ?? [];
   const gallery = useSelector(state => state.galleryState?.list) ?? [];
+  const user = useSelector(state => state.userState?.user) ?? {};
 
   const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
   const hasPurchaseHistoryPermissions = usePermissions(PURCHASE_PERM);
@@ -82,6 +83,9 @@ const GuitarDetail = props => {
             {snippet}
           </span>
         );
+      }
+      if (_.isEmpty(user)) {
+        return (snippet ?? "").replaceAll("Morgan", "Laurel");
       }
       return snippet;
     });
