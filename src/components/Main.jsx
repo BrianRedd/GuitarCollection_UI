@@ -80,6 +80,11 @@ const Main = () => {
     });
   };
 
+  /**
+   * @function selectAndGoToGuitar
+   * @description selects guitar and redirects to details tab
+   * @param {string} id
+   */
   const selectAndGoToGuitar = id => {
     const selectedGuitar = guitars?.find(
       guitar => guitar._id === id || guitar.name === id
@@ -122,7 +127,7 @@ const Main = () => {
         </div>
         <hr />
         <div ref={sectionRefs[2]}>
-          <Gallery />
+          <Gallery selectAndGoToGuitar={selectAndGoToGuitar} />
         </div>
       </div>
       <Modals />

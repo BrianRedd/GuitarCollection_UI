@@ -30,7 +30,7 @@ import "./styles/gallery.scss";
  * @returns {React.ReactNode}
  */
 const GalleryImage = props => {
-  const { image, selectImage, handleDelete } = props;
+  const { handleDelete, image, selectAndGoToGuitar, selectImage } = props;
   const dispatch = useDispatch();
 
   const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
@@ -71,7 +71,10 @@ const GalleryImage = props => {
                 selectImage(image);
               }}
             >
-              <FontAwesomeIcon icon={faPenToSquare} className="text-success small" />
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                className="text-success small"
+              />
             </IconButton>
             <IconButton
               onClick={() => {
@@ -105,8 +108,9 @@ const GalleryImage = props => {
       </div>
       <ImageViewerModal
         isModalOpen={isModalOpen}
-        toggle={toggle}
         image={image}
+        selectAndGoToGuitar={selectAndGoToGuitar}
+        toggle={toggle}
       />
     </React.Fragment>
   );
@@ -115,12 +119,14 @@ const GalleryImage = props => {
 GalleryImage.propTypes = {
   handleDelete: PropTypes.func,
   image: PropTypes.objectOf(PropTypes.any),
+  selectAndGoToGuitar: PropTypes.func,
   selectImage: PropTypes.func
 };
 
 GalleryImage.defaultTypes = {
   handleDelete: undefined,
   image: {},
+  selectAndGoToGuitar: () => {},
   selectImage: () => {}
 };
 

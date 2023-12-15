@@ -2,13 +2,18 @@
 
 import React, { useState } from "react";
 
-import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowDown,
+  faArrowRight,
+  faCloudArrowUp
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ButtonBase } from "@mui/material";
 import { Form, Formik } from "formik";
 import _ from "lodash";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Collapse, Container, Row } from "reactstrap";
 
 import usePermissions from "../../hooks/usePermissions";
 import {
@@ -33,7 +38,8 @@ import "./styles/gallery.scss";
  * @function Gallery
  * @returns {ReactNode}
  */
-const Gallery = () => {
+const Gallery = props => {
+  const { selectAndGoToGuitar } = props;
   const dispatch = useDispatch();
 
   const guitars = useSelector(state => state.guitarsState.list) ?? [];
@@ -52,6 +58,7 @@ const Gallery = () => {
     types.galleryImage.defaults
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTabOpen, setIsTabOpen] = useState(false);
 
   const isEdit = Boolean(selectedImage._id);
 
@@ -65,7 +72,7 @@ const Gallery = () => {
       });
     });
     return _.orderBy(
-      (gallery ?? []).map((image) => ({
+      (gallery ?? []).map(image => ({
         key: image._id,
         ...image,
         guitar: `${imageGuitarMapping?.[image._id] ?? ""}`
@@ -76,7 +83,20 @@ const Gallery = () => {
 
   return (
     <Container fluid="md gallery-container">
-      <h1>Gallery</h1>
+      <ButtonBase
+        onClick={() => setIsTabOpen(!isTabOpen)}
+        className=" justify-content-start d-flex"
+      >
+        <div className="mb-3">
+          <h1 className="d-inline">Gallery</h1>
+          <h5 className="d-inline">
+            <FontAwesomeIcon
+              className="ms-2"
+              icon={isTabOpen ? faArrowDown : faArrowRight}
+            />
+          </h5>
+        </div>
+      </ButtonBase>
       <Formik
         initialValues={selectedImage}
         onSubmit={(values, actions) => {
@@ -108,51 +128,62 @@ const Gallery = () => {
             setSelectedImage(image);
           };
           return (
-            <Form className="gallery-form">
-              <Row className="justify-content-center">
-                {hasEditGuitarPermissions && (
-                  <ButtonBase
-                    className="gallery-image border d-block me-2 bg-white"
-                    onClick={() => {
-                      selectImage(types.galleryImage.defaults);
-                      setIsModalOpen(true);
-                    }}
-                  >
-                    <Row>
-                      <Col>
-                        <h6 className="">Upload New Image</h6>
-                      </Col>
-                    </Row>
-                    <Row className="">
-                      <Col>
-                        <FontAwesomeIcon icon={faCloudArrowUp} size="2xl" />
-                      </Col>
-                    </Row>
-                  </ButtonBase>
-                )}
-                {gridData()?.map((image, idx) => (
-                  <GalleryImage
-                    key={`${image._id}_${idx}`}
-                    image={image}
-                    selectImage={image => {
-                      selectImage(image);
-                      setIsModalOpen(true);
-                    }}
-                  />
-                ))}
-              </Row>
-              <ImageUploadModal
-                isOpen={isModalOpen}
-                toggle={() => setIsModalOpen(!isModalOpen)}
-                selectedImage={selectedImage}
-                handleSubmit={formProps.handleSubmit}
-              />
-            </Form>
+            <Collapse isOpen={isTabOpen}>
+              <Form className="gallery-form">
+                <Row className="justify-content-center">
+                  {hasEditGuitarPermissions && (
+                    <ButtonBase
+                      className="gallery-image border d-block me-2 bg-white"
+                      onClick={() => {
+                        selectImage(types.galleryImage.defaults);
+                        setIsModalOpen(true);
+                      }}
+                    >
+                      <Row>
+                        <Col>
+                          <h6 className="">Upload New Image</h6>
+                        </Col>
+                      </Row>
+                      <Row className="">
+                        <Col>
+                          <FontAwesomeIcon icon={faCloudArrowUp} size="2xl" />
+                        </Col>
+                      </Row>
+                    </ButtonBase>
+                  )}
+                  {gridData()?.map((image, idx) => (
+                    <GalleryImage
+                      key={`${image._id}_${idx}`}
+                      image={image}
+                      selectImage={image => {
+                        selectImage(image);
+                        setIsModalOpen(true);
+                      }}
+                      selectAndGoToGuitar={selectAndGoToGuitar}
+                    />
+                  ))}
+                </Row>
+                <ImageUploadModal
+                  isOpen={isModalOpen}
+                  toggle={() => setIsModalOpen(!isModalOpen)}
+                  selectedImage={selectedImage}
+                  handleSubmit={formProps.handleSubmit}
+                />
+              </Form>
+            </Collapse>
           );
         }}
       </Formik>
     </Container>
   );
+};
+
+Gallery.propTypes = {
+  selectAndGoToGuitar: PropTypes.func
+};
+
+Gallery.defaultProps = {
+  selectAndGoToGuitar: () => {}
 };
 
 export default Gallery;

@@ -2,11 +2,11 @@
 
 import React from "react";
 
+import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@mui/material";
 import PropTypes from "prop-types";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import { Button } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { SERVER_LOCATION } from "../../utils/constants";
 
@@ -15,16 +15,31 @@ import { SERVER_LOCATION } from "../../utils/constants";
  * @returns {React.ReactNode}
  */
 const ImageViewerModal = props => {
-  const { isModalOpen, toggle, image } = props;
+  const { isModalOpen, image, selectAndGoToGuitar, toggle } = props;
   return (
     <Modal isOpen={isModalOpen} toggle={toggle}>
-      <ModalHeader toggle={toggle}>{image.caption ?? "Image"}</ModalHeader>
+      <ModalHeader toggle={toggle}>
+        {image.guitar ? (
+          <span
+            className="navigation-span me-1"
+            onClick={() => {
+              toggle();
+              selectAndGoToGuitar(image.guitar);
+            }}
+          >
+            {image.guitar}
+          </span>
+        ) : (
+          ""
+        )}
+        {image.caption}
+      </ModalHeader>
       <ModalBody>
         <img
           className="w-100"
           src={`${SERVER_LOCATION}/gallery/${image.image}`}
           alt={image.caption ?? "Image"}
-        ></img>
+        />
       </ModalBody>
       <ModalFooter>
         <Button
@@ -45,12 +60,14 @@ const ImageViewerModal = props => {
 ImageViewerModal.propTypes = {
   image: PropTypes.objectOf(PropTypes.any),
   isModalOpen: PropTypes.bool,
+  selectAndGoToGuitar: PropTypes.func,
   toggle: PropTypes.func
 };
 
 ImageViewerModal.defaultProps = {
   image: {},
   isModalOpen: false,
+  selectAndGoToGuitar: () => {},
   toggle: () => {}
 };
 

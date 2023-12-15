@@ -3,12 +3,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 import {
+  faAward,
   faFilter,
   faGuitar,
-  faHome,
   faImages,
   faList,
   faRegistered,
+  faSquarePlus,
   faUser,
   faUserGear
 } from "@fortawesome/free-solid-svg-icons";
@@ -114,7 +115,7 @@ const NavBar = props => {
               scrollTo(0);
             }}
           >
-            <FontAwesomeIcon icon={faHome} /> Home
+            <FontAwesomeIcon icon={faAward} /> Featured
           </NavItem>
           <NavItem
             onClick={() => {
@@ -156,9 +157,11 @@ const NavBar = props => {
               dispatch(toggleToggle({ id: "filterModal" }));
             }}
           >
-            <FontAwesomeIcon icon={faFilter} /> Filters{" "}
+            <FontAwesomeIcon icon={faFilter} /> Filters
             {Boolean(numberOfAppliedFilters) && (
-              <Badge color="warning">{numberOfAppliedFilters}</Badge>
+              <Badge className="ms-2" color="warning">
+                {numberOfAppliedFilters}
+              </Badge>
             )}
           </NavItem>
           {hasEditGuitarPermissions && (
@@ -173,7 +176,7 @@ const NavBar = props => {
                 );
               }}
             >
-              <FontAwesomeIcon icon={faGuitar} /> Add Instrument
+              <FontAwesomeIcon icon={faSquarePlus} /> Add Instrument
             </NavItem>
           )}
           {user._id ? (
