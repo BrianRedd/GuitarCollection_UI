@@ -2,11 +2,9 @@
 
 import React, { useMemo } from "react";
 
-import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Box,
-  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -22,19 +20,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Alert, Badge, Col, Row } from "reactstrap";
 
 import useFilters from "../../hooks/useFilters";
-import usePermissions from "../../hooks/usePermissions";
-import {
-  removeGuitar,
-  updatePagination
-} from "../../store/slices/guitarsSlice";
+import { updatePagination } from "../../store/slices/guitarsSlice";
 import * as types from "../../types/types";
 import { SERVER_LOCATION } from "../../utils/constants";
 import { formatDate } from "../../utils/utils";
 import {
   ALLOWED_DATE_FORMATS,
   CAPTION_OPTION_FULL_FRONT,
-  GUITAR_PERM,
-  OWNERSHIP_STATUS_OPTIONS
+  OWNERSHIP_STATUS_OPTIONS,
+  TEXT_ASC,
+  TEXT_DESC
 } from "../data/constants";
 
 import moment from "moment";
@@ -45,32 +40,28 @@ import "./styles/guitarlist.scss";
  * @function GuitarList
  * @returns {ReactNode}
  */
-const GuitarList = props => {
-  const { selectAndGoToGuitar, editGuitar } = props;
+const GuitarList = (props) => {
+  const { selectAndGoToGuitar } = props;
 
   const dispatch = useDispatch();
 
-  const {
-    list: guitarsFromState = [],
-    pagination = types.guitarsState.defaults
-  } = useSelector(state => state.guitarsState) ?? {};
-  const brands = useSelector(state => state.brandsState?.list) ?? [];
-  const gallery = useSelector(state => state.galleryState?.list) ?? [];
+  const { list: guitarsFromState = [], pagination = types.guitarsState.defaults } =
+    useSelector((state) => state.guitarsState) ?? {};
+  const brands = useSelector((state) => state.brandsState?.list) ?? [];
+  const gallery = useSelector((state) => state.galleryState?.list) ?? [];
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const filters = useSelector(state => state.filtersState?.filters) ?? {};
-
-  const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
+  const filters = useSelector((state) => state.filtersState?.filters) ?? {};
 
   const applyFilter = useFilters();
 
   const frontPictures = gallery.filter(
-    image => image.caption === CAPTION_OPTION_FULL_FRONT
+    (image) => image.caption === CAPTION_OPTION_FULL_FRONT
   );
 
-  const guitars = applyFilter(guitarsFromState ?? []).map(guitar => {
+  const guitars = applyFilter(guitarsFromState ?? []).map((guitar) => {
     const rawAcquiredDate =
       guitar?.purchaseHistory?.find(
-        transaction => transaction.ownershipStatus === "PUR"
+        (transaction) => transaction.ownershipStatus === "PUR"
       )?.when ?? "";
     const isAcquiredDateValid = moment(
       rawAcquiredDate,
@@ -81,15 +72,14 @@ const GuitarList = props => {
       ...guitar,
       noOfPictures: (guitar?.pictures ?? []).length,
       dateAcquired: formatDate(rawAcquiredDate ?? "", true),
-      lastPlayed:
-        guitar.playLog?.[0]?.playDate || "N/A",
+      lastPlayed: guitar.playLog?.[0]?.playDate || "N/A",
       isAcquiredDateValid
     };
   });
 
   const numberOfAppliedFilters = useMemo(
     () =>
-      Object.keys(filters ?? {}).filter(filter => {
+      Object.keys(filters ?? {}).filter((filter) => {
         return (
           (Array.isArray(filters[filter]) && Boolean(filters[filter].length)) ||
           (!Array.isArray(filters[filter]) && filters[filter])
@@ -122,6 +112,10 @@ const GuitarList = props => {
       label: "Year"
     },
     {
+      id: "serialNo",
+      label: "S/N"
+    },
+    {
       id: "status",
       label: "Status"
     },
@@ -135,29 +129,21 @@ const GuitarList = props => {
     }
   ];
 
-  if (hasEditGuitarPermissions) {
-    headCells.push({
-      id: "iconHolder",
-      label: ""
-    });
-  }
+  const gridData = _.orderBy(guitars, [orderBy, "serialNo"], [order, TEXT_ASC]);
 
-  const gridData = _.orderBy(guitars, [orderBy, "serialNo"], [order, "asc"]);
-
-  const getNameAdornment = row => {
+  const getNameAdornment = (row) => {
     const lastPurchaseHistory = row?.purchaseHistory?.slice(-1) ?? {};
     const lastOwnershipStatus = lastPurchaseHistory[0]?.ownershipStatus;
     const icon = OWNERSHIP_STATUS_OPTIONS.find(
-      option => option.value === lastOwnershipStatus
+      (option) => option.value === lastOwnershipStatus
     )?.icon;
     return icon ? (
       <Tooltip
         arrow
         placement="right"
         title={
-          OWNERSHIP_STATUS_OPTIONS.find(
-            option => option.value === lastOwnershipStatus
-          )?.label
+          OWNERSHIP_STATUS_OPTIONS.find((option) => option.value === lastOwnershipStatus)
+            ?.label
         }
       >
         <FontAwesomeIcon icon={icon} className="ms-2" />
@@ -175,8 +161,7 @@ const GuitarList = props => {
         </Col>
         <Col className="d-flex justify-content-end align-items-center">
           <h5 onClick={() => dispatch(toggleToggle({ id: "filterModal" }))}>
-            ({guitars.length} displayed; {numberOfAppliedFilters} filters
-            applied)
+            ({guitars.length} displayed; {numberOfAppliedFilters} filters applied)
           </h5>
         </Col>
       </Row>
@@ -185,11 +170,9 @@ const GuitarList = props => {
           <Table aria-labelledby="tableTitle" size="small">
             <TableHead>
               <TableRow>
-                {headCells.map(headCell => (
+                {headCells.map((headCell) => (
                   <TableCell
-                    className={
-                      headCell.id === "iconHolder" ? "icon_holder" : ""
-                    }
+                    className={headCell.id === "iconHolder" ? "icon_holder" : ""}
                     key={headCell.id}
                     sortDirection={orderBy === headCell.id ? order : false}
                   >
@@ -198,12 +181,12 @@ const GuitarList = props => {
                     ) : (
                       <TableSortLabel
                         active={orderBy === headCell.id}
-                        direction={orderBy === headCell.id ? order : "asc"}
+                        direction={orderBy === headCell.id ? order : TEXT_ASC}
                         onClick={() => {
                           dispatch(
                             updatePagination({
                               orderBy: headCell.id,
-                              order: order === "asc" ? "desc" : "asc"
+                              order: order === TEXT_ASC ? TEXT_DESC : TEXT_ASC
                             })
                           );
                         }}
@@ -216,22 +199,20 @@ const GuitarList = props => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {gridData.map(row => {
+              {gridData.map((row) => {
                 const brand =
-                  (brands ?? []).find(brand => brand.id === row.brandId) ?? {};
-                const frontPicture = frontPictures.find(picture =>
+                  (brands ?? []).find((brand) => brand.id === row.brandId) ?? {};
+                const frontPicture = frontPictures.find((picture) =>
                   (row.pictures ?? []).includes(picture._id)
                 );
                 return (
-                  <TableRow key={row._id}>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      onClick={() => {
-                        selectAndGoToGuitar(row._id);
-                      }}
-                      className="text-nowrap"
-                    >
+                  <TableRow
+                    key={row._id}
+                    onClick={() => {
+                      selectAndGoToGuitar(row._id);
+                    }}
+                  >
+                    <TableCell component="th" scope="row" className="text-nowrap">
                       {!_.isEmpty(frontPicture) && (
                         <React.Fragment>
                           <img
@@ -247,21 +228,11 @@ const GuitarList = props => {
                         </React.Fragment>
                       )}
                     </TableCell>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      onClick={() => {
-                        selectAndGoToGuitar(row._id);
-                      }}
-                    >
+                    <TableCell component="th" scope="row">
                       <b>{row.name}</b>
                       {getNameAdornment(row)}
                     </TableCell>
-                    <TableCell
-                      onClick={() => {
-                        selectAndGoToGuitar(row._id);
-                      }}
-                    >
+                    <TableCell>
                       {brand.logo ? (
                         <img
                           src={`${SERVER_LOCATION}/brandLogos/${brand.logo}`}
@@ -272,76 +243,16 @@ const GuitarList = props => {
                         brand.name ?? row.brandId
                       )}
                     </TableCell>
-                    <TableCell
-                      onClick={() => {
-                        selectAndGoToGuitar(row._id);
-                      }}
-                    >
-                      {row.model}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => {
-                        selectAndGoToGuitar(row._id);
-                      }}
-                    >
-                      {row.year}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => {
-                        selectAndGoToGuitar(row._id);
-                      }}
-                    >
-                      {row.status}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => {
-                        selectAndGoToGuitar(row._id);
-                      }}
-                    >
+                    <TableCell>{row.model}</TableCell>
+                    <TableCell>{row.year}</TableCell>
+                    <TableCell>{row.serialNo}</TableCell>
+                    <TableCell>{row.status}</TableCell>
+                    <TableCell>
                       {row.isAcquiredDateValid
                         ? moment(row.dateAcquired).format("MMM YYYY")
                         : row.dateAcquired}
                     </TableCell>
-                    <TableCell
-                      onClick={() => {
-                        selectAndGoToGuitar(row._id);
-                      }}
-                    >
-                      {row.lastPlayed}
-                    </TableCell>
-                    {hasEditGuitarPermissions && (
-                      <TableCell className="icon_holder">
-                        <IconButton
-                          onClick={() => {
-                            editGuitar(row._id);
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faPenToSquare}
-                            className="text-success small"
-                          />
-                        </IconButton>
-                        <IconButton
-                          onClick={() =>
-                            dispatch(
-                              toggleToggle({
-                                id: "confirmationModal",
-                                title: `Delete ${row.name ?? "Instrument"}?`,
-                                text: `Are you sure you want to permanently delete ${
-                                  row.name ?? "this instrument"
-                                }?`,
-                                handleYes: () => dispatch(removeGuitar(row._id))
-                              })
-                            )
-                          }
-                        >
-                          <FontAwesomeIcon
-                            icon={faTrash}
-                            className="text-danger small"
-                          />
-                        </IconButton>
-                      </TableCell>
-                    )}
+                    <TableCell>{row.lastPlayed}</TableCell>
                   </TableRow>
                 );
               })}

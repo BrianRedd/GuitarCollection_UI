@@ -141,8 +141,7 @@ const AddEditBrandModal = () => {
                   onClick={() => {
                     toggle();
                   }}
-                  variant="contained"
-                  disableElevation
+                  variant="outlined"
                   color="error"
                 >
                   <FontAwesomeIcon icon={faCircleXmark} className="me-3" />

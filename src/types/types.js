@@ -16,7 +16,8 @@ import {
   FILTER_QUERY,
   FILTER_STATUS,
   INSTRUMENT_OPTION_GUITAR,
-  STATUS_OPTION_PLAYABLE
+  STATUS_OPTION_PLAYABLE,
+  TEXT_ASC
 } from "../components/data/constants";
 
 /*
@@ -140,7 +141,7 @@ export const guitarsState = {
     loading: false,
     message: {},
     pagination: {
-      order: "asc",
+      order: TEXT_ASC,
       orderBy: DEFAULT_ORDER_BY
     },
     selected: ""

@@ -23,7 +23,7 @@ const EditGuitarModal = () => {
   const dispatch = useDispatch();
 
   const { list: guitars, selected: selectedGuitar } =
-    useSelector(state => state.guitarsState) ?? {};
+    useSelector((state) => state.guitarsState) ?? {};
 
   const { isOpen } = useModalContext("editGuitarModal");
   const toggle = () => dispatch(toggleToggle({ id: "editGuitarModal" }));
@@ -33,24 +33,18 @@ const EditGuitarModal = () => {
   const initialValues = {
     ...types.guitar.defaults,
     ...guitars.find(
-      guitar =>
-        guitar.name === selectedGuitar ||
-        guitar._id === hash ||
-        guitar.name === hash
+      (guitar) =>
+        guitar.name === selectedGuitar || guitar._id === hash || guitar.name === hash
     )
   };
 
   const submitButtonText = `Update ${
-    initialValues.name ??
-    initialValues.instrumentType ??
-    INSTRUMENT_OPTION_GUITAR
+    initialValues.name ?? initialValues.instrumentType ?? INSTRUMENT_OPTION_GUITAR
   }`;
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} fullscreen>
-      <ModalHeader toggle={toggle}>
-        Edit {initialValues.name ?? "Guitar"}
-      </ModalHeader>
+      <ModalHeader toggle={toggle}>Edit {initialValues.name ?? "Guitar"}</ModalHeader>
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {

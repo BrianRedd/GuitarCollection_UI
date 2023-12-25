@@ -14,6 +14,9 @@ export const TEXT_REQUIRED = "Required";
 
 export const DATE_FORMAT = "YYYY-MM-DD";
 
+export const TEXT_ASC = "asc";
+export const TEXT_DESC = "desc";
+
 export const OWNERSHIP_STATUS_OPTIONS = [
   {
     value: "PUR",
@@ -55,12 +58,7 @@ export const SOUNDSCAPE_OPTIONS_DEFAULTS = [
   "Electric Stereo"
 ];
 
-export const COLOR_OPTIONS_DEFAULTS = [
-  "Black",
-  "Natural",
-  "Red",
-  "Tobacco Sunburst"
-];
+export const COLOR_OPTIONS_DEFAULTS = ["Black", "Natural", "Red", "Tobacco Sunburst"];
 
 export const TUNING_OPTIONS_DEFAULTS = [
   "Standard/EADGBE",
@@ -130,12 +128,7 @@ export const GUITAR_PERM = "EDIT_GUITAR";
 export const BRAND_PERM = "EDIT_BRAND";
 export const PURCHASE_PERM = "VIEW_PURCHASE_HISTORY";
 
-export const PERMISSIONS_OPTIONS = [
-  ADMIN_PERM,
-  BRAND_PERM,
-  GUITAR_PERM,
-  PURCHASE_PERM
-];
+export const PERMISSIONS_OPTIONS = [ADMIN_PERM, BRAND_PERM, GUITAR_PERM, PURCHASE_PERM];
 
 export const FILTER_QUERY = "query";
 export const FILTER_STATUS = "status";

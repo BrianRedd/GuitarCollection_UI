@@ -9,6 +9,8 @@ import {
   SOUNDSCAPE_OPTIONS_DEFAULTS,
   STATUS_OPTIONS_DEFAULTS,
   STATUS_OPTION_PLAYABLE,
+  TEXT_ASC,
+  TEXT_DESC,
   TUNING_OPTIONS_DEFAULTS
 } from "../components/data/constants";
 
@@ -24,7 +26,7 @@ const useOptions = ({ guitarId }) => {
         .length
     })),
     ["presence", "name"],
-    ["desc", "asc"]
+    [TEXT_DESC, TEXT_ASC]
   );
   const countryOptions = _.uniq(
     _.compact([

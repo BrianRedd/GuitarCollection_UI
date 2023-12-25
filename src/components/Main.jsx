@@ -15,6 +15,7 @@ import Brands from "./Brands/Brands";
 import Gallery from "./Gallery/Gallery";
 import GuitarDetail from "./GuitarDetail/GuitarDetail";
 import GuitarList from "./GuitarList/GuitarList";
+import GuitarList2 from "./GuitarList/GuitarList2";
 import Home from "./Viewer/Home";
 import Modals from "./Viewer/Modals";
 import NavBar from "./Viewer/NavBar";
@@ -26,7 +27,7 @@ import NavBar from "./Viewer/NavBar";
 const Main = () => {
   const dispatch = useDispatch();
 
-  const { list: guitars } = useSelector(state => state.guitarsState) ?? {};
+  const { list: guitars } = useSelector((state) => state.guitarsState) ?? {};
 
   const sectionRefs = [
     useRef(null), // 0 home
@@ -37,21 +38,21 @@ const Main = () => {
   ];
 
   useEffect(() => {
-    dispatch(getGuitars()).then(response => {
+    dispatch(getGuitars()).then((response) => {
       enqueueSnackbar(response.payload.message);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    dispatch(getBrands()).then(response => {
+    dispatch(getBrands()).then((response) => {
       enqueueSnackbar(response.payload.message);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    dispatch(getGallery()).then(response => {
+    dispatch(getGallery()).then((response) => {
       enqueueSnackbar(response.payload.message);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,7 +63,7 @@ const Main = () => {
   useEffect(() => {
     if (loginCookie) {
       const loginArray = loginCookie.split("|");
-      dispatch(getUser(loginArray?.[0])).then(response => {
+      dispatch(getUser(loginArray?.[0])).then((response) => {
         if (response?.payload?.data?.password === loginArray?.[1]) {
           dispatch(writeUser(response.payload.data));
         } else {
@@ -73,7 +74,7 @@ const Main = () => {
     }
   }, [dispatch, loginCookie]);
 
-  const scrollTo = sectionIdx => {
+  const scrollTo = (sectionIdx) => {
     window.scrollTo({
       top: sectionRefs[sectionIdx].current.offsetTop - 80,
       behavior: "smooth"
@@ -85,16 +86,16 @@ const Main = () => {
    * @description selects guitar and redirects to details tab
    * @param {string} id
    */
-  const selectAndGoToGuitar = id => {
+  const selectAndGoToGuitar = (id) => {
     const selectedGuitar = guitars?.find(
-      guitar => guitar._id === id || guitar.name === id
+      (guitar) => guitar._id === id || guitar.name === id
     );
     window.location.hash = `#${id}`;
     dispatch(updateSelected(selectedGuitar?.name ?? id));
     scrollTo(4);
   };
 
-  const editGuitar = id => {
+  const editGuitar = (id) => {
     window.location.hash = `#${id}`;
     dispatch(updateSelected(id));
     dispatch(toggleToggle({ id: "editGuitarModal" }));
@@ -108,11 +109,14 @@ const Main = () => {
           <Home selectAndGoToGuitar={selectAndGoToGuitar} />
         </div>
         <hr />
-        <div ref={sectionRefs[1]}>
-          <GuitarList
+        <div>
+          <GuitarList2
             selectAndGoToGuitar={selectAndGoToGuitar}
             editGuitar={editGuitar}
           />
+        </div>
+        <div ref={sectionRefs[1]}>
+          <GuitarList selectAndGoToGuitar={selectAndGoToGuitar} editGuitar={editGuitar} />
         </div>
         <hr />
         <div ref={sectionRefs[3]}>
