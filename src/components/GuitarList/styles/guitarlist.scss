@@ -22,6 +22,13 @@ table {
   }
 }
 
+.picture-thumbnail {
+  height: 60px;
+  width: 45px;
+  background-position: center;
+  background-size: cover;
+  display: inline-block;
+}
 .picture-badge {
   vertical-align: top !important;
   position: relative;

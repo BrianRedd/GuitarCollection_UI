@@ -5,7 +5,9 @@ import React, { useState } from "react";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import _ from "lodash";
+import PropTypes from "prop-types";
 import { Table } from "reactstrap";
+
 import { TEXT_ASC, TEXT_DESC } from "../data/constants";
 
 /**
@@ -13,15 +15,15 @@ import { TEXT_ASC, TEXT_DESC } from "../data/constants";
  * @returns {React.ReactNode}
  */
 const Grid = (props) => {
-  const { columnsConfig, gridData, onRowSelect } = props;
+  const { columnsConfig, defaultSort, gridData, onRowSelect } = props;
 
-  const [sortField, setSortField] = useState("");
-  const [sortDirection, setSortDirection] = useState(0);
+  const [sortField, setSortField] = useState(defaultSort?.sortBy ?? "");
+  const [sortDirectionAsc, setsortDirectionAsc] = useState(defaultSort?.direction !== TEXT_DESC);
 
   const columnKeys = Object.keys(columnsConfig ?? {});
 
   const sortedGridData = sortField
-    ? _.orderBy(gridData, sortField, sortDirection ? TEXT_ASC : TEXT_DESC)
+    ? _.orderBy(gridData, sortField, sortDirectionAsc ? TEXT_ASC : TEXT_DESC)
     : gridData;
 
   const TableHeader = () => {
@@ -33,7 +35,7 @@ const Grid = (props) => {
           if (!columnsConfig?.[hrow]?.isNotSortable) {
             if (sortField !== hrow) {
               setSortField(hrow);
-            } else setSortDirection((sortDirection + 1) % 2);
+            } else setsortDirectionAsc(!sortDirectionAsc);
           }
         }}
       >
@@ -41,7 +43,7 @@ const Grid = (props) => {
         {sortField === hrow ? (
           <small style={{ opacity: 0.5 }}>
             <FontAwesomeIcon
-              icon={sortDirection ? faArrowUp : faArrowDown}
+              icon={sortDirectionAsc ? faArrowDown : faArrowUp}
               className="ms-1"
             />
           </small>
@@ -58,7 +60,6 @@ const Grid = (props) => {
   };
 
   const TableRow = ({ row }) => {
-    console.log("row", row);
     const tableRow = columnKeys.map((column) => (
       <td key={column}>
         {columnsConfig?.[column]?.cellComponent
@@ -69,7 +70,6 @@ const Grid = (props) => {
     return (
       <tr
         onClick={() => {
-          console.log("row", row);
           if (onRowSelect) {
             onRowSelect(row);
           }
@@ -95,8 +95,21 @@ const Grid = (props) => {
   );
 };
 
-Grid.propTypes = {};
+Grid.propTypes = {
+  columnsConfig: PropTypes.objectOf(PropTypes.any),
+  defaultSort: PropTypes.shape({
+    sortBy: PropTypes.string,
+    direction: PropTypes.string
+  }),
+  gridData: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  onRowSelect: PropTypes.func
+};
 
-Grid.defaultProps = {};
+Grid.defaultProps = {
+  columnsConfig: {},
+  defaultSort: {},
+  gridData: [],
+  onRowSelect: undefined
+};
 
 export default Grid;

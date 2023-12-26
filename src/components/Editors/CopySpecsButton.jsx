@@ -35,13 +35,11 @@ const CopySpecsButton = props => {
             sourceGuitar: parentFormProps?.values?.sibling ?? ""
           }}
           onSubmit={values => {
-            console.log("values", values);
             const updatedSpecifications = [
               ...(guitars.find(guitar => guitar._id === values.sourceGuitar)
                 ?.specifications ?? []),
               ...(parentFormProps.values?.specifications ?? [])
             ];
-            console.log("updatedSpecifications", updatedSpecifications);
             writeArray("specifications", updatedSpecifications);
           }}
         >

@@ -88,6 +88,9 @@ const GuitarList2 = (props) => {
       </Row>
       <Grid
         columnsConfig={guitarsColumnsConfig}
+        defaultSort={{
+          sortBy: "name"
+        }}
         gridData={guitars}
         onRowSelect={(row) => selectAndGoToGuitar(row._id)}
       />

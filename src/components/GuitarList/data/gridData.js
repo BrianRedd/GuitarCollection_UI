@@ -15,10 +15,11 @@ export const guitarsColumnsConfig = {
     cellComponent: (row) =>
       !_.isEmpty(row.frontPicture) ? (
         <React.Fragment>
-          <img
-            src={`${SERVER_LOCATION}/gallery/${row?.frontPicture.image}`}
-            height="60"
-            alt={row.name}
+          <div
+            className="picture-thumbnail"
+            style={{
+              backgroundImage: `url("${SERVER_LOCATION}/gallery/${row?.frontPicture.image}")`
+            }}
           />
           {Boolean(row.noOfPictures) && (
             <Badge color="info" className="picture-badge">
@@ -39,7 +40,10 @@ export const guitarsColumnsConfig = {
       row?.brand?.logo ? (
         <img
           src={`${SERVER_LOCATION}/brandLogos/${row?.brand?.logo}`}
-          height="45"
+          style={{
+            maxHeight: "45px",
+            maxWidth: "76px"
+          }}
           alt={row?.brand?.name}
         ></img>
       ) : (
@@ -60,7 +64,7 @@ export const guitarsColumnsConfig = {
   },
   dateAcquired: {
     title: "Date Acquired",
-    cellComponent: row => formatDate(row.dateAcquired, "MMM YYYY")
+    cellComponent: (row) => formatDate(row.dateAcquired, "MMM YYYY")
   },
   lastPlayed: {
     title: "Last Played"
