@@ -1,8 +1,10 @@
 /** @module Grid */
 
+import React, { useState } from "react";
+
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import _ from "lodash";
 import { Table } from "reactstrap";
 import { TEXT_ASC, TEXT_DESC } from "../data/constants";
 
@@ -13,24 +15,14 @@ import { TEXT_ASC, TEXT_DESC } from "../data/constants";
 const Grid = (props) => {
   const { columnsConfig, gridData, onRowSelect } = props;
 
-  console.log("gridData", gridData);
-
-  /*
-    columnsConfg = {
-        fieldName: {
-            title: "Field"
-        }
-    }
-  */
-
-  const SORT_DIRECTION = [TEXT_ASC, TEXT_DESC];
-
   const [sortField, setSortField] = useState("");
   const [sortDirection, setSortDirection] = useState(0);
 
-  console.log("sortField", sortField, "sortDirection", SORT_DIRECTION?.[sortDirection]);
-
   const columnKeys = Object.keys(columnsConfig ?? {});
+
+  const sortedGridData = sortField
+    ? _.orderBy(gridData, sortField, sortDirection ? TEXT_ASC : TEXT_DESC)
+    : gridData;
 
   const TableHeader = () => {
     const tableHeader = columnKeys.map((hrow) => (
@@ -89,7 +81,7 @@ const Grid = (props) => {
   };
 
   const TableBody = () => {
-    const gridRows = gridData.map((row, idx) => (
+    const gridRows = sortedGridData.map((row, idx) => (
       <TableRow key={`row_${idx}`} row={row} />
     ));
     return <tbody>{gridRows}</tbody>;

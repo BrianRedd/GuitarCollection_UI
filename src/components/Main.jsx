@@ -15,7 +15,6 @@ import Brands from "./Brands/Brands";
 import Gallery from "./Gallery/Gallery";
 import GuitarDetail from "./GuitarDetail/GuitarDetail";
 import GuitarList from "./GuitarList/GuitarList";
-import GuitarList2 from "./GuitarList/GuitarList2";
 import Home from "./Viewer/Home";
 import Modals from "./Viewer/Modals";
 import NavBar from "./Viewer/NavBar";
@@ -109,12 +108,6 @@ const Main = () => {
           <Home selectAndGoToGuitar={selectAndGoToGuitar} />
         </div>
         <hr />
-        <div>
-          <GuitarList2
-            selectAndGoToGuitar={selectAndGoToGuitar}
-            editGuitar={editGuitar}
-          />
-        </div>
         <div ref={sectionRefs[1]}>
           <GuitarList selectAndGoToGuitar={selectAndGoToGuitar} editGuitar={editGuitar} />
         </div>

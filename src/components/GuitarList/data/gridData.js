@@ -6,6 +6,7 @@ import _ from "lodash";
 import { Badge } from "reactstrap";
 
 import { SERVER_LOCATION } from "../../../utils/constants";
+import { formatDate } from "../../../utils/utils";
 
 export const guitarsColumnsConfig = {
   noOfPictures: {
@@ -58,7 +59,8 @@ export const guitarsColumnsConfig = {
     title: "Status"
   },
   dateAcquired: {
-    title: "Date Acquired"
+    title: "Date Acquired",
+    cellComponent: row => formatDate(row.dateAcquired, "MMM YYYY")
   },
   lastPlayed: {
     title: "Last Played"

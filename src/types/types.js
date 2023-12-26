@@ -6,7 +6,6 @@ import {
   bool,
   number,
   objectOf,
-  oneOfType,
   shape,
   string
 } from "prop-types";

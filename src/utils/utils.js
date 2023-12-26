@@ -3,7 +3,7 @@
 import moment from "moment";
 import { ALLOWED_DATE_FORMATS } from "../components/data/constants";
 
-export const getColWidth = width => {
+export const getColWidth = (width) => {
   const xs = 12;
   let md = 0;
   let lg = 0;
@@ -27,7 +27,7 @@ export const getColWidth = width => {
   };
 };
 
-export const getUserName = user => {
+export const getUserName = (user) => {
   return user.firstname
     ? `${user.firstname} ${user.lastname ?? ""}`
     : user.username ?? "User";
@@ -43,11 +43,11 @@ export const cookieFunctions = {
     d.setTime(d.getTime() + age * 24 * 60 * 60 * 1000);
     document.cookie = `${cname}=${cvalue};expires=${d.toUTCString()};path=/`;
   },
-  getCookie: cname => {
+  getCookie: (cname) => {
     const name = `${cname}=`;
     const cookieArray = document.cookie.split(";");
     let requestedCookie = "";
-    cookieArray.forEach(cookie => {
+    cookieArray.forEach((cookie) => {
       const c = cookie.replace(/ /g, "");
       if (c.indexOf(name) === 0) {
         requestedCookie = c.substring(name.length, c.length);
@@ -57,12 +57,10 @@ export const cookieFunctions = {
   }
 };
 
-export const formatDate = (dateString, ignoreDay) => {
+export const formatDate = (dateString, format = "YYYY-MM-DD") => {
   const isValid = moment(dateString, ALLOWED_DATE_FORMATS, true).isValid();
   if (!isValid) {
     return dateString;
   }
-  return moment(dateString, ALLOWED_DATE_FORMATS, true).format(
-    ignoreDay ? "YYYY-MM" : "YYYY-MM-DD"
-  );
+  return moment(dateString, ALLOWED_DATE_FORMATS, true).format(format);
 };
