@@ -83,20 +83,18 @@ const Main = () => {
   /**
    * @function selectAndGoToGuitar
    * @description selects guitar and redirects to details tab
-   * @param {string} id
+   * @param {string} name
    */
-  const selectAndGoToGuitar = (id) => {
+  const selectAndGoToGuitar = name => {
     const selectedGuitar = guitars?.find(
-      (guitar) => guitar._id === id || guitar.name === id
+      (guitar) => guitar._id === name || guitar.name === name
     );
-    window.location.hash = `#${id}`;
-    dispatch(updateSelected(selectedGuitar?.name ?? id));
+    dispatch(updateSelected(selectedGuitar?.name ?? name));
     scrollTo(4);
   };
 
-  const editGuitar = (id) => {
-    window.location.hash = `#${id}`;
-    dispatch(updateSelected(id));
+  const editGuitar = (name) => {
+    dispatch(updateSelected(name));
     dispatch(toggleToggle({ id: "editGuitarModal" }));
   };
 

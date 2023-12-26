@@ -209,7 +209,7 @@ const GuitarList = (props) => {
                   <TableRow
                     key={row._id}
                     onClick={() => {
-                      selectAndGoToGuitar(row._id);
+                      selectAndGoToGuitar(row.name);
                     }}
                   >
                     <TableCell component="th" scope="row" className="text-nowrap">

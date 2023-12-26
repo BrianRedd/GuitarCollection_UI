@@ -28,13 +28,10 @@ const EditGuitarModal = () => {
   const { isOpen } = useModalContext("editGuitarModal");
   const toggle = () => dispatch(toggleToggle({ id: "editGuitarModal" }));
 
-  const hash = (window.location.hash ?? "").slice(1);
-
   const initialValues = {
     ...types.guitar.defaults,
     ...guitars.find(
-      (guitar) =>
-        guitar.name === selectedGuitar || guitar._id === hash || guitar.name === hash
+      (guitar) => guitar.name === selectedGuitar || guitar._id === selectedGuitar
     )
   };
 

@@ -92,7 +92,7 @@ const GuitarList2 = (props) => {
           sortBy: "name"
         }}
         gridData={guitars}
-        onRowSelect={(row) => selectAndGoToGuitar(row._id)}
+        onRowSelect={(row) => selectAndGoToGuitar(row.name)}
       />
     </Card>
   );

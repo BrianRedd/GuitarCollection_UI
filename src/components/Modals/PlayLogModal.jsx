@@ -49,7 +49,7 @@ const PlayLogModal = () => {
           dispatch(updateGuitar(values)).then(() => {
             toggle();
             if (selectAndGoToGuitar) {
-              selectAndGoToGuitar(guitar._id);
+              selectAndGoToGuitar(guitar.name);
             }
           });
         }}

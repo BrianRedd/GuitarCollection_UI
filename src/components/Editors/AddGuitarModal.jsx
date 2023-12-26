@@ -44,7 +44,7 @@ const AddGuitarModal = () => {
             if (response) {
               dispatch(getGuitars()).then(() => {
                 actions.resetForm(initialValues);
-                selectAndGoToGuitar(response?.payload?.data?._id);
+                selectAndGoToGuitar(response?.payload?.data?.name);
               });
             }
             toggle();

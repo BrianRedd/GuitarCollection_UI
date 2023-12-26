@@ -20,17 +20,16 @@ import {
   STATUS_OPTION_PLAYABLE
 } from "../data/constants";
 
-const Home = props => {
+const Home = (props) => {
   const { selectAndGoToGuitar } = props;
 
   const dispatch = useDispatch();
 
-  const hash = (window.location.hash ?? "").slice(1);
 
-  const guitars = useSelector(state => state.guitarsState?.list) ?? [];
-  const brands = useSelector(state => state.brandsState?.list) ?? [];
-  const gallery = useSelector(state => state.galleryState?.list) ?? [];
-  const filters = useSelector(state => state.filtersState.filters) ?? {};
+  const guitars = useSelector((state) => state.guitarsState?.list) ?? [];
+  const brands = useSelector((state) => state.brandsState?.list) ?? [];
+  const gallery = useSelector((state) => state.galleryState?.list) ?? [];
+  const filters = useSelector((state) => state.filtersState.filters) ?? {};
 
   const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
   const hasAdminPermissions = usePermissions(ADMIN_PERM);
@@ -39,23 +38,28 @@ const Home = props => {
 
   const [featuredGuitar, setFeaturedGuitar] = useState({});
 
-  const getFeaturedGuitar = isNew => {
+  const getFeaturedGuitar = (isNew) => {
     const availableGuitars = applyFilter(guitars, true);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const guitarParam = urlParams.get("guitar") || urlParams.get("g");
 
     // TODO: take into account last played
     const rand = Math.floor(Math.random() * availableGuitars.length);
 
     const featuredGuitar = (guitars ?? []).find(
-      guitar =>
-        (!isNew && hash && (guitar._id === hash || guitar.name === hash)) ||
-        (isNew && guitar._id === availableGuitars[rand]._id)
+      (guitar) =>
+        (!isNew && !guitarParam && guitar.name === availableGuitars[rand].name) ||
+        (!isNew &&
+          guitarParam &&
+          (guitar._id === guitarParam || guitar.name === guitarParam)) ||
+        (isNew && guitar.name === availableGuitars[rand].name)
     ) ?? {
       name: "Unknown"
     };
 
-    window.location.hash = `#${featuredGuitar?._id ?? ""}`;
     dispatch(updateSelected(featuredGuitar.name));
-    const frontPicture = (gallery ?? []).find(image => {
+    const frontPicture = (gallery ?? []).find((image) => {
       return (
         (featuredGuitar.pictures ?? []).includes(image?._id) &&
         image?.caption &&
@@ -63,7 +67,7 @@ const Home = props => {
       );
     })?.image;
     const brandObject = (brands ?? []).find(
-      brand => brand.id === featuredGuitar.brandId
+      (brand) => brand.id === featuredGuitar.brandId
     );
     return {
       ...featuredGuitar,
@@ -76,19 +80,11 @@ const Home = props => {
 
   useEffect(() => {
     if (guitars.length && brands.length && gallery.length) {
-      const featuredGuitar = getFeaturedGuitar(!Boolean(hash));
+      const featuredGuitar = getFeaturedGuitar(false);
       setFeaturedGuitar(featuredGuitar);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guitars, brands, gallery]);
-
-  useEffect(() => {
-    if (!hash) {
-      const featuredGuitar = getFeaturedGuitar(true);
-      setFeaturedGuitar(featuredGuitar);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hash]);
 
   return (
     <Container fluid="md" className="mt-4">
@@ -110,10 +106,9 @@ const Home = props => {
             {_.round(
               _.mean(
                 guitars?.map(
-                  guitar =>
-                    guitar.purchaseHistory?.find(
-                      ph => ph.ownershipStatus === "PUR"
-                    )?.amount ?? 0
+                  (guitar) =>
+                    guitar.purchaseHistory?.find((ph) => ph.ownershipStatus === "PUR")
+                      ?.amount ?? 0
                 )
               ),
               2
@@ -134,7 +129,7 @@ const Home = props => {
                 <Col>
                   <h5
                     onClick={() => {
-                      selectAndGoToGuitar(featuredGuitar._id);
+                      selectAndGoToGuitar(featuredGuitar.name);
                     }}
                   >
                     <b>{featuredGuitar.name}</b>
@@ -176,9 +171,7 @@ const Home = props => {
                   <p>
                     <b>Tuning:</b> {featuredGuitar.tuning}
                   </p>
-                  {!(filters.featuredStatus ?? []).includes(
-                    STATUS_OPTION_PLAYABLE
-                  ) && (
+                  {!(filters.featuredStatus ?? []).includes(STATUS_OPTION_PLAYABLE) && (
                     <p>
                       <b>Status:</b> {featuredGuitar.status}
                     </p>
@@ -198,7 +191,7 @@ const Home = props => {
                       variant="contained"
                       disableElevation
                       color="success"
-                      onClick={async event => {
+                      onClick={async (event) => {
                         event.preventDefault();
 
                         dispatch(
@@ -239,7 +232,7 @@ const Home = props => {
             style={{ minWidth: "200px", minHeight: "200px" }}
             className="border"
             onClick={() => {
-              selectAndGoToGuitar(featuredGuitar._id);
+              selectAndGoToGuitar(featuredGuitar.name);
             }}
           >
             {hasFrontPicture ? (
