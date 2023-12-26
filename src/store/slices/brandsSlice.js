@@ -84,12 +84,6 @@ const brandsSlice = createSlice({
   reducers: {
     clearMessage(state, action) {
       state.message = {};
-    },
-    updatePagination(state, action) {
-      state.pagination = {
-        ...state.pagination,
-        ...action.payload.data
-      };
     }
   },
   extraReducers: builder => {

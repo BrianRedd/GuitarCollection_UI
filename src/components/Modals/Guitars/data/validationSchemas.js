@@ -2,7 +2,7 @@
 
 import * as Yup from "yup";
 
-import { TEXT_REQUIRED } from "../../data/constants";
+import { TEXT_REQUIRED } from "../../../data/constants";
 
 export const getGuitarsValidationSchema = ({ guitars, isEdit }) => {
   const usedNames = (guitars ?? []).map(guitar => guitar.name);

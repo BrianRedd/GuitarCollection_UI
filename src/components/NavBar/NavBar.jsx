@@ -5,7 +5,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   faAward,
   faFilter,
+  faGrinHearts,
   faGuitar,
+  faHandSparkles,
   faImages,
   faList,
   faRegistered,
@@ -40,7 +42,7 @@ import { GUITAR_PERM } from "../data/constants";
  * @function NavBar
  * @returns {React.ReactNode}
  */
-const NavBar = props => {
+const NavBar = (props) => {
   const { scrollTo, selectAndGoToGuitar } = props;
 
   const dispatch = useDispatch();
@@ -48,19 +50,17 @@ const NavBar = props => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
 
   const { message: guitarsMessage, selected: selectedGuitar } =
-    useSelector(state => state.guitarsState) ?? {};
-  const { message: brandsMessage } =
-    useSelector(state => state.brandsState) ?? {};
-  const { message: galleryMessage } =
-    useSelector(state => state.galleryState) ?? {};
-  const { user } = useSelector(state => state.userState) ?? {};
-  const { filters } = useSelector(state => state.filtersState) ?? {};
+    useSelector((state) => state.guitarsState) ?? {};
+  const { message: brandsMessage } = useSelector((state) => state.brandsState) ?? {};
+  const { message: galleryMessage } = useSelector((state) => state.galleryState) ?? {};
+  const { user } = useSelector((state) => state.userState) ?? {};
+  const { filters } = useSelector((state) => state.filtersState) ?? {};
 
   const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
 
   const numberOfAppliedFilters = useMemo(
     () =>
-      Object.keys(filters ?? {}).filter(filter => {
+      Object.keys(filters ?? {}).filter((filter) => {
         return (
           (Array.isArray(filters[filter]) && Boolean(filters[filter].length)) ||
           (!Array.isArray(filters[filter]) && filters[filter])
@@ -154,15 +154,26 @@ const NavBar = props => {
           <NavItem
             onClick={() => {
               toggle();
+              scrollTo(5);
+            }}
+          >
+            <FontAwesomeIcon icon={faGrinHearts} /> Wish List
+          </NavItem>
+          <NavItem
+            onClick={() => {
+              toggle();
               dispatch(toggleToggle({ id: "filterModal" }));
             }}
           >
-            <FontAwesomeIcon icon={faFilter} /> Filters
-            {Boolean(numberOfAppliedFilters) && (
-              <Badge className="ms-2" color="warning">
-                {numberOfAppliedFilters}
-              </Badge>
-            )}
+            <FontAwesomeIcon icon={faFilter} />{" "}
+            <span>
+              Filters
+              {Boolean(numberOfAppliedFilters) && (
+                <Badge className="ms-2" color="warning">
+                  {numberOfAppliedFilters}
+                </Badge>
+              )}
+            </span>
           </NavItem>
           {hasEditGuitarPermissions && (
             <NavItem
@@ -179,9 +190,9 @@ const NavBar = props => {
               <FontAwesomeIcon icon={faSquarePlus} /> Add Instrument
             </NavItem>
           )}
+          <div className="ms-auto" />
           {user._id ? (
             <NavItem
-              className="ms-auto"
               onClick={() => {
                 toggle();
                 dispatch(toggleToggle({ id: "manageUserModal" }));

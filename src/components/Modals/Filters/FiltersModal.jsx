@@ -21,16 +21,16 @@ import {
   Row
 } from "reactstrap";
 
-import useModalContext from "../../hooks/useModalContext";
-import useOptions from "../../hooks/useOptions";
-import { writeFilters } from "../../store/slices/filtersSlice";
-import { toggleToggle } from "../../store/slices/toggleSlice";
-import * as types from "../../types/types";
-import { FILTER_FEATURED_STATUS, FILTER_STATUS } from "../data/constants";
+import useModalContext from "../../../hooks/useModalContext";
+import useOptions from "../../../hooks/useOptions";
+import { writeFilters } from "../../../store/slices/filtersSlice";
+import { toggleToggle } from "../../../store/slices/toggleSlice";
+import * as types from "../../../types/types";
+import { FILTER_FEATURED_STATUS, FILTER_STATUS } from "../../data/constants";
 
-import InputMultiSelectField from "../common/InputMultiSelectField";
-import InputSelectField from "../common/InputSelectField";
-import InputTextField from "../common/InputTextField";
+import InputMultiSelectField from "../../common/InputMultiSelectField";
+import InputSelectField from "../../common/InputSelectField";
+import InputTextField from "../../common/InputTextField";
 
 /**
  * @function FiltersModal

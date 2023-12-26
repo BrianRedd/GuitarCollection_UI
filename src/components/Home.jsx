@@ -8,27 +8,27 @@ import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
 
-import useFilters from "../../hooks/useFilters";
-import usePermissions from "../../hooks/usePermissions";
-import { updateSelected } from "../../store/slices/guitarsSlice";
-import { toggleToggle } from "../../store/slices/toggleSlice";
-import { SERVER_LOCATION } from "../../utils/constants";
+import useFilters from "../hooks/useFilters";
+import usePermissions from "../hooks/usePermissions";
+import { updateSelected } from "../store/slices/guitarsSlice";
+import { toggleToggle } from "../store/slices/toggleSlice";
+import { SERVER_LOCATION } from "../utils/constants";
 import {
   ADMIN_PERM,
   CAPTION_OPTION_FULL_FRONT,
   GUITAR_PERM,
   STATUS_OPTION_PLAYABLE
-} from "../data/constants";
+} from "./data/constants";
 
 const Home = (props) => {
   const { selectAndGoToGuitar } = props;
 
   const dispatch = useDispatch();
 
-
   const guitars = useSelector((state) => state.guitarsState?.list) ?? [];
   const brands = useSelector((state) => state.brandsState?.list) ?? [];
   const gallery = useSelector((state) => state.galleryState?.list) ?? [];
+  const wishList = useSelector((state) => state.wishListState?.list) ?? [];
   const filters = useSelector((state) => state.filtersState.filters) ?? {};
 
   const hasEditGuitarPermissions = usePermissions(GUITAR_PERM);
@@ -94,15 +94,14 @@ const Home = (props) => {
         </Col>
       </Row>
       {hasAdminPermissions && (
-        <Row className="border d-flex align-items-baseline">
+        <Row className="border d-flex align-items-center">
+          <h3>Statistics</h3>
+          <Col>{guitars.length} Instruments</Col>
+          <Col>{brands.length} Brands</Col>
+          <Col>{gallery.length} Gallery Images</Col>
+          <Col>{wishList.length} Wish List Items</Col>
           <Col>
-            <h3>Statistics</h3>
-          </Col>
-          <Col>{guitars.length} Guitars Loaded</Col>
-          <Col>{brands.length} Brands Loaded</Col>
-          <Col>{gallery.length} Gallery Images Loaded</Col>
-          <Col>
-            Average Guitar Cost: $
+            Average Instrument Cost: $
             {_.round(
               _.mean(
                 guitars?.map(

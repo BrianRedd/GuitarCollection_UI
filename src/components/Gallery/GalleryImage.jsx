@@ -20,7 +20,7 @@ import {
 import { SERVER_LOCATION } from "../../utils/constants";
 import { GUITAR_PERM } from "../data/constants";
 
-import ImageViewerModal from "../Modals/ImageViewerModal";
+import ImageViewerModal from "../Modals/Images/ImageViewerModal";
 
 import { toggleToggle } from "../../store/slices/toggleSlice";
 import "./styles/gallery.scss";

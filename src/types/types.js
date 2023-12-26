@@ -316,3 +316,51 @@ export const toggleState = {
     toggles: []
   }
 };
+
+
+/*
+ WISH LIST TYPES
+ ---------------*/
+/**
+ * @const wish
+ */
+export const wish = {
+  types: shape({
+    brandId: string,
+    model: string,
+    instrumentType: string,
+    noOfStrings: number,
+    soundScape: string,
+    color: string,
+    notes: string,
+  }),
+  defaults: {
+    brandId: "",
+    model: "",
+    instrumentType: INSTRUMENT_OPTION_GUITAR,
+    noOfStrings: 6,
+    soundScape: "",
+    color: "",
+    notes: ""
+  }
+};
+
+/**
+ * @const wishListState
+ * @description Types for wishListState Redux store
+ */
+export const wishListState = {
+  types: shape({
+    list: arrayOf(wish.types),
+    loading: bool,
+    message: shape({
+      type: string,
+      text: string
+    })
+  }),
+  defaults: {
+    list: [],
+    loading: false,
+    message: {}
+  }
+};

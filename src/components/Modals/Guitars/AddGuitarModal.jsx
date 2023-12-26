@@ -5,43 +5,34 @@ import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
-import useModalContext from "../../hooks/useModalContext";
-import { getGuitars, updateGuitar } from "../../store/slices/guitarsSlice";
-import { toggleToggle } from "../../store/slices/toggleSlice";
-import * as types from "../../types/types";
-import { INSTRUMENT_OPTION_GUITAR } from "../data/constants";
+import { addGuitar, getGuitars } from "../../../store/slices/guitarsSlice";
+import { toggleToggle } from "../../../store/slices/toggleSlice";
+import * as types from "../../../types/types";
 import { getGuitarsValidationSchema } from "./data/validationSchemas";
 
+import useModalContext from "../../../hooks/useModalContext";
 import GuitarForm from "./GuitarForm";
 import GuitarFormButtons from "./GuitarFormButtons";
 
 /**
- * @function EditGuitarModal
+ * @function AddGuitarModal
  * @returns {React.ReactNode}
  */
-const EditGuitarModal = () => {
+const AddGuitarModal = () => {
   const dispatch = useDispatch();
 
-  const { list: guitars, selected: selectedGuitar } =
-    useSelector((state) => state.guitarsState) ?? {};
+  const guitars = useSelector(state => state.guitarsState?.list) ?? [];
 
-  const { isOpen } = useModalContext("editGuitarModal");
-  const toggle = () => dispatch(toggleToggle({ id: "editGuitarModal" }));
+  const { isOpen, selectAndGoToGuitar } = useModalContext("addGuitarModal");
+  const toggle = () => dispatch(toggleToggle({ id: "addGuitarModal" }));
 
-  const initialValues = {
-    ...types.guitar.defaults,
-    ...guitars.find(
-      (guitar) => guitar.name === selectedGuitar || guitar._id === selectedGuitar
-    )
-  };
+  const initialValues = types.guitar.defaults;
 
-  const submitButtonText = `Update ${
-    initialValues.name ?? initialValues.instrumentType ?? INSTRUMENT_OPTION_GUITAR
-  }`;
+  const submitButtonText = "Add Instrument";
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} fullscreen>
-      <ModalHeader toggle={toggle}>Edit {initialValues.name ?? "Guitar"}</ModalHeader>
+      <ModalHeader toggle={toggle}>Add Instrument</ModalHeader>
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {
@@ -49,15 +40,17 @@ const EditGuitarModal = () => {
             ...values,
             specifications: _.orderBy(values?.specifications, "specType")
           };
-          dispatch(updateGuitar(submissionValues)).then(() => {
-            dispatch(getGuitars()).then(() => {
-              actions.resetForm(initialValues);
-            });
+          dispatch(addGuitar(submissionValues)).then(response => {
+            if (response) {
+              dispatch(getGuitars()).then(() => {
+                actions.resetForm(initialValues);
+                selectAndGoToGuitar(response?.payload?.data?.name);
+              });
+            }
+            toggle();
           });
-          toggle();
         }}
         validationSchema={getGuitarsValidationSchema({
-          isEdit: true,
           guitars
         })}
       >
@@ -82,4 +75,4 @@ const EditGuitarModal = () => {
   );
 };
 
-export default EditGuitarModal;
+export default AddGuitarModal;

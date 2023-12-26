@@ -18,17 +18,17 @@ import {
   Row
 } from "reactstrap";
 
-import usePermissions from "../../hooks/usePermissions";
-import { SERVER_LOCATION } from "../../utils/constants";
+import usePermissions from "../../../hooks/usePermissions";
+import { SERVER_LOCATION } from "../../../utils/constants";
 import {
   CAPTION_OPTIONS_DEFAULTS,
   CAPTION_OPTION_RECEIPT,
   PURCHASE_PERM
-} from "../data/constants";
+} from "../../data/constants";
 
-import InputFreeFormField from "../common/InputFreeFormField";
+import InputFreeFormField from "../../common/InputFreeFormField";
 
-import "./styles/modalstyles.scss";
+import "../styles/modalstyles.scss";
 
 /**
  * @function ImageSelectorModal

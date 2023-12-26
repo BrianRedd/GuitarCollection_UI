@@ -29,18 +29,18 @@ import {
   ModalHeader
 } from "reactstrap";
 
-import { updateUser, writeUser } from "../../store/slices/userSlice";
+import { updateUser, writeUser } from "../../../store/slices/userSlice";
 
-import useModalContext from "../../hooks/useModalContext";
-import usePermissions from "../../hooks/usePermissions";
-import { toggleToggle } from "../../store/slices/toggleSlice";
-import md5Hasher from "../../utils/md5";
-import { cookieFunctions, getUserName } from "../../utils/utils";
-import { ADMIN_PERM, PERMISSIONS_OPTIONS } from "../data/constants";
-import { manageUserValidationSchema } from "./data/modalData";
+import useModalContext from "../../../hooks/useModalContext";
+import usePermissions from "../../../hooks/usePermissions";
+import { toggleToggle } from "../../../store/slices/toggleSlice";
+import md5Hasher from "../../../utils/md5";
+import { cookieFunctions, getUserName } from "../../../utils/utils";
+import { ADMIN_PERM, PERMISSIONS_OPTIONS } from "../../data/constants";
+import { manageUserValidationSchema } from "../data/modalData";
 
-import InputMultiSelectField from "../common/InputMultiSelectField";
-import InputTextField from "../common/InputTextField";
+import InputMultiSelectField from "../../common/InputMultiSelectField";
+import InputTextField from "../../common/InputTextField";
 import AddEditUserForm from "./AddEditUserForm";
 
 /**

@@ -8,7 +8,7 @@ import { Button } from "@mui/material";
 import PropTypes from "prop-types";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
-import { SERVER_LOCATION } from "../../utils/constants";
+import { SERVER_LOCATION } from "../../../utils/constants";
 
 /**
  * @function ImageViewerModal

@@ -23,10 +23,10 @@ import {
   Row
 } from "reactstrap";
 
-import { SERVER_LOCATION } from "../../utils/constants";
-import { CAPTION_OPTIONS_DEFAULTS } from "../data/constants";
+import { SERVER_LOCATION } from "../../../utils/constants";
+import { CAPTION_OPTIONS_DEFAULTS } from "../../data/constants";
 
-import InputFreeFormField from "../common/InputFreeFormField";
+import InputFreeFormField from "../../common/InputFreeFormField";
 
 /**
  * @function ImageUploadModal

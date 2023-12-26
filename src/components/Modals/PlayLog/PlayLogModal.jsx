@@ -14,12 +14,12 @@ import { Button } from "@mui/material";
 import { Formik } from "formik";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
-import useModalContext from "../../hooks/useModalContext";
-import useUpdatePlayLog from "../../hooks/useUpdatePlayLog";
-import { updateGuitar } from "../../store/slices/guitarsSlice";
-import { toggleToggle } from "../../store/slices/toggleSlice";
-import { DATE_FORMAT } from "../data/constants";
-import EditableGrid from "../common/EditableGrid";
+import useModalContext from "../../../hooks/useModalContext";
+import useUpdatePlayLog from "../../../hooks/useUpdatePlayLog";
+import { updateGuitar } from "../../../store/slices/guitarsSlice";
+import { toggleToggle } from "../../../store/slices/toggleSlice";
+import { DATE_FORMAT } from "../../data/constants";
+import EditableGrid from "../../common/EditableGrid";
 
 
 /**

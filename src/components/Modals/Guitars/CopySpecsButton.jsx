@@ -12,8 +12,8 @@ import { Button, IconButton } from "@mui/material";
 import { Formik, useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import { Row } from "reactstrap";
-import useOptions from "../../hooks/useOptions";
-import InputSelectField from "../common/InputSelectField";
+import useOptions from "../../../hooks/useOptions";
+import InputSelectField from "../../common/InputSelectField";
 
 const CopySpecsButton = props => {
   const { writeArray } = props;

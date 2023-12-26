@@ -10,9 +10,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import useModalContext from "../../hooks/useModalContext";
+import useModalContext from "../../../hooks/useModalContext";
 
-import { toggleToggle } from "../../store/slices/toggleSlice";
+import { toggleToggle } from "../../../store/slices/toggleSlice";
 
 /**
  * @function ConfirmationModal

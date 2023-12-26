@@ -32,8 +32,8 @@ import {
 } from "../data/constants";
 
 import GalleryImage from "../Gallery/GalleryImage";
-import ImageSelectorModal from "../Modals/ImageSelectorModal";
-import ImageUploadModal from "../Modals/ImageUploadModal";
+import ImageSelectorModal from "../Modals/Images/ImageSelectorModal";
+import ImageUploadModal from "../Modals/Images/ImageUploadModal";
 
 import "../Gallery/styles/gallery.scss";
 

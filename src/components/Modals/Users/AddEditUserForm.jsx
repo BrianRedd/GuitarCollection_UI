@@ -16,18 +16,18 @@ import _ from "lodash";
 import { useDispatch } from "react-redux";
 import { Collapse } from "reactstrap";
 
-import usePermissions from "../../hooks/usePermissions";
+import usePermissions from "../../../hooks/usePermissions";
 import {
   addUser,
   deleteUser,
   getUser,
   updateUser
-} from "../../store/slices/userSlice";
-import * as types from "../../types/types";
-import { ADMIN_PERM, PERMISSIONS_OPTIONS } from "../data/constants";
+} from "../../../store/slices/userSlice";
+import * as types from "../../../types/types";
+import { ADMIN_PERM, PERMISSIONS_OPTIONS } from "../../data/constants";
 
-import InputMultiSelectField from "../common/InputMultiSelectField";
-import InputTextField from "../common/InputTextField";
+import InputMultiSelectField from "../../common/InputMultiSelectField";
+import InputTextField from "../../common/InputTextField";
 
 const AddEditUserForm = () => {
   const dispatch = useDispatch();

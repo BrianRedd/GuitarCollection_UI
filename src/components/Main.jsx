@@ -15,9 +15,11 @@ import Brands from "./Brands/Brands";
 import Gallery from "./Gallery/Gallery";
 import GuitarDetail from "./GuitarDetail/GuitarDetail";
 import GuitarList from "./GuitarList/GuitarList";
-import Home from "./Viewer/Home";
-import Modals from "./Viewer/Modals";
-import NavBar from "./Viewer/NavBar";
+import { getWishList } from "../store/slices/wishListSlice";
+import WishList from "./WishList/WishList";
+import NavBar from "./NavBar/NavBar";
+import Home from "./Home";
+import Modals from "./Modals/Modals";
 
 /**
  * @function Main
@@ -33,7 +35,8 @@ const Main = () => {
     useRef(null), // 1 guitarList
     useRef(null), // 2 gallery
     useRef(null), // 3 brands
-    useRef(null) // 4 detail
+    useRef(null), // 4 detail
+    useRef(null) // 5 wishlist
   ];
 
   useEffect(() => {
@@ -52,6 +55,13 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(getGallery()).then((response) => {
+      enqueueSnackbar(response.payload.message);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    dispatch(getWishList()).then((response) => {
       enqueueSnackbar(response.payload.message);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -123,6 +133,10 @@ const Main = () => {
         <hr />
         <div ref={sectionRefs[2]}>
           <Gallery selectAndGoToGuitar={selectAndGoToGuitar} />
+        </div>
+        <hr />
+        <div ref={sectionRefs[5]}>
+          <WishList />
         </div>
       </div>
       <Modals />

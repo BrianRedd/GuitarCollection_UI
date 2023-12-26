@@ -29,7 +29,7 @@ import {
 } from "../data/constants";
 import { galleryValidationSchema } from "./data/validationSchemas";
 
-import ImageUploadModal from "../Modals/ImageUploadModal";
+import ImageUploadModal from "../Modals/Images/ImageUploadModal";
 import GalleryImage from "./GalleryImage";
 
 import "./styles/gallery.scss";

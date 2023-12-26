@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { useFormikContext } from "formik";
 import PropTypes from "prop-types";
-
-import usePermissions from "../../hooks/usePermissions";
-import { GUITAR_PERM } from "../data/constants";
-
 import { useDispatch } from "react-redux";
-import { removeGuitar } from "../../store/slices/guitarsSlice";
-import { toggleToggle } from "../../store/slices/toggleSlice";
+
+import usePermissions from "../../../hooks/usePermissions";
+import { removeGuitar } from "../../../store/slices/guitarsSlice";
+import { toggleToggle } from "../../../store/slices/toggleSlice";
+import { GUITAR_PERM } from "../../data/constants";
+
 import "./styles/editors.scss";
 
 /**
@@ -43,7 +43,7 @@ const GuitarFormButtons = (props) => {
                 }?`,
                 handleYes: () => {
                   toggle();
-                  dispatch(removeGuitar(formValues._id))
+                  dispatch(removeGuitar(formValues._id));
                 }
               })
             );

@@ -70,12 +70,6 @@ const guitarsSlice = createSlice({
     clearMessage(state, action) {
       state.message = {};
     },
-    updatePagination(state, action) {
-      state.pagination = {
-        ...state.pagination,
-        ...action.payload
-      };
-    },
     updateSelected(state, action) {
       state.selected = action.payload;
     }
@@ -151,7 +145,7 @@ const guitarsSlice = createSlice({
   }
 });
 
-export const { clearMessage, updatePagination, updateSelected } =
+export const { clearMessage, updateSelected } =
   guitarsSlice.actions;
 
 export default guitarsSlice.reducer;

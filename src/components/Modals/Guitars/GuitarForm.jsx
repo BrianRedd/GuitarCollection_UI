@@ -10,23 +10,23 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Col, Form, FormGroup, Row } from "reactstrap";
 
-import useOptions from "../../hooks/useOptions";
-import usePermissions from "../../hooks/usePermissions";
-import { SERVER_LOCATION } from "../../utils/constants";
-import { getDateFromOvationSN } from "../../utils/dateFromSN";
-import { getColWidth } from "../../utils/utils";
+import useOptions from "../../../hooks/useOptions";
+import usePermissions from "../../../hooks/usePermissions";
+import { SERVER_LOCATION } from "../../../utils/constants";
+import { getDateFromOvationSN } from "../../../utils/dateFromSN";
+import { getColWidth } from "../../../utils/utils";
 import {
   CAPTION_OPTION_FULL_FRONT,
   OWNERSHIP_STATUS_OPTIONS,
   PURCHASE_PERM,
   SPEC_OPTIONS_DEFAULTS,
   TODO_OPTIONS_DEFAULTS
-} from "../data/constants";
+} from "../../data/constants";
 
-import EditableGrid from "../common/EditableGrid";
-import InputFreeFormField from "../common/InputFreeFormField";
-import InputSelectField from "../common/InputSelectField";
-import InputTextField from "../common/InputTextField";
+import EditableGrid from "../../common/EditableGrid";
+import InputFreeFormField from "../../common/InputFreeFormField";
+import InputSelectField from "../../common/InputSelectField";
+import InputTextField from "../../common/InputTextField";
 import CopySpecsButton from "./CopySpecsButton";
 
 /**

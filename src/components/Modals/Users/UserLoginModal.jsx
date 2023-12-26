@@ -16,14 +16,14 @@ import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
-import useModalContext from "../../hooks/useModalContext";
-import { toggleToggle } from "../../store/slices/toggleSlice";
-import { getUser, updateUser, writeUser } from "../../store/slices/userSlice";
-import md5Hasher from "../../utils/md5";
-import { cookieFunctions } from "../../utils/utils";
-import { userLoginValidationSchema } from "./data/modalData";
+import useModalContext from "../../../hooks/useModalContext";
+import { toggleToggle } from "../../../store/slices/toggleSlice";
+import { getUser, updateUser, writeUser } from "../../../store/slices/userSlice";
+import md5Hasher from "../../../utils/md5";
+import { cookieFunctions } from "../../../utils/utils";
+import { userLoginValidationSchema } from "../data/modalData";
 
-import InputTextField from "../common/InputTextField";
+import InputTextField from "../../common/InputTextField";
 
 /**
  * @function UserLoginModal

@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import { faCircleXmark, faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { Formik } from "formik";
@@ -17,18 +18,13 @@ import {
   Row
 } from "reactstrap";
 
-import { faCircleXmark, faSave } from "@fortawesome/free-solid-svg-icons";
-import useModalContext from "../../hooks/useModalContext";
-import {
-  addBrand,
-  getBrands,
-  updateBrand
-} from "../../store/slices/brandsSlice";
-import { toggleToggle } from "../../store/slices/toggleSlice";
-import * as types from "../../types/types";
-import { SERVER_LOCATION } from "../../utils/constants";
-import InputTextField from "../common/InputTextField";
-import { getBrandsValidationSchema } from "./data/modalData";
+import useModalContext from "../../../hooks/useModalContext";
+import { addBrand, getBrands, updateBrand } from "../../../store/slices/brandsSlice";
+import { toggleToggle } from "../../../store/slices/toggleSlice";
+import * as types from "../../../types/types";
+import { SERVER_LOCATION } from "../../../utils/constants";
+import InputTextField from "../../common/InputTextField";
+import { getBrandsValidationSchema } from "../data/modalData";
 
 /**
  * @function AddEditBrandModal
@@ -37,10 +33,9 @@ import { getBrandsValidationSchema } from "./data/modalData";
 const AddEditBrandModal = () => {
   const dispatch = useDispatch();
 
-  const brands = useSelector(state => state.brandsState.list) ?? [];
+  const brands = useSelector((state) => state.brandsState.list) ?? [];
 
-  const { isOpen, selectedBrand, isEdit } =
-    useModalContext("addEditBrandModal");
+  const { isOpen, selectedBrand, isEdit } = useModalContext("addEditBrandModal");
   const toggle = () => dispatch(toggleToggle({ id: "addEditBrandModal" }));
 
   return (
@@ -76,7 +71,7 @@ const AddEditBrandModal = () => {
           thisItem: selectedBrand?._id ? selectedBrand : null
         })}
       >
-        {formProps => {
+        {(formProps) => {
           return (
             <React.Fragment>
               <ModalBody>
@@ -86,7 +81,7 @@ const AddEditBrandModal = () => {
                       <InputTextField
                         name="name"
                         required
-                        onChange={evt => {
+                        onChange={(evt) => {
                           const value = evt.target.value;
                           if (value && value.length > 2 && !isEdit) {
                             formProps.setFieldValue(
@@ -112,11 +107,8 @@ const AddEditBrandModal = () => {
                           type="file"
                           name="image"
                           className="form-control form-control-lg"
-                          onChange={event => {
-                            formProps.setFieldValue(
-                              "logo",
-                              event.currentTarget.files[0]
-                            );
+                          onChange={(event) => {
+                            formProps.setFieldValue("logo", event.currentTarget.files[0]);
                           }}
                           required
                         />

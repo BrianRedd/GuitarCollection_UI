@@ -1,8 +1,9 @@
-/** @module GuitarList2 */
+/** @module GuitarList */
 
 import React, { useMemo } from "react";
 
 import moment from "moment";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Col, Row } from "reactstrap";
 
@@ -17,10 +18,10 @@ import Grid from "../common/Grid";
 import "./styles/guitarlist.scss";
 
 /**
- * @function GuitarList2
+ * @function GuitarList
  * @returns {React.ReactNode}
  */
-const GuitarList2 = (props) => {
+const GuitarList = (props) => {
   const { selectAndGoToGuitar } = props;
 
   const dispatch = useDispatch();
@@ -98,8 +99,12 @@ const GuitarList2 = (props) => {
   );
 };
 
-GuitarList2.propTypes = {};
+GuitarList.propTypes = {
+  selectAndGoToGuitar: PropTypes.func
+};
 
-GuitarList2.defaultProps = {};
+GuitarList.defaultProps = {
+  selectAndGoToGuitar: () => {}
+};
 
-export default GuitarList2;
+export default GuitarList;
