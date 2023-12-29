@@ -10,14 +10,18 @@ import EditGuitarModal from "./Guitars/EditGuitarModal";
 import PlayLogModal from "./PlayLog/PlayLogModal";
 import ManageUserModal from "./Users/ManageUserModal";
 import UserLoginModal from "./Users/UserLoginModal";
+import AddWishListItemModal from "./WishList/AddWishListItemModal";
+import EditWishListItemModal from "./WishList/EditWishListItemModal";
 
 const Modals = () => {
   return (
     <React.Fragment>
       <AddEditBrandModal />
       <AddGuitarModal />
+      <AddWishListItemModal />
       <ConfirmationModal />
       <EditGuitarModal />
+      <EditWishListItemModal />
       <FiltersModal />
       <ManageUserModal />
       <PlayLogModal />

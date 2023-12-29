@@ -14,7 +14,7 @@ const initialState = types.wishListState.defaults;
  * @description Makes API call to retrieve wishList from DB
  */
 export const getWishList = createAsyncThunk("wishList/getWishList", () => {
-  return axios.get(`${apiURL}/getWishList`).then((response) => {
+  return axios.get(`${apiURL}/getwishlist`).then((response) => {
     return response.data;
   });
 });
@@ -25,7 +25,7 @@ export const getWishList = createAsyncThunk("wishList/getWishList", () => {
  * @param {Object} guitarObject
  */
 export const addWishListItem = createAsyncThunk("wishList/addWishListItem", (guitarObject) => {
-  return axios.post(`${apiURL}/saveWishList`, guitarObject).then((response) => {
+  return axios.post(`${apiURL}/savewishlist`, guitarObject).then((response) => {
     enqueueSnackbar(response.data.message);
     return response.data;
   });
@@ -38,7 +38,7 @@ export const addWishListItem = createAsyncThunk("wishList/addWishListItem", (gui
  */
 export const updateWishListItem = createAsyncThunk("wishList/updateWishListItem", (guitarObject) => {
   return axios
-    .put(`${apiURL}/updateWishList/${guitarObject._id}`, guitarObject)
+    .put(`${apiURL}/updatewishlist/${guitarObject._id}`, guitarObject)
     .then((response) => {
       enqueueSnackbar(response.data.message);
       return {
@@ -54,7 +54,7 @@ export const updateWishListItem = createAsyncThunk("wishList/updateWishListItem"
  * @param {string} id
  */
 export const removeWishListItem = createAsyncThunk("wishList/removeWishListItem", (id) => {
-  return axios.delete(`${apiURL}/deleteWishList/${id}`).then((response) => {
+  return axios.delete(`${apiURL}/deletewishlist/${id}`).then((response) => {
     enqueueSnackbar(response.data.message);
     return response.data;
   });

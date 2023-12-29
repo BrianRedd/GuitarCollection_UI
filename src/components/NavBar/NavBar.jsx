@@ -4,10 +4,10 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import {
   faAward,
+  faBookAtlas,
   faFilter,
   faGrinHearts,
   faGuitar,
-  faHandSparkles,
   faImages,
   faList,
   faRegistered,
@@ -104,7 +104,7 @@ const NavBar = (props) => {
   const toggle = () => setIsHamburgerOpen(!isHamburgerOpen);
 
   return (
-    <Navbar color="dark" dark expand="lg" fixed="top">
+    <Navbar color="dark" dark expand="xl" fixed="top">
       <NavbarBrand href="/">Brian's Guitars</NavbarBrand>
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isHamburgerOpen} navbar>
@@ -190,6 +190,14 @@ const NavBar = (props) => {
               <FontAwesomeIcon icon={faSquarePlus} /> Add Instrument
             </NavItem>
           )}
+          <NavItem
+            onClick={() => {
+              toggle();
+              scrollTo(6);
+            }}
+          >
+            <FontAwesomeIcon icon={faBookAtlas} /> Resources
+          </NavItem>
           <div className="ms-auto" />
           {user._id ? (
             <NavItem

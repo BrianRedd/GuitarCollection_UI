@@ -5,12 +5,12 @@ import React from "react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Container, Row } from "reactstrap";
 
 import usePermissions from "../../hooks/usePermissions";
 import { toggleToggle } from "../../store/slices/toggleSlice";
-import * as types from "../../types/types";
 import { GUITAR_PERM } from "../data/constants";
 import { wishListColumnsConfig } from "./data/gridData";
 
@@ -22,7 +22,8 @@ import "../GuitarList/styles/guitarlist.scss";
  * @function WishList
  * @returns {React.ReactNode}
  */
-const WishList = () => {
+const WishList = (props) => {
+  const { selectAndGoToGuitar } = props;
   const dispatch = useDispatch();
 
   const wishList = useSelector((state) => state.wishListState?.list) ?? [];
@@ -54,8 +55,7 @@ const WishList = () => {
               onClick={() =>
                 dispatch(
                   toggleToggle({
-                    id: "addWishListItem",
-                    selectedBrand: types.wish.defaults
+                    id: "addWishListModal"
                   })
                 )
               }
@@ -72,10 +72,27 @@ const WishList = () => {
           sortBy: "name"
         }}
         gridData={gridData}
-        onRowSelect={(row) => console.log("row", row)}
+        onRowSelect={(row) => {
+          console.log("row", row);
+          dispatch(
+            toggleToggle({
+              id: "editWishListModal",
+              selectedInstrument: row,
+              selectAndGoToGuitar
+            })
+          );
+        }}
       />
     </Container>
   );
+};
+
+WishList.propTypes = {
+  selectAndGoToGuitar: PropTypes.func
+};
+
+WishList.defaultProps = {
+  selectAndGoToGuitar: () => {}
 };
 
 export default WishList;

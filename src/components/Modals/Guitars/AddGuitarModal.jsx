@@ -5,12 +5,12 @@ import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
+import useModalContext from "../../../hooks/useModalContext";
 import { addGuitar, getGuitars } from "../../../store/slices/guitarsSlice";
 import { toggleToggle } from "../../../store/slices/toggleSlice";
 import * as types from "../../../types/types";
 import { getGuitarsValidationSchema } from "./data/validationSchemas";
 
-import useModalContext from "../../../hooks/useModalContext";
 import GuitarForm from "./GuitarForm";
 import GuitarFormButtons from "./GuitarFormButtons";
 
@@ -21,12 +21,19 @@ import GuitarFormButtons from "./GuitarFormButtons";
 const AddGuitarModal = () => {
   const dispatch = useDispatch();
 
-  const guitars = useSelector(state => state.guitarsState?.list) ?? [];
+  const guitars = useSelector((state) => state.guitarsState?.list) ?? [];
 
-  const { isOpen, selectAndGoToGuitar } = useModalContext("addGuitarModal");
+  const {
+    isOpen,
+    selectAndGoToGuitar,
+    newGuitar = {}
+  } = useModalContext("addGuitarModal");
   const toggle = () => dispatch(toggleToggle({ id: "addGuitarModal" }));
 
-  const initialValues = types.guitar.defaults;
+  const initialValues = {
+    ...types.guitar.defaults,
+    ...newGuitar
+  };
 
   const submitButtonText = "Add Instrument";
 
@@ -40,7 +47,7 @@ const AddGuitarModal = () => {
             ...values,
             specifications: _.orderBy(values?.specifications, "specType")
           };
-          dispatch(addGuitar(submissionValues)).then(response => {
+          dispatch(addGuitar(submissionValues)).then((response) => {
             if (response) {
               dispatch(getGuitars()).then(() => {
                 actions.resetForm(initialValues);

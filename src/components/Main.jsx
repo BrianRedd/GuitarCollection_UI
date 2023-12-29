@@ -20,6 +20,7 @@ import WishList from "./WishList/WishList";
 import NavBar from "./NavBar/NavBar";
 import Home from "./Home";
 import Modals from "./Modals/Modals";
+import Resources from "./Resources/Resources";
 
 /**
  * @function Main
@@ -36,7 +37,8 @@ const Main = () => {
     useRef(null), // 2 gallery
     useRef(null), // 3 brands
     useRef(null), // 4 detail
-    useRef(null) // 5 wishlist
+    useRef(null), // 5 wishlist
+    useRef(null) // 6 resources
   ];
 
   useEffect(() => {
@@ -136,7 +138,11 @@ const Main = () => {
         </div>
         <hr />
         <div ref={sectionRefs[5]}>
-          <WishList />
+          <WishList selectAndGoToGuitar={selectAndGoToGuitar} />
+        </div>
+        <hr />
+        <div ref={sectionRefs[6]}>
+          <Resources selectAndGoToGuitar={selectAndGoToGuitar} />
         </div>
       </div>
       <Modals />
