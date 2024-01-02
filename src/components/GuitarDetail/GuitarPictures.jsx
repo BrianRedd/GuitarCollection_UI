@@ -103,8 +103,6 @@ const GuitarPictures = props => {
               );
               actions.resetForm(types.galleryImage.defaults);
               setSelectedImage({});
-              dispatch(getGallery());
-              dispatch(getGuitars());
             });
       }}
       validationSchema={galleryValidationSchema}

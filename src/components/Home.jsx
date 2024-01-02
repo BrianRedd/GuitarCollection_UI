@@ -25,7 +25,7 @@ const Home = (props) => {
 
   const dispatch = useDispatch();
 
-  const guitars = useSelector((state) => state.guitarsState?.list) ?? [];
+  const {list: guitars, selected: selectedGuitar} = useSelector((state) => state.guitarsState) ?? {};
   const brands = useSelector((state) => state.brandsState?.list) ?? [];
   const gallery = useSelector((state) => state.galleryState?.list) ?? [];
   const wishList = useSelector((state) => state.wishListState?.list) ?? [];
@@ -79,7 +79,7 @@ const Home = (props) => {
   const hasFrontPicture = !_.isEmpty(featuredGuitar.frontPicture);
 
   useEffect(() => {
-    if (guitars.length && brands.length && gallery.length) {
+    if (guitars.length && brands.length && gallery.length && !selectedGuitar) {
       const featuredGuitar = getFeaturedGuitar(false);
       setFeaturedGuitar(featuredGuitar);
     }
