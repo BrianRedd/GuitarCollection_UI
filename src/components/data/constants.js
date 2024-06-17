@@ -130,9 +130,10 @@ export const PURCHASE_PERM = "VIEW_PURCHASE_HISTORY";
 
 export const PERMISSIONS_OPTIONS = [ADMIN_PERM, BRAND_PERM, GUITAR_PERM, PURCHASE_PERM];
 
-export const FILTER_QUERY = "query";
-export const FILTER_STATUS = "status";
+export const FILTER_INSTRUMENT_TYPE = "instrumentType";
 export const FILTER_FEATURED_STATUS = "featuredStatus";
+export const FILTER_STATUS = "status";
+export const FILTER_QUERY = "query";
 
 export const ALLOWED_DATE_FORMATS = [
   "DD/MM/YYYY",

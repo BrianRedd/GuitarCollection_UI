@@ -11,22 +11,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Col,
-  Input,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  Row
-} from "reactstrap";
+import { Col, Input, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 
 import useModalContext from "../../../hooks/useModalContext";
 import useOptions from "../../../hooks/useOptions";
 import { writeFilters } from "../../../store/slices/filtersSlice";
 import { toggleToggle } from "../../../store/slices/toggleSlice";
 import * as types from "../../../types/types";
-import { FILTER_FEATURED_STATUS, FILTER_STATUS } from "../../data/constants";
+import { FILTER_FEATURED_STATUS, FILTER_INSTRUMENT_TYPE, FILTER_STATUS } from "../../data/constants";
 
 import InputMultiSelectField from "../../common/InputMultiSelectField";
 import InputSelectField from "../../common/InputSelectField";
@@ -39,7 +31,7 @@ import InputTextField from "../../common/InputTextField";
 const FiltersModal = () => {
   const dispatch = useDispatch();
 
-  const filters = useSelector(state => state.filtersState.filters) ?? {};
+  const filters = useSelector((state) => state.filtersState.filters) ?? {};
 
   const { isOpen } = useModalContext("filterModal");
   const toggle = () => dispatch(toggleToggle({ id: "filterModal" }));
@@ -62,6 +54,7 @@ const FiltersModal = () => {
 
   const clearedFilters = {
     ...types.filtersState.defaults.filters,
+    [FILTER_INSTRUMENT_TYPE]: [],
     [FILTER_STATUS]: [],
     [FILTER_FEATURED_STATUS]: []
   };
@@ -71,30 +64,30 @@ const FiltersModal = () => {
       <ModalHeader toggle={toggle}>Apply Filters</ModalHeader>
       <Formik
         initialValues={filters}
-        onSubmit={values => {
+        onSubmit={(values) => {
           dispatch(writeFilters(values));
           toggle();
         }}
         enableReinitialize
       >
-        {formProps => {
-          const clickBrandRadioOption = val => {
+        {(formProps) => {
+          const clickBrandRadioOption = (val) => {
             setBrandRadioOption(val);
             switch (val) {
               case 1:
                 formProps.setFieldValue(
                   "brandId",
                   brandOptions
-                    .map(option => option.value)
-                    .filter(option => ovationBrands?.includes(option))
+                    .map((option) => option.value)
+                    .filter((option) => ovationBrands?.includes(option))
                 );
                 break;
               case 2:
                 formProps.setFieldValue(
                   "brandId",
                   brandOptions
-                    .map(option => option.value)
-                    .filter(option => !ovationBrands?.includes(option))
+                    .map((option) => option.value)
+                    .filter((option) => !ovationBrands?.includes(option))
                 );
                 break;
               default:
