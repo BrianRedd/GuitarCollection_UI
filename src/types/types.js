@@ -291,7 +291,7 @@ export const filtersState = {
       from_year: "",
       to_year: "",
       countyOfOrigin: [],
-      instrumentType: [],
+      instrumentType: [INSTRUMENT_OPTION_GUITAR],
       noOfStrings: [],
       soundScape: [],
       color: [],
