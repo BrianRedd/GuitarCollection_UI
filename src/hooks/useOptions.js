@@ -15,15 +15,14 @@ import {
 } from "../components/data/constants";
 
 const useOptions = ({ guitarId }) => {
-  const guitars = useSelector(state => state.guitarsState?.list) ?? [];
-  const brands = useSelector(state => state.brandsState.list) ?? [];
+  const guitars = useSelector((state) => state.guitarsState?.list) ?? [];
+  const brands = useSelector((state) => state.brandsState.list) ?? [];
 
   const brandOptions = _.orderBy(
-    brands?.map(brand => ({
+    brands?.map((brand) => ({
       value: brand.id,
       label: brand.name,
-      presence: (guitars ?? []).filter(guitar => guitar.brandId === brand.id)
-        .length
+      presence: (guitars ?? []).filter((guitar) => guitar.brandId === brand.id).length
     })),
     ["presence", "name"],
     [TEXT_DESC, TEXT_ASC]
@@ -31,61 +30,62 @@ const useOptions = ({ guitarId }) => {
   const countryOptions = _.uniq(
     _.compact([
       ...COUNTRY_OPTIONS_DEFAULTS,
-      ...guitars.map(guitar => guitar.countyOfOrigin).sort()
+      ...guitars.map((guitar) => guitar.countyOfOrigin).sort()
     ])
   );
   const instrumentOptions = _.uniq(
     _.compact([
       ...INSTRUMENT_OPTIONS_DEFAULTS,
-      ...guitars.map(guitar => guitar.instrumentType).sort()
+      ...guitars.map((guitar) => guitar.instrumentType).sort()
     ])
   );
   const soundScapeOptions = _.uniq(
     _.compact([
       ...SOUNDSCAPE_OPTIONS_DEFAULTS,
-      ...guitars.map(guitar => guitar.soundScape)
+      ...guitars.map((guitar) => guitar.soundScape)
     ])
   ).sort();
   const colorOptions = _.uniq(
-    _.compact([
-      ...COLOR_OPTIONS_DEFAULTS,
-      ...guitars.map(guitar => guitar.color)
-    ])
+    _.compact([...COLOR_OPTIONS_DEFAULTS, ...guitars.map((guitar) => guitar.color)])
   ).sort();
   const statusOptions = _.uniq(
     _.compact([
       ...STATUS_OPTIONS_DEFAULTS,
-      ...guitars.map(guitar => guitar.status).sort()
+      ...guitars.map((guitar) => guitar.status).sort()
     ])
   );
   const tuningOptions = _.uniq(
     _.compact([
       ...TUNING_OPTIONS_DEFAULTS,
-      ...guitars.map(guitar => guitar.tuning).sort()
+      ...guitars.map((guitar) => guitar.tuning).sort()
     ])
   );
   const yearOptions = _.uniq(
     _.compact(
       guitars
-        .map(guitar => parseFloat(guitar.year).toString())
-        .filter(option => option !== "NaN")
+        .map((guitar) => parseFloat(guitar.year).toString())
+        .filter((option) => option !== "NaN")
         .sort()
     )
   );
   const noOfStringOptions = _.uniq(
-    _.compact(_.orderBy(guitars.map(guitar => parseFloat(guitar.noOfStrings))))
-  ).map(option => option.toString());
-  const otherGuitarOptions = _.orderBy(
-    guitars
-      .filter(guitar => !guitarId || guitar?._id !== guitarId)
-      .map(guitar => ({
-        value: guitar._id,
-        label: `${guitar.name}${
-          guitar.status === STATUS_OPTION_PLAYABLE ? "" : "*"
-        }`
-      })),
-    "label"
-  );
+    _.compact(_.orderBy(guitars.map((guitar) => parseFloat(guitar.noOfStrings))))
+  ).map((option) => option.toString());
+  const otherGuitarOptions = [
+    {
+      value: null,
+      label: "None"
+    },
+    ..._.orderBy(
+      guitars
+        .filter((guitar) => !guitarId || guitar?._id !== guitarId)
+        .map((guitar) => ({
+          value: guitar._id,
+          label: `${guitar.name}${guitar.status === STATUS_OPTION_PLAYABLE ? "" : "*"}`
+        })),
+      "label"
+    )
+  ];
 
   return {
     brandOptions,

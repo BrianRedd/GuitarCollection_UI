@@ -108,11 +108,12 @@ export const SPEC_OPTIONS_DEFAULTS = [
   "Nut Width",
   "Pickups",
   "Pre-Amp",
+  "Reference Link^",
   "Scale Length",
   "Sound Hole",
   "Tailpiece",
   "Tuners",
-  "Reference Link^",
+  "Weight",
   "Other"
 ];
 
